@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/smileybuttons" >
-        <file alias="OkButton" >Ok.bmp</file>
-        <file alias="CancelButton" >Cancel.bmp</file>
-    </qresource>
-</RCC>
