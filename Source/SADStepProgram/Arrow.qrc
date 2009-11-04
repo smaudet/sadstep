@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/arrows" >
+        <file alias="MArrow" >arrows/arrow.png</file>
+        <file alias="background.jpg" >arrows/trogdor-wings.jpg</file>
+    </qresource>
+</RCC>

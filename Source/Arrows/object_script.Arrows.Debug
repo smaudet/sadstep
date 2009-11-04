@@ -1,0 +1,12 @@
+INPUT(
+./debug/ArrowGraphicsSet.o
+./debug/main.o
+./debug/mainwindow.o
+./debug/arrow.o
+./debug/point3d.o
+./debug/blitclass.o
+./debug/path.o
+./debug/unitvector.o
+./debug/moc_mainwindow.o
+./debug/qrc_Arrow.o
+);

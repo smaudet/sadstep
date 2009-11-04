@@ -1,0 +1,15 @@
+INPUT(
+./release/stepmenu.o
+./release/songmenu.o
+./release/startmenu.o
+./release/menuInit.o
+./release/basemenuform.o
+./release/gamemenu.o
+./release/optionmenu.o
+./release/moc_startmenu.o
+./release/moc_basemenuform.o
+./release/moc_gamemenu.o
+./release/moc_optionmenu.o
+./release/qrc_MenuForms.o
+./release/qrc_ButtonsLib.o
+);

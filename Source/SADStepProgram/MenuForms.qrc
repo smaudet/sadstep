@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/menus" >
+        <file alias="song.ui" >songMenuForm.ui</file>
+        <file alias="mainmenu.ui" >MMenuForm.ui</file>
+        <file alias="gamemenu.ui" >gamemenuform.ui</file>
+        <file alias="optionmenu.ui" >optionmenu.ui</file>
+    </qresource>
+</RCC>

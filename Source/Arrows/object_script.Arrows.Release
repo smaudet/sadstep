@@ -1,0 +1,12 @@
+INPUT(
+./release/ArrowGraphicsSet.o
+./release/main.o
+./release/mainwindow.o
+./release/arrow.o
+./release/point3d.o
+./release/blitclass.o
+./release/path.o
+./release/unitvector.o
+./release/moc_mainwindow.o
+./release/qrc_Arrow.o
+);

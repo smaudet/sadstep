@@ -1,0 +1,5 @@
+Odd Output from console with regards to object deletion
+Unable to delete StepMenu in unknown sequence
+Issue with closing Menu twice
+Odd Output from console with regards to deletion from Arrows
+Arrows slowing down at an unacceptable rate - need speeding up
