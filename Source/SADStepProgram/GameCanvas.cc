@@ -1,5 +1,6 @@
 #include "GameCanvas.h"
 #include <QBrush>
+#include <QPalette>
 #include <QtDebug>
 #include <QPaintEngine>
 
@@ -7,7 +8,7 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
         QWidget(parent)
 {
     this->lanes=lanes;
-    this->setGeometry(x(),y(),parentWidget()->width(),parentWidget()->height());
+    this->setGeometry(x()/2,y()/2,parentWidget()->width(),parentWidget()->height());
     arrows = new QList<QList<Arrow*>*>();
     for(int i = 0;i<lanes;++i){
         arrows->append(new QList<Arrow*>());
@@ -16,10 +17,27 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     connect(timer,SIGNAL(timeout()),this,SLOT(updateArrows()));
     graphics = new ArrowGraphicsSet();
     laneSize=this->width()/lanes;
-    graphics->loadAllGraphics(laneSize,laneSize);
-    parentWidget()->setStyleSheet("background-image: url(:/arrows/background.jpg)");
+    graphics->loadAllGraphics(laneSize/2,laneSize/2);
+    QBrush brush(getBackgroundImage());
+    QPalette palette = parentWidget()->palette();
+    palette.setBrush(QPalette::Window,brush);
+    palette.setBrush(QPalette::WindowText,*(new QBrush(*(new QColor(255,100,0
+                                                                    ,30)))));
+    parentWidget()->setStyleSheet("");
+    parentWidget()->setPalette(palette);
     type = 1;
     this->fps = fps;
+    showScoreText("Hooray");
+}
+
+void GameCanvas::showScoreText(QString txt) {
+    this->txt = txt;
+}
+
+QImage GameCanvas::getBackgroundImage() {
+    //QImage& retimg = *(new QImage());
+    
+    return *(graphics->getGraphic(0));
 }
 
 void GameCanvas::start() {
@@ -39,6 +57,9 @@ bool GameCanvas::spawnArrow(double speed,int lane) {
     return false;
 }
 
+int GameCanvas::getDistance() {
+    return this->height();
+}
 
 bool GameCanvas::destroyArrow(int lane) {
     if(lane>this->lanes||lane<=0){
@@ -77,6 +98,11 @@ bool GameCanvas::scoreArrow(int lane) {
 void GameCanvas::paintEvent(QPaintEvent* e){
     QPainter* p = new QPainter(this);
     QListIterator<QList<Arrow*>*> itr(*arrows);
+    //draw score region
+    for(int i=0;i<this->lanes;++i){
+        const QImage* timg = graphics->getArrowGraphic(2,i+1);
+        p->drawImage((i)*laneSize/2+this->width()/4,0,*timg);
+    }
     int laneNum=1;
     while(itr.hasNext()) {
         QListIterator<Arrow*> itr2(*itr.next());
@@ -84,10 +110,11 @@ void GameCanvas::paintEvent(QPaintEvent* e){
             Arrow* arrow = itr2.next();
             const QImage* timg = graphics->getArrowGraphic(arrow->getType(),laneNum);
             int yindent = ((double)arrow->getPercentLoc()/100)*this->height();
-            p->drawImage((laneNum-1)*laneSize,this->height()-yindent,*timg);
+            p->drawImage((laneNum-1)*laneSize/2+this->width()/4,this->height()-yindent,*timg);
         }
         ++laneNum;
     }
+    p->drawText(this->height()/2,this->width()/4,this->height()/8,this->width()/4,Qt::AlignCenter,txt);
 }
 
 void GameCanvas::updateArrows() {

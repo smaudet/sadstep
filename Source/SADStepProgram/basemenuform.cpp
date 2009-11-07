@@ -89,18 +89,21 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
         case 1: {
             stepMenu = new GameMenu(this);
             setButtonsVisible(false);
+            changeLabel(0);
             setMenuWidget(stepMenu);
             break;
         }
         case 2: {
             stepMenu = new SongMenu(this);
             setButtonsVisible(true);
+            changeLabel(2);
             setMenuWidget(stepMenu);
             break;
         }
         case 3: {
             stepMenu = new OptionMenu(this);
             setButtonsVisible(false);
+            changeLabel(1);
             setMenuWidget(stepMenu);
             break;
         }
@@ -119,6 +122,27 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
             break;
         }
     };
+}
+
+void BaseMenuForm::changeLabel(int labelChange){
+    sui = new QFile(":/menus/basemenu.ui");
+    switch(labelChange) {
+        case 0: {
+
+    m_ui->label->setText("Game Menu");
+            break;
+        }
+        case 1: {
+
+    m_ui->label->setText("Options Menu");
+            break;
+        }
+        case 2: {
+
+    m_ui->label->setText("Song Menu");
+            break;
+        }
+    }
 }
 
 void BaseMenuForm::changeEvent(QEvent *e)

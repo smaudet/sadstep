@@ -1,6 +1,8 @@
 #include "timeline.h"
 #include <QTimer>
 #include <QList>
+#include "GameCanvas.h"
+#include <QtDebug>
 
 Timeline::Timeline()
 {
@@ -54,55 +56,129 @@ Timeline::Timeline()
   you would only have one vector, a Vector of a Vector of values.
 
   */
-Timeline::Timeline(double bpm, QList<int>* BPM, QList<QList<int>*>* arrowData, double songLength)
+Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData, double songLength)
 {
-    int dt = 0; // used as a counter in deletion proccess (see checkTime function)
-    int ct = 0; // used as a counter in creation proccess (see createTime function)
-    int cTime; // used it creation proccess
-    int dTime; // used in destruction process
-    QList <int>* creationTime;
-    QList <int>* destructionTime;
-    //double thisbpm = bpm;
-   // double sLength = songLength;
-    int x;
-    for (int x=0; x < arrowData->size(); ++x)
+    qDebug() << "hello";
+    dt = 0; // used as a counter in deletion proccess (see checkTime function)
+    ct = 0; // used as a counter in creation proccess (see createTime function)
+    int loadInCon = 0; //final product of math for creation time.
+    int loadInDecon = 0; //same as above, but destruction.
+    double indivBPM, indivBPmS = 0;
+    int noteDeconTime = 0;
+    double buffer = 0;
+
+    creationTime = new QList<int>;
+    destructionTime = new QList<int>;
+    // double sLength = songLength;
+
+    if (arrowData->size() == BPM->size())
     {
-        if (arrowData->at(x)!= 0000)
+        for (int x=0; x < arrowData->size(); x++)
         {
-            // REMINDER::Arrow Creator class takes care of dealing with
-            //(0000) vectors. This class ignors them.
-            creationTime->append();
-            //TODO: Math for creation time vector values
-            destructionTime->append();
-            //TODO: Math for destruction time vector values
+            QList<QList<int>*>* measureData = arrowData->at(x);
+            for(int w = 0; w < measureData->size(); w++)
+            {
+                if (measureData->at(w)!= 0000)
+                {
+                    // REMINDER::Arrow Creator class takes care of dealing with
+                    //(0000) vectors. This class ignors them.
+                    indivBPM = BPM->at(x)/measureData->size();
+                    indivBPmS = indivBPM/60000; //converts BPM to Beats per millisecond
+                    noteDeconTime = 1/indivBPmS; //gets milliseconds per beat(ie note)
+                    if (destructionTime->isEmpty())
+                    {
+                        loadInDecon = noteDeconTime; //used to load in initial value for destructionTime
+                    }
+                    else
+                    {
+                        loadInDecon = destructionTime->last() + noteDeconTime;
+                    }   //above eqn. compounds the time in dT
+                    destructionTime->append(loadInDecon);
+                    loadInCon = destructionTime->last() - 5000; //Assuming it takes 5 seconds for arrows to
+                    creationTime->append(loadInCon);            //travle across the screen.
+                    qDebug() << "creation time size" << creationTime->size();
+                }
+                else
+                {
+                    //TODO What is this else statement for? - Sebastian
+                }
+            }
         }
-        else
-        {
-            // does nothing otherwise
-        }
-
-
-
     }
+    else if(BPM->size()==1) {
+        for (int x=0; x < arrowData->size(); x++)
+        {
+            QList<QList<int>*>* measureData = arrowData->at(x);
+            for(int w = 0; w < measureData->size(); w++)
+            {
+                    // REMINDER::Arrow Creator class takes care of dealing with
+                    //(0000) vectors. This class ignors them.
+                    double measureBPS = BPM->at(0);
+                    measureBPS*=1000;
+                    //indivBPmS = indivBPM/60; //converts BPM to Beats per second
+                    qDebug() << measureBPS << "bps" << measureBPS/measureData->size();
+                    noteDeconTime = measureBPS/measureData->size();
+                    //noteDeconTime = 1/indivBPmS*1000; //gets milliseconds per beat(ie note)
+                    qDebug() << noteDeconTime;
+                    destructionTime->append(noteDeconTime+loadInDecon);
+                    loadInDecon = destructionTime->last();
+                    loadInCon = loadInDecon; //Assuming it takes 5 seconds for arrows to
+                    creationTime->append(loadInCon);            //travle across the screen.
+                    qDebug() << "creation time" << loadInCon;
 
+            }
+        }
+    } else {
+        //If BPM size and Arrow size don't match, AND BPM size isn't equall to
+        //one, THEN and only then did an error occur.
+    }
+}
+
+void Timeline::getNotes(QList<QList<QList<int>*>*>* arrowData) {
+    //This function takes arrowData, which is grouped in Measures, which are
+    //a bunch of lines with "arrows" in them, and puts them into one large
+    //measure.
+    //(example)
+    //0010
+    //0100  (each block is a measure. each line represents the arrows.)
+    //1000
+    //,
+    //0001
+    //1010
+    //0101
+    //,
+    //will now read
+    //0010
+    //0100
+    //1000
+    //0001
+    //1010
+    //0101
+    QList<QList<int>*>* localMeasure;
+    
+    arrowGiantMeasure = new QList<QList<int>*>;
+    for (int x = 0; x < arrowData->size(); x++)
+    {
+        localMeasure = arrowData->at(x);
+        arrowGiantMeasure->append(*localMeasure);
+    }
+    qDebug() << "arrowGiantMeasure" << arrowGiantMeasure->size();
 }
 
 int Timeline::getArrowSpeed()
 {
-    int distance;
-    int arrowSpeed;
-
-    distance = int getDistance();// size of window
     arrowSpeed = (distance/5000); // may change to include BPM @ later date
-     return arrowSpeed;
+    return arrowSpeed;
 }
 
-int Timeline::timeDisplacement(pushTime)// used to send time to Score class
+void Timeline::setDistance(int distance) {
+    this->distance = distance;
+}
+
+int Timeline::timeDisplacement(int pushTimer) // used to send time to Score class
 {
-    //int getPushTime(pushTime); not needed atm
-    int pushTimer = pushTime;
-    int checkTime(scorePushTime);
-    int displacement;
+    //int getPushTime(pushTimer); not needed atm
+    //scorePushTime = checkTime();
     // helps give time in absolute value for distance
     //between when arrow should have been pushed and is pushed
     if (pushTimer > scorePushTime)
@@ -123,12 +199,13 @@ int Timeline::createTime() //returns creation time for arrows 1 set at a time
     return cTime;
     ++ct;
 }
-int TimeLine::checkTime() // returns time for destruction 1 arrow set at a time
+int Timeline::checkTime() // returns time for destruction 1 arrow set at a time
 {
     dTime = destructionTime->at(dt);
     return dTime;
     ++dt;
 }
-void Timeline::~Timeline() // destructor
+Timeline::~Timeline() // destructor
 {
+
 }

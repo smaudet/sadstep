@@ -2,6 +2,7 @@
 #define GAMECANVAS_H
 
 #include <QObject>
+#include <QString>
 #include <QThread>
 #include <QWidget>
 #include <QList>
@@ -32,7 +33,8 @@ public:
     GameCanvas(int lanes,QWidget* parent, int fps = 60);
     ~GameCanvas();
     void run();
-    int getPixelDistance();
+    //In pixels
+    int getDistance();
     bool spawnArrow(double speed, int lane);
     bool destroyArrow(int lane);
     bool blankArrow(int lane);
@@ -48,12 +50,14 @@ public:
     void start();
 public slots:
     void updateArrows();
+    void showScoreText(QString txt);
 protected:
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
     //friend void GameCanvasThread::run();
     int fps;
+    QImage getBackgroundImage();
     ArrowGraphicsSet* graphics;
     //An N-dimensional array of lanes of Arrows
     QList<QList<Arrow*>*>* arrows;
@@ -61,6 +65,7 @@ private:
     int type;
     int lanes;
     int laneSize;
+    QString txt;
 };
 
 #endif // GAMECANVAS_H

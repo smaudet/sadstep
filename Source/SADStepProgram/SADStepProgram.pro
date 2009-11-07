@@ -15,7 +15,14 @@ SOURCES += main.cc \
     GameCanvas.cc \
     basemenuform.cpp \
     ArrowGraphicsSet.cpp \
-    Arrow.cc
+    Arrow.cc \
+    timeline.cpp \
+    score.cpp \
+    ScoreData.cpp \
+    FileIOServer.cc \
+    SongCatalogue.cc \
+    SMFileReader.cc \
+    musicplayer.cpp
 HEADERS += mainwindow.h \
     stepmenu.h \
     startmenu.h \
@@ -26,7 +33,16 @@ HEADERS += mainwindow.h \
     GameCanvas.h \
     basemenuform.h \
     ArrowGraphicsSet.h \
-    Arrow.h
+    Arrow.h \
+    timeline.h \
+    score.h \
+    ScoreData.h \
+    FileIOServer.h \
+    SongReader.h \
+    SongCatalogue.h \
+    SMFileReader.h \
+    StepReader.h \
+    musicplayer.h
 FORMS += songMenuForm.ui \
     optionmenu.ui \
     MMenuForm.ui \

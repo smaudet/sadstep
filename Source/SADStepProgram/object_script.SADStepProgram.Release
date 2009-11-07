@@ -11,6 +11,13 @@ INPUT(
 ./release/basemenuform.o
 ./release/ArrowGraphicsSet.o
 ./release/Arrow.o
+./release/timeline.o
+./release/score.o
+./release/ScoreData.o
+./release/FileIOServer.o
+./release/SongCatalogue.o
+./release/SMFileReader.o
+./release/musicplayer.o
 ./release/moc_mainwindow.o
 ./release/moc_startmenu.o
 ./release/moc_optionmenu.o

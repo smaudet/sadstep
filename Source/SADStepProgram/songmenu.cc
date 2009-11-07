@@ -10,9 +10,13 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
     loader = new QUiLoader();
     widget = new QWidget();
     loader->load(sui,widget);
-    QListWidget* listWidget = widget->findChild<QListWidget*>("listWidget");
-    listWidget->addItem("hah!");
-    listWidget->addItem("We did it!");
+    listWidget = widget->findChild<QListWidget*>("listWidget");
+    SongCatalogue* const cata = SongCatalogue::getInstance();
+    const QList<QString>* list = cata->getFileNames();
+    for (int x = 0; x < 20; x++)
+    {
+        listWidget->addItem(list->at(x));
+    }
     this->setWidgetRep(widget);
 }
 
@@ -22,4 +26,10 @@ SongMenu::~SongMenu() {
     delete loader;
     delete widget;
     qDebug() << "SongMenu";
+}
+
+const int SongMenu::getIndex()
+{
+     //const int number = listWidget->currentRow;
+     return listWidget->currentRow();
 }

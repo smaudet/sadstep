@@ -11,6 +11,13 @@ INPUT(
 ./debug/basemenuform.o
 ./debug/ArrowGraphicsSet.o
 ./debug/Arrow.o
+./debug/timeline.o
+./debug/score.o
+./debug/ScoreData.o
+./debug/FileIOServer.o
+./debug/SongCatalogue.o
+./debug/SMFileReader.o
+./debug/musicplayer.o
 ./debug/moc_mainwindow.o
 ./debug/moc_startmenu.o
 ./debug/moc_optionmenu.o

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'gamemenuform.ui'
 **
-** Created: Thu Oct 29 16:24:46 2009
+** Created: Fri Nov 6 12:20:00 2009
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

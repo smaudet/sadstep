@@ -3,6 +3,8 @@
 
 #include <QtGui/QWidget>
 #include <QObject>
+#include <QLabel>
+#include <QFile>
 #include "stepmenu.h"
 
 class StepMenu;
@@ -19,12 +21,14 @@ public:
     enum BaseMenuOps {
         RUN_GAME = 300
     };
+    QLabel* label;
     void setMenuWidget(StepMenu* menu);
     bool setButtonsVisible(bool visible);
     bool toggleButtonWindow();
     bool toggleOK();
     bool toggleCancel();
     void goToMenu(int index, bool firstRun = false);
+    void changeLabel(int labelChange);
 //    void runGame();
 //    void runElse();
 public slots:
@@ -38,6 +42,7 @@ private:
     bool showButtonWindow;
     bool showOK;
     bool showCancel;
+    QFile* sui;
     StepMenu* stepMenu;
     Ui::BaseMenuForm *m_ui;
 };

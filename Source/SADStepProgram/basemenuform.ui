@@ -50,7 +50,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Title</string>
+         <string>SADStep</string>
         </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>

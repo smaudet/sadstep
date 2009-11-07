@@ -33,6 +33,7 @@ void ArrowGraphicsSet::loadArrowGraphics(int width, int height, int lanes) {
     }
     QList<QImage*>* timg = new QList<QImage*>();
     timg->append(new QImage(":/arrows/MArrow","png"));
+    timg->append(new QImage(":/arrows/arrowScore","png"));
     //TODO Add support for separate images
     QListIterator<QImage*> itr(*timg);
     while(itr.hasNext()) {
