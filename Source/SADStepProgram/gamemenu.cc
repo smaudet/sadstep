@@ -23,9 +23,7 @@ void GameMenu::menuSelected3() {
 void GameMenu::menuSelected4() {
     form->goToMenu(4);
 }
-GameMenu::~GameMenu()
-{
-
+GameMenu::~GameMenu() {
     qDebug() << "GameStuff";
     delete sui;
     delete loader;
@@ -33,4 +31,5 @@ GameMenu::~GameMenu()
     delete optionBtn;
     delete exitBtn;
     delete widget;
+    qDebug() << "GameStuff";
 }

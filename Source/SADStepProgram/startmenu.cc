@@ -16,10 +16,10 @@ void StartMenu::menuSelected1() {
     form->goToMenu(1);
 }
 StartMenu::~StartMenu() {
-    //qDebug() << "StartMenu";
+    qDebug() << "StartMenu";
     delete sui;
     delete loader;
     delete startBtn;
     delete widget;
-    //qDebug() << "StartMenu";
+    qDebug() << "StartMenu";
 }

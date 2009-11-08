@@ -45,8 +45,10 @@ void GameCanvas::start() {
 }
 
 GameCanvas::~GameCanvas() {
+    qDebug() << "allo";
     delete arrows;
     delete timer;
+    qDebug() << ":)";
 }
 
 bool GameCanvas::spawnArrow(double speed,int lane) {

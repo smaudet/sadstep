@@ -31,8 +31,6 @@ bool BaseMenuForm::mainMenu() {
 BaseMenuForm::~BaseMenuForm()
 {
     qDebug() << "forward";
-    //delete stepMenu;
-    qDebug() << "backward";
     delete m_ui;
     qDebug() << "twilight";
 }
@@ -75,6 +73,7 @@ bool BaseMenuForm::toggleCancel() {
     return showCancel;
 }*/
 
+
 void BaseMenuForm::goToMenu(int index, bool firstRun) {
     if(!firstRun){
     delete stepMenu;
@@ -109,7 +108,6 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
         }
         case 4: {
             close();
-            setMenuWidget(stepMenu);
             break;
         }
         case 300: { // Run Game
@@ -143,6 +141,10 @@ void BaseMenuForm::changeLabel(int labelChange){
             break;
         }
     }
+}
+
+void BaseMenuForm::closeEvent(QCloseEvent* e) {
+    this->parentWidget()->close();
 }
 
 void BaseMenuForm::changeEvent(QEvent *e)

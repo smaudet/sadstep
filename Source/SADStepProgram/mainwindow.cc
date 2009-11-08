@@ -310,8 +310,8 @@ void MainWindow::timerEvent(QTimerEvent* e) {
 }
 
 MainWindow::~MainWindow() {
+    qDebug() << "deleting menu";
     delete menu;
-    delete canvas;
 }
 
 

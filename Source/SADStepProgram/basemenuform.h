@@ -38,6 +38,7 @@ signals:
     void runGame(int index);
 protected:
     void changeEvent(QEvent *e);
+    void closeEvent(QCloseEvent* e);
 private:
     bool showButtonWindow;
     bool showOK;

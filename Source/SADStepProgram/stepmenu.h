@@ -16,7 +16,7 @@ class StepMenu: public QWidget
 {
 public:
     StepMenu(BaseMenuForm* form, QWidget *parent = 0);
-    virtual ~StepMenu();
+    ~StepMenu();
     QWidget* getWidget();
     
 protected:
