@@ -13,7 +13,7 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
     listWidget = widget->findChild<QListWidget*>("listWidget");
     SongCatalogue* const cata = SongCatalogue::getInstance();
     const QList<QString>* list = cata->getFileNames();
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < list->size(); x++)
     {
         listWidget->addItem(list->at(x));
     }
