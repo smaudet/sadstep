@@ -31,7 +31,7 @@ SMFileReader::SMFileReader(QString location)
 {
     this->fileName = new QString(location);
 }
-//
+
 //void SMFileReader::findTags() {
 //    QFile file(fileName);/*
 //    qDebug() << file.exists();*/
@@ -57,38 +57,42 @@ SMFileReader::SMFileReader(QString location)
 //}
 
 
-//QString SMFileReader::getSongFile() {
-//    QString s;
-//        bool found = false;
-//        QFile file(*fileName);
-//        qDebug() << "Can open:" << file.open(QIODevice::ReadOnly);
-//        while(!found) {
-//            char * somedata;
-//            file.readLine(somedata,10000);
-//            s = somedata;
-//            if(ts.startsWith("\#MUSIC:")) {
-//                found = true;
-//            }
-//        }
-//        s = s.remove(*(new QRegExp(":.*;")));
-//        qDebug() << s;
-//        s.truncate(s.size()-1);
-//        qDebug() << s;
-//        s.remove(0,1);
-//        qDebug() << s;
-//        return s;
-//}
+QString SMFileReader::getSongFile() {
+    QString s;
+    bool found = false;
+    QFile file(*fileName);
+    /*qDebug() << "Can open:" << */file.open(QIODevice::ReadOnly);
+//    qDebug() << file.exists();
+    QTextStream textfile(&file);
+    textfile.setAutoDetectUnicode(true);
+    while(!found) {
+//        char * somedata;
+//        file.readLine(somedata,10000);
+        
+        s = textfile.readLine();/*somedata;*/
+        if(s.startsWith("\#MUSIC:")) {
+            found = true;
+        }
+    }
+    s = s.remove(*(new QRegExp(":.*;")));
+    //qDebug() << s;
+    s.truncate(s.size()-1);
+    //qDebug() << s;
+    s.remove(0,1);
+    qDebug() << s;
+    return s;
+}
 
 //TODO atm difficulty actually maps to position, and practically a
 //lower number returns easier difficulty, however in future need to search in
 //SM files and get the actuall difficulty
 QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
-    qDebug() << *fileName;
+    //qDebug() << *fileName;
     QList<QList<QList<int>*>*>* data = new QList<QList<QList<int>*>*>();
     QFile file(*fileName);
-    qDebug() << "Can open:" << file.open(QIODevice::ReadOnly);
-    qDebug() << file.exists();
-    qDebug() << "from the file:" << file.canReadLine();/*
+    /*qDebug() << "Can open:" << */file.open(QIODevice::ReadOnly);
+    /*qDebug() << file.exists();
+    qDebug() << "from the file:" << file.canReadLine();*//*
     qDebug() << file.isReadable() << "Readability";
     qDebug() << file.isOpen() << "State of open";
     qDebug() << file.isTextModeEnabled() << "State of text";*/
@@ -100,20 +104,14 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
     for(int i=0;i<=difficulty;i++) {
         bool found = false;
         while(!found) {
-            char * somedata;
-            qDebug() << "oh noes";
-            textfile.readLine();
+            //textfile.readLine();
             //file.readLine(somedata,10000);
-            qDebug() << "read in line";
+            //qDebug() << "read in line";
             QString ts(/*somedata*/textfile.readLine());
-//            if(textfile.atEnd()){
-//                qDebug() << "Bugged out";
-//                break;
-//            }
             qDebug() << "ts: " << ts;
             if(ts.startsWith("\#NOTES:")) {
                 found = true;
-                qDebug() << "found diff";
+                //qDebug() << "found diff";
                 lastString = ts;
             }
         }
@@ -128,7 +126,7 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
     //Begin Reading Routine
     bool done = false;
     while(!done){
-        qDebug() << "Beginning note read";
+        //qDebug() << "Beginning note read";
         data->append(new QList<QList<int>*>);
         QList<QList<int>*>* measure = data->last();
         bool finishedMeasure = false;
@@ -140,12 +138,12 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
             s=s.trimmed();
             //qDebug() << "file: " << s;
             if(s.isEmpty()) {
-                qDebug() << "discarded empty";
+                //qDebug() << "discarded empty";
                 continue;
             }
             if(s.contains(",") || s.contains(";")) {
                 finishedMeasure = true;
-                qDebug() << "found measure";
+                //qDebug() << "found measure";
                 if(s.contains(";")){
                     qDebug() << "finished reading data";
                     done = true;
@@ -155,13 +153,13 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
                 QList<int>* note = measure->last();
                 for(int i = 0;i<s.size();i++){
                     note->append(QString(s.at(i)).toInt());
-                    qDebug() << note->last() << "s";
+                    //qDebug() << note->last() << "s";
                 }
-                qDebug() << note->size();
+                //qDebug() << note->size();
             }
         }
     }
-    qDebug() << "ought to be done with data";
+    //qDebug() << "ought to be done with data";
     return data;
 }
 

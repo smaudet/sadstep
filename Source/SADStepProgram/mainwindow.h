@@ -22,6 +22,9 @@
 #include "GameCanvas.h"
 #include "timeline.h"
 
+//To be deleted:
+#include <QSound>
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -37,10 +40,12 @@ protected:
     void timerEvent(QTimerEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
+    QSound* sound;
+    bool canvasOn;
+    bool needsToCloseGame;
     FileIOServer* fio;
     GameCanvas* canvas;
     BaseMenuForm* menu;
-    QTimer* timer;
     bool canwinB;
     QListIterator<int>* itr;
     Timeline* timeline;

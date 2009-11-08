@@ -12,37 +12,32 @@
 #include <QSound>
 
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent)
-{
+	: QMainWindow(parent) {
     showFullScreen();
+    canvasOn = false;
+    needsToCloseGame = false;
     runMenu();
     fio = new FileIOServer(); // starts file IO server
-    this->timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(gameLogic()));
     x = 0;
 }
 
 void MainWindow::gameLogic() {
     qDebug() << "Porpoises?";
-    if (canvas)
-    {
-        //int creationTime1 = itr->next();
-        qDebug() << "Elephants!";
-        //int creationTime2 = itr->peekNext();
-        //int timeDisplacement = creationTime2 - creationTime1; // calculates displacement from n and n+1 creation times to set value for timer
-        qDebug() << "Tinker Winker Dolls";
-        //Score* scores = new Score(); // starts score class
-        bool allValYAreZero = true;
-        //Note
-        int ysize = arrows->at(x)->size();
-        int* y = new int[ysize];
-        for(int i=0;i<ysize;++i) {
-            qDebug() << "Go Boom " << i;
-            qDebug() << x;
-            y[i] = arrows->at(x)->at(i);
-            if(y[i]!=0){
-                allValYAreZero = false;
-            }
+    if (canvas) {
+	qDebug() << "Elephants!";
+	qDebug() << "Tinker Winker Dolls";
+	//Score* scores = new Score(); // starts score class
+	bool allValYAreZero = true;
+	//Note
+	int ysize = arrows->at(x)->size();
+	int* y = new int[ysize];
+	for(int i=0;i<ysize;++i) {
+	    qDebug() << "Go Boom " << i;
+	    qDebug() << x;
+	    y[i] = arrows->at(x)->at(i);
+	    if(y[i]!=0){
+		allValYAreZero = false;
+	    }
         }
         if(allValYAreZero)
         {
@@ -58,11 +53,17 @@ void MainWindow::gameLogic() {
             }
             x++;
         }
-        lastTimerID = startTimer(itr->next());
+	if(needsToCloseGame) {
+	    needsToCloseGame=false;
+	    runMenu();
+	} else {
+	    lastTimerID = startTimer(itr->next());
+	}
     }
 }
 
 void MainWindow::runGame() {
+    canvasOn = true;
     qDebug() << "hel";
     const SongCatalogue* const catalogue = fio->getSongCatalogue(); // implements the instance of song catalogue
     qDebug() << "are you dying?";
@@ -89,7 +90,6 @@ void MainWindow::runGame() {
     qDebug() << "hel";
     canvas->start();
     lastTimerID = startTimer(itr->next());
-    //timer->start(itr->next());
     qDebug() << itr->peekPrevious();
  /*
       To Scott Tollas
@@ -252,10 +252,20 @@ void MainWindow::runGame() {
                     //            }
                     //        while (timer->isActive());
                     //        delete timer;
-    QSound::play("1000 Words.wav");
+    sound = new QSound("1000 Words.wav");
+    sound->play();
 }
 
 void MainWindow::runMenu() {
+    qDebug() << "menu running";
+    if(canvasOn) { // Need to delete game stuff
+        qDebug() << "canvas was on";
+        delete timeline;
+        delete itr;
+        canvasOn = false;
+        sound->stop();
+    }
+    qDebug() << "end of loop";
     menu = new BaseMenuForm(this);
     connect(menu,SIGNAL(runGame(int)),this,SLOT(runGame()));
     setCentralWidget(menu);
@@ -289,7 +299,7 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
     }
     if(e->key()==Qt::Key_Escape){
         if(canvas){
-            runMenu();
+            needsToCloseGame = true;
         }
     }
 }

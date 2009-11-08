@@ -22,11 +22,11 @@ StepReader* FileIOServer::getStepReader(QString* location) {
     return NULL;
 }
 
-//SongReader* FileIOServer::getSongReader(QString* location) {
-//    QString s(*location);
-//    qDebug() << s;
-//    if(s.endsWith(".sm",Qt::CaseInsensitive)) {
-//        return new SMFileReader(*location);
-//    }
-//    return NULL;
-//}
+SongReader* FileIOServer::getSongReader(QString* location) {
+    QString s(*location);
+    qDebug() << s;
+    if(s.endsWith(".sm",Qt::CaseInsensitive)) {
+        return new SMFileReader(*location);
+    }
+    return NULL;
+}

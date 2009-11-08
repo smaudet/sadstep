@@ -8,3 +8,4 @@ object_script.SADStepProgram.Release
 Makefile
 Makefile.Debug
 Makefile.Release
+ui_*.h

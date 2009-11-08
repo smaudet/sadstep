@@ -4,7 +4,6 @@
 class SongReader
 {
 public:
-    SongReader();
     virtual QString getSongFile() = 0;
 private:
 };
