@@ -28,8 +28,7 @@ bool BaseMenuForm::mainMenu() {
     goToMenu(1);
 }
 
-BaseMenuForm::~BaseMenuForm()
-{
+BaseMenuForm::~BaseMenuForm() {
     qDebug() << "forward";
     delete m_ui;
     qDebug() << "twilight";
@@ -42,9 +41,9 @@ void BaseMenuForm::setMenuWidget(StepMenu* menu) {
 
 bool BaseMenuForm::setButtonsVisible(bool visible){
     if(!visible) {
-        m_ui->frame_3->hide();
+	m_ui->frame_3->hide();
     } else {
-        m_ui->frame_3->show();
+	m_ui->frame_3->show();
     }
     return visible;
 }
@@ -56,9 +55,9 @@ bool BaseMenuForm::toggleButtonWindow() {
 /*bool BaseMenuForm::toggleOK() {
     showOK = !showOK;
     if(showOK) {
-        m_ui->okBtn->show();
+	m_ui->okBtn->show();
     } else {
-        m_ui->okBtn->hide();
+	m_ui->okBtn->hide();
     }
     return showOK;
 }
@@ -66,9 +65,9 @@ bool BaseMenuForm::toggleButtonWindow() {
 bool BaseMenuForm::toggleCancel() {
     showCancel = !showCancel;
     if(showCancel) {
-        m_ui->cancelBtn->show();
+	m_ui->cancelBtn->show();
     } else {
-        m_ui->cancelBtn->hide();
+	m_ui->cancelBtn->hide();
     }
     return showCancel;
 }*/
@@ -79,46 +78,46 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
     delete stepMenu;
     }
     switch(index) {
-        case 0: {
-            stepMenu = new StartMenu(this);
-            setButtonsVisible(false);
-            setMenuWidget(stepMenu);
-            }
-            break;
-        case 1: {
-            stepMenu = new GameMenu(this);
-            setButtonsVisible(false);
-            changeLabel(0);
-            setMenuWidget(stepMenu);
-            break;
-        }
-        case 2: {
-            stepMenu = new SongMenu(this);
-            setButtonsVisible(true);
-            changeLabel(2);
-            setMenuWidget(stepMenu);
-            break;
-        }
-        case 3: {
-            stepMenu = new OptionMenu(this);
-            setButtonsVisible(false);
-            changeLabel(1);
-            setMenuWidget(stepMenu);
-            break;
-        }
-        case 4: {
-            close();
-            break;
-        }
-        case 300: { // Run Game
-            emit runGame(0);
-            break;
-        }
-        default:{
-            stepMenu = new StartMenu(this);
-            setButtonsVisible(false);
-            break;
-        }
+	case 0: {
+	    stepMenu = new StartMenu(this);
+	    setButtonsVisible(false);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+	case 1: {
+	    stepMenu = new GameMenu(this);
+	    setButtonsVisible(false);
+	    changeLabel(0);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+	case 2: {
+	    stepMenu = new SongMenu(this);
+	    setButtonsVisible(true);
+	    changeLabel(2);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+	case 3: {
+	    stepMenu = new OptionMenu(this);
+	    setButtonsVisible(false);
+	    changeLabel(1);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+	case 4: {
+	    close();
+	    break;
+	}
+	case 300: { // Run Game
+	    emit runGame(0);
+	    break;
+	}
+	default:{
+	    stepMenu = new StartMenu(this);
+	    setButtonsVisible(false);
+	    break;
+	}
     };
 }
 

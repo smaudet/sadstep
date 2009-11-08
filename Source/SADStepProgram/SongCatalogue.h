@@ -5,8 +5,7 @@
 #include <QDir>
 #include <QString>
 
-class SongCatalogue
-{
+class SongCatalogue {
 public:
     //TODO Replace with Macro or Datatype
     const QList<QString>* const getFileNames() const;
