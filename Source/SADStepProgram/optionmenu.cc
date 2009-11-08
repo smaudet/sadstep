@@ -9,6 +9,7 @@ OptionMenu::OptionMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form, paren
     cancelBtn = widget->findChild<QPushButton*>("cancelBtn");
     connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancel()));
     this->setWidgetRep(widget);
+    //qDebug() << parent->height() << " at Options Menu";
 }
 OptionMenu::~OptionMenu() {
     qDebug() << "OptionMenu";

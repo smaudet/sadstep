@@ -6,6 +6,8 @@
 #include <QLabel>
 #include <QFile>
 #include "stepmenu.h"
+#include <QGridLayout>
+#include <QSpacerItem>
 
 class StepMenu;
 
@@ -46,6 +48,10 @@ private:
     QFile* sui;
     StepMenu* stepMenu;
     Ui::BaseMenuForm *m_ui;
+    QSpacerItem* up;
+    QSpacerItem* down;
+    QSpacerItem* left;
+    QSpacerItem* right;
 };
 
 #endif // BASEMENUFORM_H

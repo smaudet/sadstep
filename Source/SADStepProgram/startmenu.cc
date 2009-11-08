@@ -1,6 +1,6 @@
 #include "startmenu.h"
 #include "basemenuform.h"
-#include <QPushButton>
+
 
 StartMenu::StartMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form,parent)
 {
@@ -8,7 +8,9 @@ StartMenu::StartMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form,parent)
     loader = new QUiLoader();
     widget = new QWidget();
     loader->load(sui,widget);
+    qDebug() << "D";
     startBtn = widget->findChild<QPushButton*>("pushButton");
+    qDebug() << "showing off birthday suit";
     connect(startBtn, SIGNAL(clicked()), this, SLOT(menuSelected1()));
     this->setWidgetRep(widget);
 }

@@ -8,7 +8,8 @@ SongCatalogue* SongCatalogue::singInst = NULL;
 //TODO Support categorization
 //TODO Support nesting
 //TODO Support Music
-SongCatalogue::SongCatalogue() {
+SongCatalogue::SongCatalogue()
+{
     //Explore the base directory
     this->baseDir = "Songs";
     QbaseDir = new QDir(baseDir);

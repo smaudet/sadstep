@@ -18,6 +18,7 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
         listWidget->addItem(list->at(x));
     }
     this->setWidgetRep(widget);
+    //qDebug() << parent->height() << " at Song Menu";
 }
 
 SongMenu::~SongMenu() {
