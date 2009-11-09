@@ -54,60 +54,56 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
-    <value type="QString" >APPDATA=C:\Documents and Settings\audets\Application Data</value>
+    <value type="QString" >ALLUSERSPROFILE=C:\ProgramData</value>
+    <value type="QString" >APPDATA=C:\Users\Scott\AppData\Roaming</value>
+    <value type="QString" >CLASSPATH=.;C:\Program Files\Java\jre6\lib\ext\QTJava.zip</value>
     <value type="QString" >COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
-    <value type="QString" >COMPUTERNAME=ECE2008AR</value>
-    <value type="QString" >COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
-    <value type="QString" >DISPLAY=:0.0</value>
+    <value type="QString" >COMPUTERNAME=SCOTT-PC</value>
+    <value type="QString" >COMSPEC=C:\Windows\system32\cmd.exe</value>
+    <value type="QString" >DFSTRACINGON=FALSE</value>
     <value type="QString" >FP_NO_HOST_CHECK=NO</value>
-    <value type="QString" >HOME=C:\Documents and Settings\audets</value>
     <value type="QString" >HOMEDRIVE=C:</value>
-    <value type="QString" >HOMEPATH=\Documents and Settings\audets</value>
-    <value type="QString" >KMP_DUPLICATE_LIB_OK=TRUE</value>
-    <value type="QString" >LM_LICENSE_FILE=c:\snec\license\license.dat</value>
-    <value type="QString" >LOGONSERVER=\\ECESERVER</value>
-    <value type="QString" >MKL_SERIAL=YES</value>
-    <value type="QString" >NIDAQMXSWITCHDIR=C:\Program Files\National Instruments\NI-DAQ\Switch\</value>
+    <value type="QString" >HOMEPATH=\Users\Scott</value>
+    <value type="QString" >LOCALAPPDATA=C:\Users\Scott\AppData\Local</value>
+    <value type="QString" >LOGONSERVER=\\SCOTT-PC</value>
     <value type="QString" >NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString" >ONLINESERVICES=Online Services</value>
     <value type="QString" >OS=Windows_NT</value>
-    <value type="QString" >PATH=C:\Qt\2009.03\mingw\bin;C:\Qt\2009.03\qt\bin;c:\winavr-20090313\bin;c:\winavr-20090313\utils\bin;c:\winavr-20081205\bin;c:\winavr-20081205\utils\bin;c:\progra~1\design~1\tina7~1;c:\progra~1\borland\cbuild~1\bin;c:\progra~1\borland\cbuild~1\projects\bpl;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati.ace\;c:\program files\common files\roxio shared\dllshared\;"c:\program files\symantec\norton ghost 2003\";c:\vxipnp\winnt\bin;c:\altera\72\quartus\bin;c:\program files\rational\clearquest;c:\program files\rational\common;c:\program files\tortoisesvn\bin;c:\snec\bin;C:\Program Files\MATLAB\R2006b\bin;C:\Program Files\MATLAB\R2006b\bin\win32;</value>
-    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.DLL</value>
+    <value type="QString" >PATH=C:\Qt\2009.03\mingw\bin;C:\Qt\2009.03\qt\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Program Files\CyberLink\Power2Go\;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Mercurial;C:\Program Files\TortoiseHg;C:\Program Files\Bazaar;C:\Program Files\Diffuse</value>
+    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC</value>
+    <value type="QString" >PCBRAND=Pavilion</value>
+    <value type="QString" >PLATFORM=MCD</value>
     <value type="QString" >PROCESSOR_ARCHITECTURE=x86</value>
-    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 15 Model 107 Stepping 2, AuthenticAMD</value>
+    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 15 Model 104 Stepping 2, AuthenticAMD</value>
     <value type="QString" >PROCESSOR_LEVEL=15</value>
-    <value type="QString" >PROCESSOR_REVISION=6b02</value>
+    <value type="QString" >PROCESSOR_REVISION=6802</value>
+    <value type="QString" >PROGRAMDATA=C:\ProgramData</value>
     <value type="QString" >PROGRAMFILES=C:\Program Files</value>
+    <value type="QString" >PUBLIC=C:\Users\Public</value>
     <value type="QString" >QTDIR=C:/Qt/2009.03/qt</value>
-    <value type="QString" >QUARTUS_ROOTDIR=c:\altera\72\quartus</value>
-    <value type="QString" >ROOTDIR=C:\PROGRA~1\RATIONAL\RATION~1\NUTCROOT</value>
-    <value type="QString" >ROXIOCENTRAL=C:\Program Files\Common Files\Roxio Shared\9.0\Roxio Central33\</value>
+    <value type="QString" >QTJAVA=C:\Program Files\Java\jre6\lib\ext\QTJava.zip</value>
     <value type="QString" >SESSIONNAME=Console</value>
-    <value type="QString" >SHELL=C:\PROGRA~1\RATIONAL\RATION~1\NUTCROOT\mksnt\sh.exe</value>
-    <value type="QString" >SNECROOTV2=c:\snec</value>
     <value type="QString" >SYSTEMDRIVE=C:</value>
-    <value type="QString" >SYSTEMROOT=C:\WINDOWS</value>
-    <value type="QString" >TEMP=C:\DOCUME~1\audets\LOCALS~1\Temp</value>
-    <value type="QString" >TMP=C:\DOCUME~1\audets\LOCALS~1\Temp</value>
-    <value type="QString" >TMPDIR=C:\DOCUME~1\audets\LOCALS~1\Temp</value>
-    <value type="QString" >USERDNSDOMAIN=TSUECE.EDU</value>
-    <value type="QString" >USERDOMAIN=TSUECE</value>
-    <value type="QString" >USERNAME=audets</value>
-    <value type="QString" >USERPROFILE=C:\Documents and Settings\audets</value>
-    <value type="QString" >VXIPNPPATH=C:\VXIPNP\</value>
-    <value type="QString" >WINDIR=C:\WINDOWS</value>
-    <value type="QString" >WXADDITIONS=C:\CodeBlocks\wxWidgets2.8\additions</value>
-    <value type="QString" >WXWIN=C:\CodeBlocks\wxWidgets2.8</value>
+    <value type="QString" >SYSTEMROOT=C:\Windows</value>
+    <value type="QString" >TEMP=C:\Users\Scott\AppData\Local\Temp</value>
+    <value type="QString" >TMP=C:\Users\Scott\AppData\Local\Temp</value>
+    <value type="QString" >TRACE_FORMAT_SEARCH_PATH=\\NTREL202.ntdev.corp.microsoft.com\4F18C3A5-CA09-4DBD-B6FC-219FDD4C6BE0\TraceFormat</value>
+    <value type="QString" >USERDOMAIN=Scott-PC</value>
+    <value type="QString" >USERNAME=Scott</value>
+    <value type="QString" >USERPART=E:</value>
+    <value type="QString" >USERPROFILE=C:\Users\Scott</value>
+    <value type="QString" >VS80COMNTOOLS=C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\</value>
+    <value type="QString" >WINDIR=C:\Windows</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
-    <value type="QString" >F:/DDR2/DDR/Source/SADStepProgram/SADStepProgram.pro</value>
+    <value type="QString" >C:/Users/Scott/Desktop/bzrSADStep/scotts branch/SADStepProgram/SADStepProgram.pro</value>
     <value type="QString" >-spec</value>
     <value type="QString" >win32-g++</value>
     <value type="QString" >-r</value>
    </valuelist>
    <value key="abstractProcess.command" type="QString" >C:/Qt/2009.03/qt/bin/qmake.exe</value>
    <value key="abstractProcess.enabled" type="bool" >false</value>
-   <value key="abstractProcess.workingDirectory" type="QString" >F:/DDR2/DDR/Source/SADStepProgram</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >C:/Users/Scott/Desktop/bzrSADStep/scotts branch/SADStepProgram</value>
    <value key="buildConfiguration" type="int" >2</value>
   </valuemap>
  </data>
@@ -116,57 +112,53 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
-    <value type="QString" >APPDATA=C:\Documents and Settings\audets\Application Data</value>
+    <value type="QString" >ALLUSERSPROFILE=C:\ProgramData</value>
+    <value type="QString" >APPDATA=C:\Users\Scott\AppData\Roaming</value>
+    <value type="QString" >CLASSPATH=.;C:\Program Files\Java\jre6\lib\ext\QTJava.zip</value>
     <value type="QString" >COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
-    <value type="QString" >COMPUTERNAME=ECE2008AR</value>
-    <value type="QString" >COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
-    <value type="QString" >DISPLAY=:0.0</value>
+    <value type="QString" >COMPUTERNAME=SCOTT-PC</value>
+    <value type="QString" >COMSPEC=C:\Windows\system32\cmd.exe</value>
+    <value type="QString" >DFSTRACINGON=FALSE</value>
     <value type="QString" >FP_NO_HOST_CHECK=NO</value>
-    <value type="QString" >HOME=C:\Documents and Settings\audets</value>
     <value type="QString" >HOMEDRIVE=C:</value>
-    <value type="QString" >HOMEPATH=\Documents and Settings\audets</value>
-    <value type="QString" >KMP_DUPLICATE_LIB_OK=TRUE</value>
-    <value type="QString" >LM_LICENSE_FILE=c:\snec\license\license.dat</value>
-    <value type="QString" >LOGONSERVER=\\ECESERVER</value>
-    <value type="QString" >MKL_SERIAL=YES</value>
-    <value type="QString" >NIDAQMXSWITCHDIR=C:\Program Files\National Instruments\NI-DAQ\Switch\</value>
+    <value type="QString" >HOMEPATH=\Users\Scott</value>
+    <value type="QString" >LOCALAPPDATA=C:\Users\Scott\AppData\Local</value>
+    <value type="QString" >LOGONSERVER=\\SCOTT-PC</value>
     <value type="QString" >NUMBER_OF_PROCESSORS=2</value>
+    <value type="QString" >ONLINESERVICES=Online Services</value>
     <value type="QString" >OS=Windows_NT</value>
-    <value type="QString" >PATH=C:\Qt\2009.03\mingw\bin;C:\Qt\2009.03\qt\bin;c:\winavr-20090313\bin;c:\winavr-20090313\utils\bin;c:\winavr-20081205\bin;c:\winavr-20081205\utils\bin;c:\progra~1\design~1\tina7~1;c:\progra~1\borland\cbuild~1\bin;c:\progra~1\borland\cbuild~1\projects\bpl;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati.ace\;c:\program files\common files\roxio shared\dllshared\;"c:\program files\symantec\norton ghost 2003\";c:\vxipnp\winnt\bin;c:\altera\72\quartus\bin;c:\program files\rational\clearquest;c:\program files\rational\common;c:\program files\tortoisesvn\bin;c:\snec\bin;C:\Program Files\MATLAB\R2006b\bin;C:\Program Files\MATLAB\R2006b\bin\win32;</value>
-    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.DLL</value>
+    <value type="QString" >PATH=C:\Qt\2009.03\mingw\bin;C:\Qt\2009.03\qt\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Program Files\CyberLink\Power2Go\;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Mercurial;C:\Program Files\TortoiseHg;C:\Program Files\Bazaar;C:\Program Files\Diffuse</value>
+    <value type="QString" >PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC</value>
+    <value type="QString" >PCBRAND=Pavilion</value>
+    <value type="QString" >PLATFORM=MCD</value>
     <value type="QString" >PROCESSOR_ARCHITECTURE=x86</value>
-    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 15 Model 107 Stepping 2, AuthenticAMD</value>
+    <value type="QString" >PROCESSOR_IDENTIFIER=x86 Family 15 Model 104 Stepping 2, AuthenticAMD</value>
     <value type="QString" >PROCESSOR_LEVEL=15</value>
-    <value type="QString" >PROCESSOR_REVISION=6b02</value>
+    <value type="QString" >PROCESSOR_REVISION=6802</value>
+    <value type="QString" >PROGRAMDATA=C:\ProgramData</value>
     <value type="QString" >PROGRAMFILES=C:\Program Files</value>
+    <value type="QString" >PUBLIC=C:\Users\Public</value>
     <value type="QString" >QTDIR=C:/Qt/2009.03/qt</value>
-    <value type="QString" >QUARTUS_ROOTDIR=c:\altera\72\quartus</value>
-    <value type="QString" >ROOTDIR=C:\PROGRA~1\RATIONAL\RATION~1\NUTCROOT</value>
-    <value type="QString" >ROXIOCENTRAL=C:\Program Files\Common Files\Roxio Shared\9.0\Roxio Central33\</value>
+    <value type="QString" >QTJAVA=C:\Program Files\Java\jre6\lib\ext\QTJava.zip</value>
     <value type="QString" >SESSIONNAME=Console</value>
-    <value type="QString" >SHELL=C:\PROGRA~1\RATIONAL\RATION~1\NUTCROOT\mksnt\sh.exe</value>
-    <value type="QString" >SNECROOTV2=c:\snec</value>
     <value type="QString" >SYSTEMDRIVE=C:</value>
-    <value type="QString" >SYSTEMROOT=C:\WINDOWS</value>
-    <value type="QString" >TEMP=C:\DOCUME~1\audets\LOCALS~1\Temp</value>
-    <value type="QString" >TMP=C:\DOCUME~1\audets\LOCALS~1\Temp</value>
-    <value type="QString" >TMPDIR=C:\DOCUME~1\audets\LOCALS~1\Temp</value>
-    <value type="QString" >USERDNSDOMAIN=TSUECE.EDU</value>
-    <value type="QString" >USERDOMAIN=TSUECE</value>
-    <value type="QString" >USERNAME=audets</value>
-    <value type="QString" >USERPROFILE=C:\Documents and Settings\audets</value>
-    <value type="QString" >VXIPNPPATH=C:\VXIPNP\</value>
-    <value type="QString" >WINDIR=C:\WINDOWS</value>
-    <value type="QString" >WXADDITIONS=C:\CodeBlocks\wxWidgets2.8\additions</value>
-    <value type="QString" >WXWIN=C:\CodeBlocks\wxWidgets2.8</value>
+    <value type="QString" >SYSTEMROOT=C:\Windows</value>
+    <value type="QString" >TEMP=C:\Users\Scott\AppData\Local\Temp</value>
+    <value type="QString" >TMP=C:\Users\Scott\AppData\Local\Temp</value>
+    <value type="QString" >TRACE_FORMAT_SEARCH_PATH=\\NTREL202.ntdev.corp.microsoft.com\4F18C3A5-CA09-4DBD-B6FC-219FDD4C6BE0\TraceFormat</value>
+    <value type="QString" >USERDOMAIN=Scott-PC</value>
+    <value type="QString" >USERNAME=Scott</value>
+    <value type="QString" >USERPART=E:</value>
+    <value type="QString" >USERPROFILE=C:\Users\Scott</value>
+    <value type="QString" >VS80COMNTOOLS=C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\</value>
+    <value type="QString" >WINDIR=C:\Windows</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
     <value type="QString" >-w</value>
    </valuelist>
    <value key="abstractProcess.command" type="QString" >C:/Qt/2009.03/mingw/bin/mingw32-make.exe</value>
    <value key="abstractProcess.enabled" type="bool" >true</value>
-   <value key="abstractProcess.workingDirectory" type="QString" >F:/DDR2/DDR/Source/SADStepProgram</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >C:/Users/Scott/Desktop/bzrSADStep/scotts branch/SADStepProgram</value>
   </valuemap>
  </data>
  <data>

@@ -13,7 +13,7 @@ GameMenu::GameMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form,parent)
     connect(gameStartBtn, SIGNAL(clicked()), this, SLOT(menuSelected2()));
     connect(optionBtn, SIGNAL(clicked()), this, SLOT(menuSelected3()));
     connect(exitBtn, SIGNAL(clicked()), this, SLOT(menuSelected4()));
-    this->setWidgetRep(widget);
+    this->setWidgetRep(widget->findChild<QWidget*>("Form"));
     //qDebug() << parent->height() << " at Game Menu";
 }
 void GameMenu::menuSelected2() {

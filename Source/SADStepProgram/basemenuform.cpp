@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QtDebug>
 
+
 BaseMenuForm::BaseMenuForm(QWidget *parent) :
     QWidget(parent),
     m_ui(new Ui::BaseMenuForm)
@@ -18,6 +19,7 @@ BaseMenuForm::BaseMenuForm(QWidget *parent) :
     parent->setStyleSheet(this->styleSheet());
     goToMenu(0, true);
     qDebug() << parent->height() << " at Base Menu Form";
+    // change
 }
 
 void BaseMenuForm::runGame() {
@@ -38,22 +40,31 @@ BaseMenuForm::~BaseMenuForm()
 
 void BaseMenuForm::setMenuWidget(StepMenu* menu) {
     menu->getWidget()->setParent(m_ui->frame_2);
-    m_ui->frame_2->setGeometry(QRect(0,0,parentWidget()->width(),parentWidget()->height()-m_ui->frame->height()));
-    //menu->getWidget()->setGeometry(m_ui->frame_2->geometry());
-    m_ui->gLayout->setVerticalSpacing((m_ui->frame_2->width()/(3)));
-    m_ui->gLayout->setHorizontalSpacing ((m_ui->frame_2->height()/(3)));
+    //qDebug() << menu->getWidget()->size() << "WIDGET";
+
+    //Fake laying out frame_2
+    m_ui->frame_2->setGeometry(QRect(0,0,parentWidget()->width(),parentWidget()->height()-m_ui->frame->height()-200));
+
+    //Add Widget to layout
     m_ui->gLayout->addWidget(menu->getWidget(),2,2,1,1,0);
-    //m_ui->gLayout->addWidget(new QPushButton, 2,1,1,1,0); // used for testing, not needed
-    up = new QSpacerItem (0, m_ui->frame_2->height()/3, QSizePolicy::Minimum, QSizePolicy::Minimum);
-    left = new QSpacerItem (m_ui->frame_2->width()/3, 0, QSizePolicy::Preferred, QSizePolicy::Minimum);
-    down = new QSpacerItem (0, m_ui->frame_2->height()/3, QSizePolicy::Minimum, QSizePolicy::Minimum);
-    right = new QSpacerItem (m_ui->frame_2->width()/3, 0, QSizePolicy::Preferred, QSizePolicy::Minimum);
+    //qDebug() << menu->getWidget()->size() << "WIDGET";
+
+    //Create Spacers
+    int inth = (m_ui->frame_2->height() - menu->getWidget()->height())/2;
+    int intw = (m_ui->frame_2->width() - menu->getWidget()->width())/2;
+    up = new QSpacerItem (0, inth, QSizePolicy::Minimum, QSizePolicy::Minimum);
+    left = new QSpacerItem (intw, 0, QSizePolicy::Preferred, QSizePolicy::Minimum);
+    down = new QSpacerItem (0,inth, QSizePolicy::Minimum, QSizePolicy::Minimum);
+    right = new QSpacerItem (intw, 0, QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+
     m_ui->gLayout->addItem(up, 1,2,1,1,Qt::AlignHCenter);
     m_ui->gLayout->addItem(down, 3,2,1,1,Qt::AlignHCenter);
     m_ui->gLayout->addItem(left, 2,1,1,1,Qt::AlignVCenter);
     m_ui->gLayout->addItem(right, 2,3,1,1,Qt::AlignVCenter);
-    qDebug() << m_ui->frame_2->width();
-    qDebug() << m_ui->frame_2->height();
+//    qDebug() << m_ui->frame_2->width();
+//    qDebug() << m_ui->frame_2->height();
+//    qDebug() << "(" << menu->getWidget()->x() << "," << menu->getWidget()->y() << ") widget location";
 }
 
 bool BaseMenuForm::setButtonsVisible(bool visible){
@@ -92,7 +103,7 @@ bool BaseMenuForm::toggleCancel() {
 
 void BaseMenuForm::goToMenu(int index, bool firstRun) {
     if(!firstRun){
-    delete stepMenu;
+        delete stepMenu;
     }
     switch(index) {
         case 0: {

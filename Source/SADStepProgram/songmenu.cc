@@ -17,13 +17,14 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
     {
         listWidget->addItem(list->at(x));
     }
-    this->setWidgetRep(widget);
+    this->setWidgetRep(widget->findChild<QWidget*>("Form"));
     //qDebug() << parent->height() << " at Song Menu";
 }
 
 SongMenu::~SongMenu() {
     qDebug() << "SongMenu";
     delete sui;
+    delete listWidget;
     delete loader;
     delete widget;
     qDebug() << "SongMenu";

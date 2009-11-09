@@ -9,6 +9,7 @@
 #include <QGridLayout>
 #include <QSpacerItem>
 
+
 class StepMenu;
 
 namespace Ui {
@@ -52,6 +53,7 @@ private:
     QSpacerItem* down;
     QSpacerItem* left;
     QSpacerItem* right;
+    QRect* rect();
 };
 
 #endif // BASEMENUFORM_H

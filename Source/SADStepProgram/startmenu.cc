@@ -12,7 +12,7 @@ StartMenu::StartMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form,parent)
     startBtn = widget->findChild<QPushButton*>("pushButton");
     qDebug() << "showing off birthday suit";
     connect(startBtn, SIGNAL(clicked()), this, SLOT(menuSelected1()));
-    this->setWidgetRep(widget);
+    this->setWidgetRep(widget->findChild<QWidget*>("Form"));
 }
 void StartMenu::menuSelected1() {
     form->goToMenu(1);
