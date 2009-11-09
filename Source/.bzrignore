@@ -9,3 +9,4 @@ Makefile.Release
 ui_*.h
 debug
 release
+SADStepProgram.pro.user
