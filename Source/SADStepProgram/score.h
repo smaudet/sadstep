@@ -8,6 +8,7 @@
 
 #include "ScoreData.h"
 #include "score.h"
+#include <QString>
 
 class Score
 {
@@ -18,8 +19,13 @@ public:
     int getTotalScore();
     void setMaxRange(int maxRange);
     int getPraise();
-    int getScore();
+    QString getScore();
     int getCombo();
+    int getNumberOfOk();
+    int getNumberOfGood();
+    int getNumberOfBad();
+    int getNumberOfPerfect();
+
 private:
     int displacement;
     int totalScore;
@@ -35,6 +41,7 @@ private:
     int good;
     int bad;
     int perfect;
+    QString scoreString;
 };
 
 #endif // SCORE_H

@@ -21,6 +21,8 @@
 #include "FileIOServer.h"
 #include "GameCanvas.h"
 #include "timeline.h"
+#include "score.h"
+#include "ScoreData.h"
 
 //To be deleted:
 #include <QSound>
@@ -52,6 +54,9 @@ private:
     int lastTimerID;
     int x;
     QList<QList<int>*>* arrows;
+    ScoreData* scoreData;
+    int dTimeHolder;
+    Score* score;
 };
 
 #endif // MAINWINDOW_H
