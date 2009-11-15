@@ -38,6 +38,8 @@ public:
 public slots:
     bool mainMenu();
     void runGame();
+    int getSpeed();
+    int getRange();
 
 signals:
     void runGame(int index);
@@ -56,6 +58,8 @@ private:
     QSpacerItem* left;
     QSpacerItem* right;
     QRect* rect();
+    int newSpeed;
+    int newRange;
 
 
 };

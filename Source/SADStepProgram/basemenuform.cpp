@@ -12,6 +12,8 @@ BaseMenuForm::BaseMenuForm(QWidget *parent) :
     QWidget(parent),
     m_ui(new Ui::BaseMenuForm)
 {
+    newSpeed = 0;
+    newRange = 0;
     m_ui->setupUi(this);
     connect(m_ui->cancelBtn,SIGNAL(clicked()),this,SLOT(mainMenu()));
     connect(m_ui->okBtn,SIGNAL(clicked()),this,SLOT(runGame()));
@@ -142,7 +144,12 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
         case 300: { // Run Game
 
             qDebug() << "Set To " << ((SongMenu*)stepMenu)->getIndex();
+            //newSpeed = (((OptionMenu*)stepMenu)->getSpeed());
+            //qDebug() << newSpeed;
+            //newRange = (((OptionMenu*)stepMenu)->getRange());
+            //qDebug() << newRange;
             emit runGame(((SongMenu*)stepMenu)->getIndex());
+
             break;
         }
         default:{
@@ -203,3 +210,12 @@ void BaseMenuForm::setActiveButton()
 
     }*/
 }
+int BaseMenuForm::getRange()
+{
+        return (newRange = 0);
+}
+int BaseMenuForm::getSpeed()
+{
+        return (newSpeed = 0);
+}
+

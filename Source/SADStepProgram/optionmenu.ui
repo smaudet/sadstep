@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>249</width>
-    <height>94</height>
+    <height>119</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="HL">
      <item>
       <widget class="QRadioButton" name="easy">
        <property name="text">

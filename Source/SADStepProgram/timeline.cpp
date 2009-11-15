@@ -167,7 +167,7 @@ void Timeline::getNotes(QList<QList<QList<int>*>*>* arrowData) {
 
 int Timeline::getArrowSpeed()
 {
-    arrowSpeed = (distance/5000); // may change to include BPM @ later date
+
     return arrowSpeed;
 }
 
@@ -208,4 +208,9 @@ int Timeline::checkTime() // returns time for destruction 1 arrow set at a time
 Timeline::~Timeline() // destructor
 {
 
+}
+void Timeline::calculateTimes (int speed, int distance)
+{
+    arrowSpeed = (distance/speed);
+    timelineDistance = distance;
 }

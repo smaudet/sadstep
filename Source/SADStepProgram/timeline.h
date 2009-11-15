@@ -17,6 +17,7 @@ public:
     QList <int>* creationTime;
     QList <int>* destructionTime;
     QList<QList<int>*>* arrowGiantMeasure;
+    void calculateTimes(int speed, int distance);
 
 private:
     int dt;
@@ -28,6 +29,8 @@ private:
     int pushTimer;
     int scorePushTime;
     int displacement;
+    int timelineDistance;
+
 };
 
 #endif // TIMELINE_H

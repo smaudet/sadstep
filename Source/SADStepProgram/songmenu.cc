@@ -47,4 +47,3 @@ void SongMenu::rowChanged2(int billybob)
 {
     songNumber = billybob;
 }
-

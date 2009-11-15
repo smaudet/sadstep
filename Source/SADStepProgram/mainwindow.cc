@@ -77,22 +77,24 @@ void MainWindow::gameLogic() {
 
 void MainWindow::runGame(int selection) {
     canvasOn = true;
-    //qDebug() << "hel";
+    qDebug() << "help me";
     const SongCatalogue* const catalogue = fio->getSongCatalogue(); // implements the instance of song catalogue
    //qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     QString location = catalogue->getFileName(selection);  // TODO: for now given 0 in future will get value from user selection
     //qDebug() << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO";
     StepReader* steps = fio->getStepReader(&location); // gets stepreader for specified file
-    //qDebug() << "MM mm good File";
+    qDebug() << "MM mm good File";
     QList<double>* bps = new QList<double>();
     bps->append(0.102);
     QList<QList<QList<int>*>*>* stepData = steps->getStepData();
     timeline = new Timeline(bps,stepData,0); // starts timeline and passes required data to its constructor
     int totalGameTime = 1 /*songs.getSongLength()*/;
-    timeline->setDistance(200);
+    qDebug() << " expected ERROR here";
+    timeline->calculateTimes(/*menu->getSpeed()*/3000, /*canvas->getDistance()*/ 2000);
+     qDebug() << " AFTER ERROR here";
     timeline->getNotes(stepData);
     score = new Score;
-    score->setMaxRange(5000); // TODO: set max range to value selected by user in options
+    score->setMaxRange(/*menu->getRange()*/ 1000); // TODO: set max range to value selected by user in options
     itr = new QListIterator<int>(*(timeline->creationTime));
     //qDebug() << "hippos";
     arrows = timeline->arrowGiantMeasure; //***** placehold (getNotes) for non existant function yet to be named
