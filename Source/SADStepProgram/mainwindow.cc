@@ -97,7 +97,7 @@ void MainWindow::runGame(int selection) {
     arrows = timeline->arrowGiantMeasure; //***** placehold (getNotes) for non existant function yet to be named
    // QBasicTimer* timer = new QBasicTimer;
     //qDebug() << "Cranes!";
-    canvas = new GameCanvas(4,this,20);
+    canvas = new GameCanvas(4,this);
     //qDebug() << "hel";
     setCentralWidget(canvas);
     //qDebug() << "hel";

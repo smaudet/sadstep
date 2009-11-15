@@ -116,7 +116,9 @@ void GameCanvas::paintEvent(QPaintEvent* e){
         }
         ++laneNum;
     }
-    p->drawText(this->height()/2,this->width()/4,this->height()/8,this->width()/4,Qt::AlignCenter,txt);
+    p->end();
+    delete p;
+    //p->drawText(this->height()/2,this->width()/4,this->height()/8,this->width()/4,Qt::AlignCenter,txt);
 }
 
 void GameCanvas::updateArrows() {
