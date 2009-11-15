@@ -74,14 +74,13 @@ void MainWindow::gameLogic() {
     }
 }
 
-void MainWindow::runGame() {
+void MainWindow::runGame(int selection) {
     canvasOn = true;
     //qDebug() << "hel";
     const SongCatalogue* const catalogue = fio->getSongCatalogue(); // implements the instance of song catalogue
-    //qDebug() << "are you dying?";
-    QString location = catalogue->getFileName(0);  // TODO: for now given 0 in future will get value from user selection
-    //TODO May not compile
-    //qDebug() << "are you dying?";
+   qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+    QString location = catalogue->getFileName(selection);  // TODO: for now given 0 in future will get value from user selection
+    qDebug() << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO";
     StepReader* steps = fio->getStepReader(&location); // gets stepreader for specified file
     //qDebug() << "MM mm good File";
     QList<double>* bps = new QList<double>();
@@ -121,7 +120,7 @@ void MainWindow::runMenu() {
     }
     qDebug() << "end of loop";
     menu = new BaseMenuForm(this);
-    connect(menu,SIGNAL(runGame(int)),this,SLOT(runGame()));
+    connect(menu,SIGNAL(runGame(int)),this,SLOT(runGame(int)));
     setCentralWidget(menu);
 }
 
@@ -141,6 +140,10 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
            //}
 
         }
+        if (!canvas)
+        {
+            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
+        }
         return;
     }
     if(e->key()==Qt::Key_Down){
@@ -154,6 +157,10 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
                canvas->showScoreText(string2);
           // }
             //canvas->spawnArrow(1,4);
+        }
+        if (!canvas)
+        {
+            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
         }
         return;
     }
@@ -169,6 +176,10 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
           // }
             //canvas->spawnArrow(1,2);
         }
+        if (!canvas)
+        {
+            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
+        }
         return;
     }
     if(e->key()==Qt::Key_Right){
@@ -182,6 +193,10 @@ void MainWindow::keyPressEvent(QKeyEvent* e) {
                canvas->showScoreText(string4);
           // }
             //canvas->spawnArrow(1,3);
+        }
+        if (!canvas)
+        {
+            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
         }
         return;
     }

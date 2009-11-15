@@ -36,7 +36,7 @@ public:
     ~MainWindow();
 public slots:
     void runMenu();
-    void runGame();
+    void runGame(int selection);
     void gameLogic();
 protected:
     void timerEvent(QTimerEvent* e);

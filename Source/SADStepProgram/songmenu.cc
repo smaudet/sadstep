@@ -18,6 +18,9 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
         listWidget->addItem(list->at(x));
     }
     this->setWidgetRep(widget->findChild<QWidget*>("Form"));
+    qDebug() << listWidget->currentRow();
+    connect(listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(rowChanged2(int)));
+
     //qDebug() << parent->height() << " at Song Menu";
 }
 
@@ -33,5 +36,15 @@ SongMenu::~SongMenu() {
 const int SongMenu::getIndex()
 {
      //const int number = listWidget->currentRow;
-     return listWidget->currentRow();
+
+   // qDebug() << listWidget->currentRow();
+     qDebug() << "Brittish people";
+    return songNumber;
+
+
 }
+void SongMenu::rowChanged2(int billybob)
+{
+    songNumber = billybob;
+}
+

@@ -26,6 +26,7 @@ public:
     };
     QLabel* label;
     void setMenuWidget(StepMenu* menu);
+    void BaseMenuForm::setActiveButton();
     bool setButtonsVisible(bool visible);
     bool toggleButtonWindow();
     bool toggleOK();
@@ -37,6 +38,7 @@ public:
 public slots:
     bool mainMenu();
     void runGame();
+
 signals:
     void runGame(int index);
 protected:
@@ -54,6 +56,8 @@ private:
     QSpacerItem* left;
     QSpacerItem* right;
     QRect* rect();
+
+
 };
 
 #endif // BASEMENUFORM_H

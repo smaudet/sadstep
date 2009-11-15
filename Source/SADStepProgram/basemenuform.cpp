@@ -110,6 +110,8 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
             stepMenu = new StartMenu(this);
             setButtonsVisible(false);
             setMenuWidget(stepMenu);
+
+
             }
             break;
         case 1: {
@@ -138,7 +140,9 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
             break;
         }
         case 300: { // Run Game
-            emit runGame(0);
+
+            qDebug() << "Set To " << ((SongMenu*)stepMenu)->getIndex();
+            emit runGame(((SongMenu*)stepMenu)->getIndex());
             break;
         }
         default:{
@@ -184,4 +188,18 @@ void BaseMenuForm::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+void BaseMenuForm::setActiveButton()
+{
+   /* if (m_ui->cancelBtn->isChecked())
+    {
+        m_ui->cancelBtn->setChecked(false);
+        m_ui->okBtn->setChecked(true);
+    }
+   if (m_ui->okBtn->isChecked())
+    {
+       m_ui->okBtn->setChecked(false);
+       m_ui->cancelBtn->setChecked(true);
+
+    }*/
 }
