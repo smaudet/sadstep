@@ -64,6 +64,7 @@ void MainWindow::gameLogic() {
         if(needsToCloseGame) { // returns to menus if song over else keeps going through loop
 	    needsToCloseGame=false;
             runMenu();
+            menu->goToMenu(2,false);
 
 
 
@@ -78,9 +79,9 @@ void MainWindow::runGame(int selection) {
     canvasOn = true;
     //qDebug() << "hel";
     const SongCatalogue* const catalogue = fio->getSongCatalogue(); // implements the instance of song catalogue
-   qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+   //qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     QString location = catalogue->getFileName(selection);  // TODO: for now given 0 in future will get value from user selection
-    qDebug() << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO";
+    //qDebug() << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO";
     StepReader* steps = fio->getStepReader(&location); // gets stepreader for specified file
     //qDebug() << "MM mm good File";
     QList<double>* bps = new QList<double>();
