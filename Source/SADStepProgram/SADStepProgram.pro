@@ -1,11 +1,14 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-10-26T15:32:27
 # -------------------------------------------------
+#QT += testlib
+LIBS += -L"lib"
+LIBS += -lvlc
+INCLUDEPATH += "include"
 CONFIG += uitools
 TARGET = SADStepProgram
 TEMPLATE = app
-SOURCES += main.cc \
-    mainwindow.cc \
+SOURCES += mainwindow.cc \
     stepmenu.cpp \
     startmenu.cc \
     songmenu.cc \
@@ -22,7 +25,9 @@ SOURCES += main.cc \
     FileIOServer.cc \
     SongCatalogue.cc \
     SMFileReader.cc \
-    musicplayer.cpp
+    MediaPlayer.cc \
+    Tests.cc \
+    main.cc
 HEADERS += mainwindow.h \
     stepmenu.h \
     startmenu.h \
@@ -42,7 +47,8 @@ HEADERS += mainwindow.h \
     SongCatalogue.h \
     SMFileReader.h \
     StepReader.h \
-    musicplayer.h
+    MediaPlayer.h \
+    Tests.h
 FORMS += songMenuForm.ui \
     optionmenu.ui \
     MMenuForm.ui \

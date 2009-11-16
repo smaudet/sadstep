@@ -9,7 +9,7 @@
 #include <QtDebug>
 
 ArrowGraphicsSet::ArrowGraphicsSet() {
-	// TODO Auto-generated constructor stub
+    // TODO Auto-generated constructor stub
 }
 
 ArrowGraphicsSet::~ArrowGraphicsSet() {

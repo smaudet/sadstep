@@ -1,3 +1,4 @@
+
 #include "SMFileReader.h"
 
 #include <QFile>
@@ -6,7 +7,8 @@
 #include <QtDebug>
 #include <QListIterator>
 #include <QStringList>
-#include <cstring>
+#include <QFileInfo>
+#include <QDir>
 
 const char* SMFileReader::tagTypeNames[] = {
     "TITLE",
@@ -61,24 +63,22 @@ QString SMFileReader::getSongFile() {
     QString s;
     bool found = false;
     QFile file(*fileName);
-    /*qDebug() << "Can open:" << */file.open(QIODevice::ReadOnly);
-//    qDebug() << file.exists();
+    file.open(QIODevice::ReadOnly);
     QTextStream textfile(&file);
     textfile.setAutoDetectUnicode(true);
     while(!found) {
-//        char * somedata;
-//        file.readLine(somedata,10000);
-        
-        s = textfile.readLine();/*somedata;*/
-        if(s.startsWith("\#MUSIC:")) {
+        s = textfile.readLine();
+        if(s.startsWith("#MUSIC:")) {
             found = true;
         }
     }
-    s = s.remove(*(new QRegExp(":.*;")));
-    //qDebug() << s;
-    s.truncate(s.size()-1);
-    //qDebug() << s;
-    s.remove(0,1);
+    s = s.remove(0,7);
+    qDebug() << s;
+    s.remove(s.length()-1,1);
+    qDebug() << s;
+    //Need to put the name relative to the sm file
+    QFileInfo fi(*fileName);
+    s=fi.dir().path()+"/"+s; //TODO make platform independent
     qDebug() << s;
     return s;
 }
@@ -90,12 +90,7 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
     //qDebug() << *fileName;
     QList<QList<QList<int>*>*>* data = new QList<QList<QList<int>*>*>();
     QFile file(*fileName);
-    /*qDebug() << "Can open:" << */file.open(QIODevice::ReadOnly);
-    /*qDebug() << file.exists();
-    qDebug() << "from the file:" << file.canReadLine();*//*
-    qDebug() << file.isReadable() << "Readability";
-    qDebug() << file.isOpen() << "State of open";
-    qDebug() << file.isTextModeEnabled() << "State of text";*/
+    file.open(QIODevice::ReadOnly);
     QTextStream textfile(&file);
     textfile.setAutoDetectUnicode(true);
     QRegExp matcher;
@@ -109,19 +104,17 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
             //qDebug() << "read in line";
             QString ts(/*somedata*/textfile.readLine());
             qDebug() << "ts: " << ts;
-            if(ts.startsWith("\#NOTES:")) {
+            if(ts.startsWith("#NOTES:")) {
                 found = true;
                 //qDebug() << "found diff";
                 lastString = ts;
             }
         }
     }
-    qDebug() << "got out of header loop";
-    //Skip Header info for now
+    //qDebug() << "got out of header loop";
+    //Skipping Header info for now
     for(int i=0;i<5;i++){
         textfile.readLine();
-//        char * somedata;
-//        file.readLine(somedata,10000);
     }
     //Begin Reading Routine
     bool done = false;
@@ -130,13 +123,10 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
         data->append(new QList<QList<int>*>);
         QList<QList<int>*>* measure = data->last();
         bool finishedMeasure = false;
-        qDebug() << "starting measure";
-        while(!finishedMeasure){/*
-            char * somedata;
-            file.readLine(somedata,10000);*/
-            QString s(/*somedata*/textfile.readLine());
+        //qDebug() << "starting measure";
+        while(!finishedMeasure){
+            QString s(textfile.readLine());
             s=s.trimmed();
-            //qDebug() << "file: " << s;
             if(s.isEmpty()) {
                 //qDebug() << "discarded empty";
                 continue;
@@ -172,12 +162,14 @@ QList<double>* SMFileReader::getBPM(int difficulty) {
     textfile.setCodec("UTF-8");
     textfile.setAutoDetectUnicode(true);
     QRegExp matcher;
-    matcher.setPattern("#BPMS:");
+    matcher.setPattern("BPMS:");
+    qDebug() << matcher.pattern();
     QString lastString;
     bool found = false;
     while(!found) {
         QString ts(textfile.readLine());
-        if(ts.indexOf(matcher)) {
+	qDebug() << ts;
+        if(ts.indexOf(matcher)>0) {
             found = true;
             lastString = ts;
         }
@@ -192,11 +184,14 @@ QList<double>* SMFileReader::getBPM(int difficulty) {
     int index = 0;
     //TODO Perform sanity checking on data
     while(itr.hasNext()){
-        QStringList vals = itr.next().split("=");
+        QStringList vals = itr.next().split(QRegExp("="));
         qDebug() << vals.size();
         //Split into parts
+	qDebug() << vals.at(0);
         int ti = ((QString)vals.at(0)).toInt();
+	qDebug() << ti << "int part";
         double d = ((QString)vals.at(1)).toDouble();
+	qDebug() << d << "double part";
         if(ti==index) {
             data->append(d);
         } else {

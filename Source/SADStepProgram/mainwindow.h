@@ -23,9 +23,7 @@
 #include "timeline.h"
 #include "score.h"
 #include "ScoreData.h"
-
-//To be deleted:
-#include <QSound>
+#include "MediaPlayer.h"
 
 class MainWindow : public QMainWindow
 {
@@ -42,14 +40,14 @@ protected:
     void timerEvent(QTimerEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
-    QSound* sound;
+    MediaPlayer* mp;
     bool canvasOn;
     bool needsToCloseGame;
     FileIOServer* fio;
     GameCanvas* canvas;
     BaseMenuForm* menu;
     bool canwinB;
-    QListIterator<int>* itr;
+    QListIterator<double>* itr;
     Timeline* timeline;
     int lastTimerID;
     int x;

@@ -71,9 +71,9 @@ void BaseMenuForm::setMenuWidget(StepMenu* menu) {
 
 bool BaseMenuForm::setButtonsVisible(bool visible){
     if(!visible) {
-        m_ui->frame_3->hide();
+	m_ui->frame_3->hide();
     } else {
-        m_ui->frame_3->show();
+	m_ui->frame_3->show();
     }
     return visible;
 }
@@ -85,9 +85,9 @@ bool BaseMenuForm::toggleButtonWindow() {
 /*bool BaseMenuForm::toggleOK() {
     showOK = !showOK;
     if(showOK) {
-        m_ui->okBtn->show();
+	m_ui->okBtn->show();
     } else {
-        m_ui->okBtn->hide();
+	m_ui->okBtn->hide();
     }
     return showOK;
 }
@@ -95,9 +95,9 @@ bool BaseMenuForm::toggleButtonWindow() {
 bool BaseMenuForm::toggleCancel() {
     showCancel = !showCancel;
     if(showCancel) {
-        m_ui->cancelBtn->show();
+	m_ui->cancelBtn->show();
     } else {
-        m_ui->cancelBtn->hide();
+	m_ui->cancelBtn->hide();
     }
     return showCancel;
 }*/
@@ -105,58 +105,55 @@ bool BaseMenuForm::toggleCancel() {
 
 void BaseMenuForm::goToMenu(int index, bool firstRun) {
     if(!firstRun){
-        delete stepMenu;
+	delete stepMenu;
     }
     switch(index) {
-        case 0: {
-            stepMenu = new StartMenu(this);
-            setButtonsVisible(false);
-            setMenuWidget(stepMenu);
-
-
-            }
-            break;
-        case 1: {
-            stepMenu = new GameMenu(this);
-            setButtonsVisible(false);
-            changeLabel(0);
-            setMenuWidget(stepMenu);
-            break;
-        }
-        case 2: {
-            stepMenu = new SongMenu(this);
-            setButtonsVisible(true);
-            changeLabel(2);
-            setMenuWidget(stepMenu);
-            break;
-        }
-        case 3: {
-            stepMenu = new OptionMenu(this);
-            setButtonsVisible(false);
-            changeLabel(1);
-            setMenuWidget(stepMenu);
-            break;
-        }
-        case 4: {
-            close();
-            break;
-        }
-        case 300: { // Run Game
-
-            qDebug() << "Set To " << ((SongMenu*)stepMenu)->getIndex();
+    case 0: {
+	    stepMenu = new StartMenu(this);
+	    setButtonsVisible(false);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+    case 1: {
+	    stepMenu = new GameMenu(this);
+	    setButtonsVisible(false);
+	    changeLabel(0);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+    case 2: {
+	    stepMenu = new SongMenu(this);
+	    setButtonsVisible(true);
+	    changeLabel(2);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+    case 3: {
+	    stepMenu = new OptionMenu(this);
+	    setButtonsVisible(false);
+	    changeLabel(1);
+	    setMenuWidget(stepMenu);
+	    break;
+	}
+    case 4: {
+	    close();
+	    break;
+	}
+    case 300: { // Run Game
+	    
+	    qDebug() << "Set To " << ((SongMenu*)stepMenu)->getIndex();
             //newSpeed = (((OptionMenu*)stepMenu)->getSpeed());
             //qDebug() << newSpeed;
             //newRange = (((OptionMenu*)stepMenu)->getRange());
             //qDebug() << newRange;
-            emit runGame(((SongMenu*)stepMenu)->getIndex());
-
-            break;
-        }
-        default:{
-            stepMenu = new StartMenu(this);
-            setButtonsVisible(false);
-            break;
-        }
+	    emit runGame(((SongMenu*)stepMenu)->getIndex());
+	    break;
+	}
+    default:{
+	    stepMenu = new StartMenu(this);
+	    setButtonsVisible(false);
+	    break;
+	}
     };
 }
 
@@ -198,16 +195,16 @@ void BaseMenuForm::changeEvent(QEvent *e)
 }
 void BaseMenuForm::setActiveButton()
 {
-   /* if (m_ui->cancelBtn->isChecked())
+    /* if (m_ui->cancelBtn->isChecked())
     {
-        m_ui->cancelBtn->setChecked(false);
-        m_ui->okBtn->setChecked(true);
+	m_ui->cancelBtn->setChecked(false);
+	m_ui->okBtn->setChecked(true);
     }
    if (m_ui->okBtn->isChecked())
     {
        m_ui->okBtn->setChecked(false);
        m_ui->cancelBtn->setChecked(true);
-
+       
     }*/
 }
 int BaseMenuForm::getRange()

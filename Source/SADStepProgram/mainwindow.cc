@@ -9,7 +9,9 @@
 #include "SongCatalogue.h"
 #include "timeline.h"
 #include "score.h"
-#include <QSound>
+#include "SongReader.h"
+
+#include <QTime>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent) {
@@ -24,52 +26,47 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::gameLogic() {
-    qDebug() << "Porpoises?";
+    //qDebug() << QTime::currentTime().minute() << " " << QTime::currentTime().second() << " " << QTime::currentTime().msec();
+    //qDebug() << "Porpoises?";
+    
+    if (x >= arrows->size()-6){
+	qDebug() << "should stop now";
+	mp->stop();
+	needsToCloseGame=true;
+    }
     if (canvas) {
-	qDebug() << "Elephants!";
-	qDebug() << "Tinker Winker Dolls";
-        Score* scores = new Score(); // starts score class
+	//qDebug() << "Elephants!";
+	//qDebug() << "Tinker Winker Dolls";
+	Score* scores = new Score(); // starts score class
 	bool allValYAreZero = true;
-        //Note (the musical type)
+	//Note (the musical type)
 	int ysize = arrows->at(x)->size();
 	int* y = new int[ysize];
 	for(int i=0;i<ysize;++i) {
-	    qDebug() << "Go Boom " << i;
-	    qDebug() << x;
+	    //Debug() << "Go Boom " << i;
+	    //qDebug() << x;
 	    y[i] = arrows->at(x)->at(i);
 	    if(y[i]!=0){
-                allValYAreZero = false; // takes into acount <0,0,0,0> vectors
+		allValYAreZero = false; // takes into acount <0,0,0,0> vectors
 	    }
-        }
-        if(allValYAreZero)
-        {
-            x++;
-        }
-        else
-        {
-            // qDebug() << "else reached";
-            for(int i = 0;i<ysize;++i) { // spawns arrow in correct lane based on file
-                if(y[i]>0){
-                    canvas->spawnArrow(1,i+1);
-                }
-                if (i == ysize)
-                {
-                    sound->stop();
-                    needsToCloseGame=true;
-                }
-
-            }
-            x++;
-        }
-        if(needsToCloseGame) { // returns to menus if song over else keeps going through loop
-	    needsToCloseGame=false;
-            runMenu();
-            menu->goToMenu(2,false);
-
-
-
-
+	}
+	if(allValYAreZero) {
+	    x++;
 	} else {
+	    // qDebug() << "else reached";
+	    for(int i = 0;i<ysize;++i) { // spawns arrow in correct lane based on file
+		if(y[i]>0){
+		    canvas->spawnArrow(1,i+1);
+		}
+	    }
+	    x++;
+	}
+	if(needsToCloseGame) { // returns to menus if song over else keeps going through loop
+	    qDebug() << "ending";
+	    needsToCloseGame=false;
+	    runMenu();
+	} else {
+	    qDebug() << itr->peekNext();
 	    lastTimerID = startTimer(itr->next());
 	}
     }
@@ -79,141 +76,130 @@ void MainWindow::runGame(int selection) {
     canvasOn = true;
     qDebug() << "help me";
     const SongCatalogue* const catalogue = fio->getSongCatalogue(); // implements the instance of song catalogue
-   //qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     QString location = catalogue->getFileName(selection);  // TODO: for now given 0 in future will get value from user selection
-    //qDebug() << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO";
     StepReader* steps = fio->getStepReader(&location); // gets stepreader for specified file
-    qDebug() << "MM mm good File";
-    QList<double>* bps = new QList<double>();
-    bps->append(0.102);
+    QList<double>* bps = steps->getBPM();
     QList<QList<QList<int>*>*>* stepData = steps->getStepData();
-    timeline = new Timeline(bps,stepData,0); // starts timeline and passes required data to its constructor
+    //Distance in pixels, time in pixels per minute
+    timeline = new Timeline(bps,stepData,0,800,360); // starts timeline and passes required data to its constructor
     int totalGameTime = 1 /*songs.getSongLength()*/;
-    qDebug() << " expected ERROR here";
-    timeline->calculateTimes(/*menu->getSpeed()*/3000, /*canvas->getDistance()*/ 2000);
-     qDebug() << " AFTER ERROR here";
+    //timeline->setDistance(200);
     timeline->getNotes(stepData);
     score = new Score;
-    score->setMaxRange(/*menu->getRange()*/ 1000); // TODO: set max range to value selected by user in options
-    itr = new QListIterator<int>(*(timeline->creationTime));
-    //qDebug() << "hippos";
+    score->setMaxRange(5000); // TODO: set max range to value selected by user in options
+    itr = new QListIterator<double>(*(timeline->creationTime));
     arrows = timeline->arrowGiantMeasure; //***** placehold (getNotes) for non existant function yet to be named
-   // QBasicTimer* timer = new QBasicTimer;
-    //qDebug() << "Cranes!";
     canvas = new GameCanvas(4,this);
-    //qDebug() << "hel";
     setCentralWidget(canvas);
-    //qDebug() << "hel";
     canvas->start();
     lastTimerID = startTimer(itr->next());
-   // qDebug() << itr->peekPrevious();
-
-    sound = new QSound("1000 Words.wav");
-    sound->play();
+    //TODO Invoke MediaPlayer instead
+    SongReader* song = fio->getSongReader(&location);
+    mp = new MediaPlayer();
+    mp->playFile(song->getSongFile());
 }
 
 void MainWindow::runMenu() {
-    // qDebug() << "menu running";
     if(canvasOn) { // Need to delete game stuff
-        qDebug() << "canvas was on";
-        delete timeline;
-        delete itr;
-        canvasOn = false;
-        sound->stop();
+	//qDebug() << "canvas was on";
+	delete timeline;
+	delete itr;
+	canvasOn = false;
+	mp->stop();
     }
-    qDebug() << "end of loop";
+    //qDebug() << "end of loop";
     menu = new BaseMenuForm(this);
     connect(menu,SIGNAL(runGame(int)),this,SLOT(runGame(int)));
     setCentralWidget(menu);
+    qDebug() << "Widget set?";
 }
 
 //Basic demonstration of keyboard use on the Game ONLY
 void MainWindow::keyPressEvent(QKeyEvent* e) {
     if(e->key()==Qt::Key_Up){
-        if(canvas){
-           //if(canvas->arrowInLane (1))
-            //{
-               dTimeHolder = timeline->checkTime();
-               score->calculateScore(250); //TODO: calculate time when key is pressed & compare
-               // it to the dTimeCounter
-               QString string1 = score->getScore();
-               canvas->showScoreText(string1);
-
-
-           //}
-
-        }
-        if (!canvas)
-        {
-            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
-        }
-        return;
+	if(canvas){
+	    //if(canvas->arrowInLane (1))
+	    //{
+	    dTimeHolder = timeline->checkTime();
+	    score->calculateScore(250); //TODO: calculate time when key is pressed & compare
+	    // it to the dTimeCounter
+	    QString string1 = score->getScore();
+	    canvas->showScoreText(string1);
+	    
+	    
+	    //}
+	    
+	}
+	if (!canvas){
+	    menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
+	}
+	return;
     }
     if(e->key()==Qt::Key_Down){
-        if(canvas){
-            //if(canvas->arrowInLane (4))
-            //{
-               dTimeHolder = timeline->checkTime();
-               score->calculateScore(250); //TODO: calculate time when key is pressed & compare
-               // it to the dTimeCounter
-               QString string2 = score->getScore();
-               canvas->showScoreText(string2);
-          // }
-            //canvas->spawnArrow(1,4);
-        }
-        if (!canvas)
-        {
-            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
-        }
-        return;
+	if(canvas){
+	    //if(canvas->arrowInLane (4))
+	    //{
+	    dTimeHolder = timeline->checkTime();
+	    score->calculateScore(250); //TODO: calculate time when key is pressed & compare
+	    // it to the dTimeCounter
+	    QString string2 = score->getScore();
+	    canvas->showScoreText(string2);
+	    // }
+	    //canvas->spawnArrow(1,4);
+	}
+	if (!canvas)
+	{
+	    menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
+	}
+	return;
     }
     if(e->key()==Qt::Key_Left){
-        if(canvas){
-            //if(canvas->arrowInLane (2))
-           // {
-               dTimeHolder = timeline->checkTime();
-               score->calculateScore(250); //TODO: calculate time when key is pressed & compare
-               // it to the dTimeCounter
-               QString string3 = score->getScore();
-               canvas->showScoreText(string3);
-          // }
-            //canvas->spawnArrow(1,2);
-        }
-        if (!canvas)
-        {
-            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
-        }
-        return;
+	if(canvas){
+	    //if(canvas->arrowInLane (2))
+	    // {
+	    dTimeHolder = timeline->checkTime();
+	    score->calculateScore(250); //TODO: calculate time when key is pressed & compare
+	    // it to the dTimeCounter
+	    QString string3 = score->getScore();
+	    canvas->showScoreText(string3);
+	    // }
+	    //canvas->spawnArrow(1,2);
+	}
+	if (!canvas)
+	{
+	    menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
+	}
+	return;
     }
     if(e->key()==Qt::Key_Right){
-        if(canvas){
-            //if(canvas->arrowInLane (3))
-           // {
-               dTimeHolder = timeline->checkTime();
-               score->calculateScore(250); //TODO: calculate time when key is pressed & compare
-               // it to the dTimeCounter
-               QString string4 = score->getScore();
-               canvas->showScoreText(string4);
-          // }
-            //canvas->spawnArrow(1,3);
-        }
-        if (!canvas)
-        {
-            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
-        }
-        return;
+	if(canvas){
+	    //if(canvas->arrowInLane (3))
+	    // {
+	    dTimeHolder = timeline->checkTime();
+	    score->calculateScore(250); //TODO: calculate time when key is pressed & compare
+	    // it to the dTimeCounter
+	    QString string4 = score->getScore();
+	    canvas->showScoreText(string4);
+	    // }
+	    //canvas->spawnArrow(1,3);
+	}
+	if (!canvas)
+	{
+	    menu->setActiveButton(); // NOTE: Does nothing atm, will allow for arrow key selection of buttons on screen
+	}
+	return;
     }
     if(e->key()==Qt::Key_Escape){
-        if(canvas){
-            qDebug() << score->getTotalScore() << " total Score";
-            qDebug() << score->getNumberOfOk() << " OK";
-            qDebug() << score->getNumberOfPerfect() << " Perfect";
-            qDebug() << score->getNumberOfGood() << " Good";
-            qDebug() << score->getNumberOfBad() << " bad";
-
-            needsToCloseGame = true;
-
-        }
+	if(canvas){
+	    qDebug() << score->getTotalScore() << " total Score";
+	    qDebug() << score->getNumberOfOk() << " OK";
+	    qDebug() << score->getNumberOfPerfect() << " Perfect";
+	    qDebug() << score->getNumberOfGood() << " Good";
+	    qDebug() << score->getNumberOfBad() << " bad";
+	    
+	    needsToCloseGame = true;
+	    
+	}
     }
 }
 

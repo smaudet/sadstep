@@ -6,7 +6,8 @@ class Timeline
 {
 public:
     Timeline();
-    Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData, double songLength);
+    Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
+		       , double songLength, double distance, double speed);
     int Timeline::getArrowSpeed();
     int Timeline::timeDisplacement(int pushTimer);
     int Timeline::createTime();
@@ -14,8 +15,8 @@ public:
     void Timeline::getNotes(QList<QList<QList<int>*>*>* arrowData);
     Timeline::~Timeline();
     void setDistance(int distance);
-    QList <int>* creationTime;
-    QList <int>* destructionTime;
+    QList <double>* creationTime;
+    QList <double>* destructionTime;
     QList<QList<int>*>* arrowGiantMeasure;
     void calculateTimes(int speed, int distance);
 
