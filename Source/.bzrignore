@@ -8,3 +8,5 @@ ui_*.h
 debug
 release
 SADStepProgram.pro.user
+include
+lib

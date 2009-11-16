@@ -7,11 +7,9 @@
 #include <QMainWindow>
 #include <QtDebug>
 
-
 BaseMenuForm::BaseMenuForm(QWidget *parent) :
-    QWidget(parent),
-    m_ui(new Ui::BaseMenuForm)
-{
+	QWidget(parent),
+	m_ui(new Ui::BaseMenuForm) {
     newSpeed = 0;
     newRange = 0;
     m_ui->setupUi(this);
@@ -45,7 +43,8 @@ void BaseMenuForm::setMenuWidget(StepMenu* menu) {
     //qDebug() << menu->getWidget()->size() << "WIDGET";
 
     //Fake laying out frame_2
-    m_ui->frame_2->setGeometry(QRect(0,0,parentWidget()->width(),parentWidget()->height()-m_ui->frame->height()-200));
+    m_ui->frame_2->setGeometry(QRect(0,0,parentWidget()->width(),parentWidget()
+				     ->height()-m_ui->frame->height()-200));
 
     //Add Widget to layout
     m_ui->gLayout->addWidget(menu->getWidget(),2,2,1,1,0);
@@ -54,19 +53,16 @@ void BaseMenuForm::setMenuWidget(StepMenu* menu) {
     //Create Spacers
     int inth = (m_ui->frame_2->height() - menu->getWidget()->height())/2;
     int intw = (m_ui->frame_2->width() - menu->getWidget()->width())/2;
-    up = new QSpacerItem (0, inth, QSizePolicy::Minimum, QSizePolicy::Minimum);
-    left = new QSpacerItem (intw, 0, QSizePolicy::Preferred, QSizePolicy::Minimum);
-    down = new QSpacerItem (0,inth, QSizePolicy::Minimum, QSizePolicy::Minimum);
-    right = new QSpacerItem (intw, 0, QSizePolicy::Preferred, QSizePolicy::Minimum);
+    up = new QSpacerItem(0,inth,QSizePolicy::Minimum,QSizePolicy::Minimum);
+    left = new QSpacerItem(intw,0,QSizePolicy::Preferred,QSizePolicy::Minimum);
+    down = new QSpacerItem(0,inth,QSizePolicy::Minimum,QSizePolicy::Minimum);
+    right = new QSpacerItem(intw,0,QSizePolicy::Preferred,QSizePolicy::Minimum);
 
 
     m_ui->gLayout->addItem(up, 1,2,1,1,Qt::AlignHCenter);
     m_ui->gLayout->addItem(down, 3,2,1,1,Qt::AlignHCenter);
     m_ui->gLayout->addItem(left, 2,1,1,1,Qt::AlignVCenter);
     m_ui->gLayout->addItem(right, 2,3,1,1,Qt::AlignVCenter);
-//    qDebug() << m_ui->frame_2->width();
-//    qDebug() << m_ui->frame_2->height();
-//    qDebug() << "(" << menu->getWidget()->x() << "," << menu->getWidget()->y() << ") widget location";
 }
 
 bool BaseMenuForm::setButtonsVisible(bool visible){
@@ -140,12 +136,12 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
 	    break;
 	}
     case 300: { // Run Game
-	    
+
 	    qDebug() << "Set To " << ((SongMenu*)stepMenu)->getIndex();
-            //newSpeed = (((OptionMenu*)stepMenu)->getSpeed());
-            //qDebug() << newSpeed;
-            //newRange = (((OptionMenu*)stepMenu)->getRange());
-            //qDebug() << newRange;
+	    //newSpeed = (((OptionMenu*)stepMenu)->getSpeed());
+	    //qDebug() << newSpeed;
+	    //newRange = (((OptionMenu*)stepMenu)->getRange());
+	    //qDebug() << newRange;
 	    emit runGame(((SongMenu*)stepMenu)->getIndex());
 	    break;
 	}
@@ -160,21 +156,21 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
 void BaseMenuForm::changeLabel(int labelChange){
     sui = new QFile(":/menus/basemenu.ui");
     switch(labelChange) {
-        case 0: {
+    case 0: {
 
-    m_ui->label->setText("Game Menu");
-            break;
-        }
-        case 1: {
+	    m_ui->label->setText("Game Menu");
+	    break;
+	}
+    case 1: {
 
-    m_ui->label->setText("Options Menu");
-            break;
-        }
-        case 2: {
+	    m_ui->label->setText("Options Menu");
+	    break;
+	}
+    case 2: {
 
-    m_ui->label->setText("Song Menu");
-            break;
-        }
+	    m_ui->label->setText("Song Menu");
+	    break;
+	}
     }
 }
 
@@ -187,10 +183,10 @@ void BaseMenuForm::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
-        m_ui->retranslateUi(this);
-        break;
+	m_ui->retranslateUi(this);
+	break;
     default:
-        break;
+	break;
     }
 }
 void BaseMenuForm::setActiveButton()
@@ -204,15 +200,15 @@ void BaseMenuForm::setActiveButton()
     {
        m_ui->okBtn->setChecked(false);
        m_ui->cancelBtn->setChecked(true);
-       
+
     }*/
 }
 int BaseMenuForm::getRange()
 {
-        return (newRange = 0);
+    return (newRange = 0);
 }
 int BaseMenuForm::getSpeed()
 {
-        return (newSpeed = 0);
+    return (newSpeed = 0);
 }
 

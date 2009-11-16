@@ -11,15 +11,15 @@
 
 class SongMenu: public StepMenu
 {
-Q_OBJECT
-
+    Q_OBJECT
 public:
     SongMenu(BaseMenuForm* form, QWidget* parent = 0);
     ~SongMenu();
     SongCatalogue* list;
     const int getIndex();
 public slots:
-    void rowChanged2(int billybob); // yes its name is billybob deal with it (From: Scott)
+    void rowChanged2(int billybob); // yes its name is billybob deal with it
+    // (From: Scott)
 private:
     QFile* sui;
     QUiLoader* loader;

@@ -15,12 +15,12 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
     const QList<QString>* list = cata->getFileNames();
     for (int x = 0; x < list->size(); x++)
     {
-        listWidget->addItem(list->at(x));
+	listWidget->addItem(list->at(x));
     }
     this->setWidgetRep(widget->findChild<QWidget*>("Form"));
     qDebug() << listWidget->currentRow();
-    connect(listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(rowChanged2(int)));
-
+    connect(listWidget,SIGNAL(currentRowChanged(int)),this,
+	    SLOT(rowChanged2(int)));
     //qDebug() << parent->height() << " at Song Menu";
 }
 
@@ -35,15 +35,14 @@ SongMenu::~SongMenu() {
 
 const int SongMenu::getIndex()
 {
-     //const int number = listWidget->currentRow;
+    //const int number = listWidget->currentRow;
 
-   // qDebug() << listWidget->currentRow();
-     qDebug() << "Brittish people";
+    // qDebug() << listWidget->currentRow();
+    qDebug() << "Brittish people";
     return songNumber;
 
 
 }
-void SongMenu::rowChanged2(int billybob)
-{
+void SongMenu::rowChanged2(int billybob){
     songNumber = billybob;
 }

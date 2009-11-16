@@ -7,7 +7,7 @@ GameMenu::GameMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form,parent)
     widget = new QWidget();
     loader->load(sui,widget);
     gameStartBtn = widget->findChild<QPushButton*>("gameSelectBtn");
-   // gamestartBtn->move((parent->width()/(2)), (parent->height()/(2)));
+    // gamestartBtn->move((parent->width()/(2)), (parent->height()/(2)));
     optionBtn = widget->findChild<QPushButton*>("optionsSelectBtn");
     exitBtn = widget->findChild<QPushButton*>("exitBtn");
     connect(gameStartBtn, SIGNAL(clicked()), this, SLOT(menuSelected2()));

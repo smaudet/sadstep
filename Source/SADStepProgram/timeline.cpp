@@ -11,9 +11,9 @@ Timeline::Timeline()
 }
 /*
   Sebastian Audet
-  
+
   AFAIK - Dance files look in general like this:
-  
+
   (example)
   104J99
   001102
@@ -26,36 +26,36 @@ Timeline::Timeline()
   832901
   000000
   011001
-  
+
   So we have a Vector of ints, i.e. 011010
   inside a vector of those i.e.
   011010
   *(something similar here)
   *(ditto)
-  
+
   And a Vector of those i.e.
-  
+
   *(What we had above)
   ,
   *(Another similar one
   ,
   *(etc, you get the idea
-  
+
   So we have a Vector of a Vector of a Vector of values, namely ints.
-  
+
   Then our custom BPM looks like so:
   10,
   20,
   40,
   30,
-  
+
   etc. i.e. a Vector of values
-  
+
   The only thing that could be out there that I may have forgotten about
   is tracks with individual bpm tracks, i.e. instead of rows of notes with beats,
   we have rows of bpm times....however I think we discussed not doing that. But in that case
   you would only have one vector, a Vector of a Vector of values.
-  
+
   */
 //TODO Stop functionality, Hold functionality, Mine functionality
 Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
@@ -67,11 +67,11 @@ Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
     double lastDeconTime = 0;
     double errorsize = 0;
     //double buffer = 0;
-    
+
     creationTime = new QList<double>;
     destructionTime = new QList<double>;
     // double sLength = songLength;
-    
+
     bool useX = false;
     if (arrowData->size() == BPM->size()) {
 	useX = true;
@@ -82,7 +82,7 @@ Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
 	//one, THEN and only then did an error occur.
 	//  TODO Throw Error
     }
-    
+
     for(int x=0;x<arrowData->size();x++){
 	//Eg:
 	//0 0 0 1
@@ -94,23 +94,23 @@ Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
 	for(int w = 0; w < measureData->size(); w++) {
 	    double measureBPM = BPM->at((useX ? x : 0)); //Use x or 0
 	    qDebug() << measureBPM << "bpm";
-	    
+
 	    //Find the speed of a quarter note
 	    measureBPM/=60; //Beats per second
 	    measureBPM=1/measureBPM; //Seconds per beat
 	    measureBPM*=1000; //milliseconds per beat
 	    qDebug() << measureBPM << "Milliseconds per beat";
-	    
+
 	    //We now have our time for a quarter note. Next, find the number of
 	    //notes in a particular measure and calculate the proper division
 	    //factor
-	    
-	    double measureSize = measureData->size(); 
+
+	    double measureSize = measureData->size();
 	    double divisionFactor = measureSize/4; /*for 8/4 time we'd get 2,
 						     4/4 would be 1, so we have
 						     the factor of division*/
 	    double noteTime = measureBPM/divisionFactor;
-	    
+
 	    //Now we have the time at which the note ought to deconstruct.
 	    //We need to find the time at which it constructs.
 	    //In theory this should be the deconstruction Time, minus whatever
@@ -119,7 +119,7 @@ Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
 	    //The distance of the screen (not arbitrary)
 	    //The speed (arbitrary) at which it is traveling
 	    //creationTime = deconstructionTime - distance/speed
-	    
+
 	    double deconTime = noteTime+totalTime;
 	    qDebug() << deconTime << " decon";
 	    this->destructionTime->append(deconTime);
@@ -154,7 +154,7 @@ void Timeline::getNotes(QList<QList<QList<int>*>*>* arrowData) {
     //1010
     //0101
     QList<QList<int>*>* localMeasure;
-    
+
     arrowGiantMeasure = new QList<QList<int>*>;
     for (int x = 0; x < arrowData->size(); x++)
     {
@@ -188,7 +188,7 @@ int Timeline::timeDisplacement(int pushTimer) // used to send time to Score clas
     {
 	displacement = (scorePushTime - pushTimer);
     }
-    
+
     return displacement;
 }
 
@@ -206,7 +206,7 @@ int Timeline::checkTime() // returns time for destruction 1 arrow set at a time
 }
 Timeline::~Timeline() // destructor
 {
-    
+
 }
 void Timeline::calculateTimes (int speed, int distance)
 {

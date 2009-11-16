@@ -6,7 +6,7 @@
   the user and program through a device such as a keyboard, though does not
   offer support for other devices at this time.
 
-        Author: Sebastian Audet
+	Author: Sebastian Audet
 
   */
 

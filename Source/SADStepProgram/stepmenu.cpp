@@ -28,9 +28,9 @@ void StepMenu::changeEvent(QEvent *e) {
     QWidget::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
-        m_ui->retranslateUi(this);
-        break;
+	m_ui->retranslateUi(this);
+	break;
     default:
-        break;
+	break;
     }
 }

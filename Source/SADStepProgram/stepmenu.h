@@ -18,11 +18,11 @@ public:
     StepMenu(BaseMenuForm* form, QWidget *parent = 0);
     ~StepMenu();
     QWidget* getWidget();
-    
+
 protected:
     void setWidgetRep(QWidget* internalWidgetRep);
     BaseMenuForm* form;
-    
+
 private:
     QWidget* internalWidgetRep;
     Ui::StepMenu* m_ui;

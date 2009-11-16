@@ -25,7 +25,6 @@ public:
     int getNumberOfGood();
     int getNumberOfBad();
     int getNumberOfPerfect();
-
 private:
     int displacement;
     int totalScore;

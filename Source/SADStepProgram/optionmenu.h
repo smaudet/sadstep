@@ -17,30 +17,28 @@ public slots:
     void rangeChange(int rangeChanged);
     void speedChange(int speedChanged);
 
-//    void menuSelected5();
-//    void menuSelected6();
-//    void menuSelected7();
+    //    void menuSelected5();
+    //    void menuSelected6();
+    //    void menuSelected7();
 public:
     //This GameMenu is virtually private! :D
     OptionMenu(BaseMenuForm* form,QWidget* parent=0);
-   ~OptionMenu();
+    ~OptionMenu();
     int getSpeed();
     int getRange();
 private:
-   QPushButton* cancelBtn;
-   QRadioButton* easy;
-   QRadioButton* normal;
-   QRadioButton* hard;
-   QRadioButton* expert;
-   QFile* sui;
-   QUiLoader* loader;
-   QWidget* widget;
-   QSlider* speedSlider;
-   QSlider* rangeSlider;
-   int speed;
-   int range;
-
-
+    QPushButton* cancelBtn;
+    QRadioButton* easy;
+    QRadioButton* normal;
+    QRadioButton* hard;
+    QRadioButton* expert;
+    QFile* sui;
+    QUiLoader* loader;
+    QWidget* widget;
+    QSlider* speedSlider;
+    QSlider* rangeSlider;
+    int speed;
+    int range;
 };
 
 #endif // OPTIONMENU_H

@@ -18,7 +18,7 @@ public slots:
 public:
     //This GameMenu is virtually private! :D
     GameMenu(BaseMenuForm* form,QWidget* parent=0);
-   ~GameMenu();
+    ~GameMenu();
 private:
     QPushButton* gameStartBtn;
     QPushButton* optionBtn;

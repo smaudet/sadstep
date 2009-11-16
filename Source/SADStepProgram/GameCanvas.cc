@@ -5,13 +5,14 @@
 #include <QPaintEngine>
 
 GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
-        QWidget(parent)
+	QWidget(parent)
 {
     this->lanes=lanes;
-    this->setGeometry(x()/2,y()/2,parentWidget()->width(),parentWidget()->height());
+    this->setGeometry(x()/2,y()/2,parentWidget()->width(),parentWidget()
+		      ->height());
     arrows = new QList<QList<Arrow*>*>();
     for(int i = 0;i<lanes;++i){
-        arrows->append(new QList<Arrow*>());
+	arrows->append(new QList<Arrow*>());
     }
     timer = new GraphicsTimer(fps);
     connect(timer,SIGNAL(timeout()),this,SLOT(updateArrows()));
@@ -22,7 +23,7 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     QPalette palette = parentWidget()->palette();
     palette.setBrush(QPalette::Window,brush);
     palette.setBrush(QPalette::WindowText,*(new QBrush(*(new QColor(255,100,0
-                                                                    ,30)))));
+								    ,30)))));
     parentWidget()->setStyleSheet("");
     parentWidget()->setPalette(palette);
     type = 1;
@@ -36,7 +37,7 @@ void GameCanvas::showScoreText(QString txt) {
 
 QImage GameCanvas::getBackgroundImage() {
     //QImage& retimg = *(new QImage());
-    
+
     return *(graphics->getGraphic(0));
 }
 
@@ -53,8 +54,8 @@ GameCanvas::~GameCanvas() {
 
 bool GameCanvas::spawnArrow(double speed,int lane) {
     if(lane>0&&lane<=lane){
-        arrows->at(lane-1)->append(new Arrow(speed,type));
-        return true;
+	arrows->at(lane-1)->append(new Arrow(speed,type));
+	return true;
     }
     return false;
 }
@@ -65,20 +66,20 @@ int GameCanvas::getDistance() {
 
 bool GameCanvas::destroyArrow(int lane) {
     if(lane>this->lanes||lane<=0){
-        qDebug() << "Tried to delete a non-existant lane " << lane;
-        return false;
+	qDebug() << "Tried to delete a non-existant lane " << lane;
+	return false;
     } else {
-        QList<Arrow*>* tlane = arrows->at(lane-1);
-        if(tlane->size()>0){
-            Arrow* arrow = tlane->first();
-            tlane->removeFirst();
-            delete arrow;
-            qDebug() << "Deleted";
-            return true;
-        } else {
-            qDebug() << "Tried to delete an arrow from a lane with no arrows";
-            return false;
-        }
+	QList<Arrow*>* tlane = arrows->at(lane-1);
+	if(tlane->size()>0){
+	    Arrow* arrow = tlane->first();
+	    tlane->removeFirst();
+	    delete arrow;
+	    qDebug() << "Deleted";
+	    return true;
+	} else {
+	    qDebug() << "Tried to delete an arrow from a lane with no arrows";
+	    return false;
+	}
     }
 }
 
@@ -102,41 +103,44 @@ void GameCanvas::paintEvent(QPaintEvent* e){
     QListIterator<QList<Arrow*>*> itr(*arrows);
     //draw score region
     for(int i=0;i<this->lanes;++i){
-        const QImage* timg = graphics->getArrowGraphic(2,i+1);
-        p->drawImage((i)*laneSize/2+this->width()/4,0,*timg);
+	const QImage* timg = graphics->getArrowGraphic(2,i+1);
+	p->drawImage((i)*laneSize/2+this->width()/4,0,*timg);
     }
     int laneNum=1;
     while(itr.hasNext()) {
-        QListIterator<Arrow*> itr2(*itr.next());
-        while(itr2.hasNext()){
-            Arrow* arrow = itr2.next();
-            const QImage* timg = graphics->getArrowGraphic(arrow->getType(),laneNum);
-            int yindent = ((double)arrow->getPercentLoc()/100)*this->height();
-            p->drawImage((laneNum-1)*laneSize/2+this->width()/4,this->height()-yindent,*timg);
-        }
-        ++laneNum;
+	QListIterator<Arrow*> itr2(*itr.next());
+	while(itr2.hasNext()){
+	    Arrow* arrow = itr2.next();
+	    const QImage* timg = graphics->getArrowGraphic(arrow->getType(),
+							   laneNum);
+	    int yindent = ((double)arrow->getPercentLoc()/100)*this->height();
+	    p->drawImage((laneNum-1)*laneSize/2+this->width()/4,this->height()
+			 -yindent,*timg);
+	}
+	++laneNum;
     }
     p->end();
     delete p;
-    //p->drawText(this->height()/2,this->width()/4,this->height()/8,this->width()/4,Qt::AlignCenter,txt);
+    //    p->drawText(this->height()/2,this->width()/4,this->height()/8,this
+    //		->width()/4,Qt::AlignCenter,txt);
 }
 
 void GameCanvas::updateArrows() {
     QListIterator<QList<Arrow*>*> itr(*arrows);
     int lane = 1;
     while(itr.hasNext()) {
-        QList<Arrow*>* n = itr.next();
-        QListIterator<Arrow*> itr2(*n);
-        while(itr2.hasNext()){
-            Arrow* arrow = itr2.next();
-            int loc=arrow->getPercentLoc();
-            if(loc>100) {
-                destroyArrow(lane);
-            } else {
-                arrow->giveLocation(loc+1);
-            }
-        }
-        ++lane;
+	QList<Arrow*>* n = itr.next();
+	QListIterator<Arrow*> itr2(*n);
+	while(itr2.hasNext()){
+	    Arrow* arrow = itr2.next();
+	    int loc=arrow->getPercentLoc();
+	    if(loc>100) {
+		destroyArrow(lane);
+	    } else {
+		arrow->giveLocation(loc+1);
+	    }
+	}
+	++lane;
     }
     repaint();
 }
@@ -151,41 +155,26 @@ GraphicsTimer* GameCanvas::getTimer() const {
 
 void GameCanvas::keyPressEvent(QKeyEvent* e){
     if(e->key()==Qt::Key_Up){
-        //qDebug() << "1";
-        spawnArrow(1,1);
-        return;
+	//qDebug() << "1";
+	spawnArrow(1,1);
+	return;
     }
     if(e->key()==Qt::Key_Down){
-        //qDebug() << "2";
-        spawnArrow(1,3);
-        return;
+	//qDebug() << "2";
+	spawnArrow(1,3);
+	return;
     }
     if(e->key()==Qt::Key_Left){
-        //qDebug() << "3";
-        spawnArrow(1,2);
-        return;
+	//qDebug() << "3";
+	spawnArrow(1,2);
+	return;
     }
     if(e->key()==Qt::Key_Right){
-        //qDebug() << "4";
-        spawnArrow(1,4);
-        return;
+	//qDebug() << "4";
+	spawnArrow(1,4);
+	return;
     }
     if(e->key()==Qt::Key_Escape){
-        parentWidget()->close();
+	parentWidget()->close();
     }
 }
-        
-//GameCanvasThread::GameCanvasThread(int lanes,int fps):gc(new GameCanvas(lanes
-//                                                                        ,fps)){}
-//GameCanvasThread::~GameCanvasThread(){
-//    delete gc;
-//}
-//
-//void GameCanvasThread::run(){
-//    gc->getTimer()->start(gc->getFps());
-//    exec();
-//}
-//
-//GameCanvas* GameCanvasThread::getCanvas() const {
-//    return gc;
-//}

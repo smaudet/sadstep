@@ -22,8 +22,8 @@ public:
     BaseMenuForm(QWidget *parent = 0);
     ~BaseMenuForm();
     enum BaseMenuOps {
-        RUN_GAME = 300
-    };
+	RUN_GAME = 300
+	       };
     QLabel* label;
     void setMenuWidget(StepMenu* menu);
     void BaseMenuForm::setActiveButton();
@@ -33,8 +33,8 @@ public:
     bool toggleCancel();
     void goToMenu(int index, bool firstRun = false);
     void changeLabel(int labelChange);
-//    void runGame();
-//    void runElse();
+    //    void runGame();
+    //    void runElse();
 public slots:
     bool mainMenu();
     void runGame();

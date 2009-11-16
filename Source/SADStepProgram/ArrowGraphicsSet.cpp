@@ -13,7 +13,7 @@ ArrowGraphicsSet::ArrowGraphicsSet() {
 }
 
 ArrowGraphicsSet::~ArrowGraphicsSet() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
 
 void ArrowGraphicsSet::loadAllGraphics(int width,int height) {
@@ -29,7 +29,7 @@ void ArrowGraphicsSet::loadGraphics() {
 void ArrowGraphicsSet::loadArrowGraphics(int width, int height, int lanes) {
     this->arrowImages = new QList<QList<QImage*>*>();
     for(int i=0;i<lanes;i++){
-        arrowImages->append(new QList<QImage*>());
+	arrowImages->append(new QList<QImage*>());
     }
     QList<QImage*>* timg = new QList<QImage*>();
     timg->append(new QImage(":/arrows/MArrow","png"));
@@ -37,16 +37,17 @@ void ArrowGraphicsSet::loadArrowGraphics(int width, int height, int lanes) {
     //TODO Add support for separate images
     QListIterator<QImage*> itr(*timg);
     while(itr.hasNext()) {
-        QImage* t = itr.next();
-        QTransform trans;
-        for(int i=0;i<lanes;++i){
-            QList<QImage*>* ta = arrowImages->at(i);
-            ta->append(
-                    new QImage(t->transformed(
-                            trans.rotate(-(360/lanes)*i)).scaled(width,height
-                                                  ,Qt::KeepAspectRatio,
-                                       Qt::SmoothTransformation)));
-        }
+	QImage* t = itr.next();
+	QTransform trans;
+	for(int i=0;i<lanes;++i){
+	    QList<QImage*>* ta = arrowImages->at(i);
+	    ta->append(
+		    new QImage(t->transformed(
+			    trans.rotate(-(360/lanes)*i))
+			       .scaled(width,height
+				       ,Qt::KeepAspectRatio,
+				       Qt::SmoothTransformation)));
+	}
     }
 }
 

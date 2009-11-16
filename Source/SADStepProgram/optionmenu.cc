@@ -55,24 +55,23 @@ void OptionMenu::cancel() {
 
 void OptionMenu::speedChange (int speedChanged)
 {
-     speed = speedSlider->value();
+    speed = speedSlider->value();
     //speed = speedChanged;
-     qDebug() << speed << " speed";
+    qDebug() << speed << " speed";
 }
 void OptionMenu::rangeChange (int rangeChanged)
 {      range = rangeSlider->value();
-     //range = rangeChanged;
-     qDebug() << range << " range";
+    //range = rangeChanged;
+    qDebug() << range << " range";
 }
 int OptionMenu::getRange()
 {
-        qDebug() << range << " range 2";
-        return range;
+    qDebug() << range << " range 2";
+    return range;
 
 }
 int OptionMenu::getSpeed()
 {
-        qDebug() << speed << " speed 2";
-        return speed;
+    qDebug() << speed << " speed 2";
+    return speed;
 }
-
