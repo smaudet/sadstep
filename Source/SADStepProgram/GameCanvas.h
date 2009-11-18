@@ -36,6 +36,7 @@ public:
     //In pixels
     int getDistance();
     bool spawnArrow(double speed, int lane);
+    bool arrowPresent(int lane);
     bool destroyArrow(int lane);
     bool blankArrow(int lane);
     //Unsure of exactly what these two functions will be responsible for

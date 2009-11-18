@@ -3,6 +3,7 @@
 #include <QPalette>
 #include <QtDebug>
 #include <QPaintEngine>
+#include <QFont>
 
 GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
 	QWidget(parent)
@@ -28,7 +29,7 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     parentWidget()->setPalette(palette);
     type = 1;
     this->fps = fps;
-    showScoreText("Hooray");
+    showScoreText("");
 }
 
 void GameCanvas::showScoreText(QString txt) {
@@ -62,6 +63,13 @@ bool GameCanvas::spawnArrow(double speed,int lane) {
 
 int GameCanvas::getDistance() {
     return this->height();
+}
+
+bool GameCanvas::arrowPresent(int lane) {
+    if(arrows->at(lane-1)->size()>0) {
+	return true;
+    }
+    return false;
 }
 
 bool GameCanvas::destroyArrow(int lane) {
@@ -119,10 +127,14 @@ void GameCanvas::paintEvent(QPaintEvent* e){
 	}
 	++laneNum;
     }
+    p->setPen(QColor(255,0,0,255));
+    QFont f;
+    f.setPointSize(100);
+    p->setFont(f);
+    p->drawText(this->rect(),Qt::AlignCenter,txt);
+    qDebug() << txt;
     p->end();
     delete p;
-    //    p->drawText(this->height()/2,this->width()/4,this->height()/8,this
-    //		->width()/4,Qt::AlignCenter,txt);
 }
 
 void GameCanvas::updateArrows() {

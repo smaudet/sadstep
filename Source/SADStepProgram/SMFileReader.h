@@ -11,9 +11,41 @@ public:
     QList<QList<QList<int>*>*>* getStepData(int difficulty=0);
     QList<double>* getBPM(int difficulty=0);
     QString getSongFile();
-    //void findTags();
+    QString getBackGroundFile();
+    QList<QPair<double,QString>*>* getBGAnimations(int difficulty = 0);
+    QList<QPair<double,QString>*>* getMenuBGAnimations(int difficulty = 0);
+    bool isMenuUsingBGAnimations(int difficulty=0);
+    bool isUsingBGAnimations(int difficulty=0);
+    QString getCredits();
+    QList<QList<QList<int>*>*>* getNoteDataField(const char* field,
+						 int difficulty=0);
+    NotesData getNotesData(int difficutly = 0);
+    double getNumericalField(const char* field,int difficulty=0);
+    double getOffset(int difficulty=0);
+    QString getSongArtist();
+    double getSongLength();
+    QString getSongLyricsPath();
+    double getSongSampleLength();
+    double getSongSampleStart();
+    bool getSongSelectable();
+    QTextStream getSongSubtitles();
+    QString getSongTitle();
+    QList<double>* getStops(int difficulty=0);
+    QString getSubtitle();
+    QString getTransliteration(int type = 0);
+    QList<double>* getVectorInfoField(const char* field,
+				      int difficulty=0);
+    int getNumDifficulties();
+    QString getDifficultyName(int difficulty);
+protected:
 private:
+    void findTags();
     static const char* tagTypeNames[];
+    QList<QString>* songFieldData;
+    QList<int>* fieldIndexes;
+    QList<int>* noteIndexes;
+    QList<NotesData>* notesData;
+    QTextStream* textfile;
 };
 
 #endif // SMFILEREADER_H

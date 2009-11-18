@@ -30,7 +30,7 @@ void Score::calculateScore(int displacement)
 
     }
 
-    if ( (displacement <= (((double)Range/(2/3))) && (displacement > ((double)Range/(1/3))))) // scoring for between (1/3 and 2/3] of max range
+    if ( (displacement <= (((double)Range/(2.0/3))) && (displacement > ((double)Range/(1.0/3))))) // scoring for between (1/3 and 2/3] of max range
     {
 	score = 500;
 	combo ++;
@@ -39,7 +39,7 @@ void Score::calculateScore(int displacement)
 
     }
 
-    if ((displacement > (double)(Range)/(2/3)) && (displacement <= (double)Range))// scoring for between (2/3 and 3/3] of max range
+    if ((displacement > (double)(Range)/(2.0/3)) && (displacement <= (double)Range))// scoring for between (2/3 and 3/3] of max range
     {
 	score = 250;
 	combo ++;

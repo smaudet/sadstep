@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-10-26T15:32:27
 # -------------------------------------------------
-#QT += testlib
+QT += testlib
 LIBS += -L"lib"
 LIBS += -lvlc
 INCLUDEPATH += "include"
@@ -27,7 +27,8 @@ SOURCES += mainwindow.cc \
     SMFileReader.cc \
     MediaPlayer.cc \
     Tests.cc \
-    main.cc
+    main.cc \
+    NotesData.cc
 HEADERS += mainwindow.h \
     stepmenu.h \
     startmenu.h \
@@ -48,7 +49,8 @@ HEADERS += mainwindow.h \
     SMFileReader.h \
     StepReader.h \
     MediaPlayer.h \
-    Tests.h
+    Tests.h \
+    NotesData.h
 FORMS += songMenuForm.ui \
     optionmenu.ui \
     MMenuForm.ui \

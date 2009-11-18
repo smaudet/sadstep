@@ -1,3 +1,8 @@
+/*
+  * Author: Sebastian Audet
+  * Implementation of SongReader and StepReader that will read an sm (stepmania)
+  * file
+  */
 
 #include "SMFileReader.h"
 
@@ -14,49 +19,113 @@ const char* SMFileReader::tagTypeNames[] = {
     "TITLE",
     "SUBTITLE",
     "ARTIST",
+    "TITLETRANSLIT",
+    "SUBTITLETRANSLIT",
+    "ARTISTTRANSLIT",
     "CREDIT",
-    "MUSIC",
-    "SELECTABLE",
-    "BACKGROUND",
     "BANNER",
+    "BACKGROUND",
+    "LYRICSPATH",
     "CDTITLE",
+    "MUSIC",
     "OFFSET",
     "SAMPLESTART",
     "SAMPLELENGTH",
+    "SELECTABLE",
     "BPMS",
     "STOPS",
-    "NOTES"
+    "BGCHANGES"
 };
 
 
-SMFileReader::SMFileReader(QString location)
-{
-    this->fileName = new QString(location);
+SMFileReader::SMFileReader(QString location) {
+    fileName = new QString(location);
+    songFieldData = new QList<QString>;
+    notesData = new QList<NotesData>;
+    fieldIndexes = new QList<int>;
+    noteIndexes = new QList<int>;
+    findTags();
 }
 
-//void SMFileReader::findTags() {
-//    QFile file(fileName);/*
-//    qDebug() << file.exists();*/
-//    file.open(QIODevice::ReadOnly);/*
-//    qDebug() << file.canReadLine();
-//    qDebug() << file.fileName();
-//    qDebug() << file.read(60);*/
-//    QTextStream textfile(&file);
-//    textfile.setCodec("UTF-8");
-//    textfile.setAutoDetectUnicode(true);
-//    QRegExp matcher;
-//    for(int i = 0;i<sizeof(tagTypeNames);i++){
-//        matcher = QRegExp("#"+QString(tagTypeNames[i])+":.*;");
-//        bool found = false;
-//        while(!found){
-//            QString s(textfile.readLine());
-//            if(s.indexOf(matcher,0)>=0){
-//                qDebug() << s.indexOf(matcher,0);
-//                found = true;
-//            }
-//        }
-//    }
-//}
+//Preparses the meta data, notes meta data, and notes location
+void SMFileReader::findTags() {
+    //Open our file
+    QFile file(*fileName);
+    file.open(QIODevice::ReadOnly);
+    //Use a textstream for easy parsing in Unicode
+    textfile = new QTextStream(&file);
+    textfile->setAutoDetectUnicode(true);
+    //Find all the header info
+    for(int i = 0;i<sizeof(tagTypeNames);i++){
+	//Must find the entire data field
+	QRegExp matcher = QRegExp(QString("#")+QString(tagTypeNames[i])+":.*;");
+	QString s;
+	bool found = false;
+	while(!found){
+	    s+=textfile->readLine();
+	    int tint = s.indexOf(matcher,0);
+	    if(tint>=0){
+		//Add our line
+		songFieldData->append(s);
+		qDebug() << s;
+		fieldIndexes->append(textfile->pos()+tint); //Necessary?
+		qDebug() << fieldIndexes->last();
+		found = true;
+	    }
+	}
+    }
+    //Find the notes locations and load the NotesData objects
+    QRegExp matcher = QRegExp(QString("#")+QString("NOTES")+":");
+    while(!textfile->atEnd()){
+	QString s(textfile->readLine());
+	int tint = s.indexOf(matcher,0);
+	if(tint>=0){
+	    //Found our index
+	    noteIndexes->append(textfile->pos()+tint);
+	    qDebug() << noteIndexes->last();
+	    s = textfile->readLine();
+	    //Clean space FIXME for whitespace
+	    while(s.isEmpty()){
+		s = textfile->readLine();
+	    }
+	    //TODO Generalize and implement: Placeholder for NotesData creation
+	    for(int i=0;i<4;i++){
+		textfile->readLine();
+	    }
+	    notesData->append(NotesData());
+	}
+    }
+}
+
+
+QString SMFileReader::getBackGroundFile() {
+
+}
+QList<QPair<double,QString>*>* SMFileReader::getBGAnimations(int difficulty){}
+QList<QPair<double,QString>*>* SMFileReader::getMenuBGAnimations(int difficulty){}
+bool SMFileReader::isMenuUsingBGAnimations(int difficulty){}
+bool SMFileReader::isUsingBGAnimations(int difficulty){}
+QString SMFileReader::getCredits(){}
+QList<QList<QList<int>*>*>* SMFileReader::getNoteDataField(const char* field,
+							   int difficulty){}
+NotesData SMFileReader::getNotesData(int difficutly){}
+double SMFileReader::getNumericalField(const char* field,int difficulty){}
+double SMFileReader::getOffset(int difficulty){}
+QString SMFileReader::getSongArtist(){}
+double SMFileReader::getSongLength(){}
+QString SMFileReader::getSongLyricsPath(){}
+double SMFileReader::getSongSampleLength(){}
+double SMFileReader::getSongSampleStart(){}
+bool SMFileReader::getSongSelectable(){}
+QTextStream SMFileReader::getSongSubtitles(){}
+QString SMFileReader::getSongTitle(){}
+QList<double>* SMFileReader::getStops(int difficulty){}
+QString SMFileReader::getSubtitle(){}
+QString SMFileReader::getTransliteration(int type){}
+QList<double>* SMFileReader::getVectorInfoField(const char* field,
+						int difficulty){}
+int SMFileReader::getNumDifficulties() {}
+QString SMFileReader::getDifficultyName(int difficulty) {}
 
 
 QString SMFileReader::getSongFile() {
@@ -177,7 +246,7 @@ QList<double>* SMFileReader::getBPM(int difficulty) {
     lastString.remove(lastString.size()-1,1);
     QStringList list = lastString.split(",");
     qDebug() << list.size();
-    //Now we have extracted our data, 
+    //Now we have extracted our data,
     //time to proof it and insert it into our
     //return value
     QListIterator<QString> itr(list);
