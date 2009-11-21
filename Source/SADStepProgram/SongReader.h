@@ -16,8 +16,7 @@
 #include <QPair>
 #include <QTextStream>
 
-class SongReader
-{
+class SongReader {
 public:
     virtual NotesData getNotesData(int difficutly = 0) = 0;
     //FIXME Decide whether or not we have just int or double

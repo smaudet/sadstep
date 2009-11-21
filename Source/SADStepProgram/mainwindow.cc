@@ -77,8 +77,8 @@ void MainWindow::runGame(int selection) {
     // TODO: for now given 0 in future will get value from user selection
     QString location = catalogue->getFileName(selection);
     // gets stepreader for specified file
-    StepReader* steps = fio->getStepReader(&location);
-    QList<double>* bps = steps->getBPM();
+    StepReader* steps = fio->getStepReader(location);
+    QList<double>* bps /*= steps->getBPM()*/;
     QList<QList<QList<int>*>*>* stepData = steps->getStepData();
     //Distance in pixels, time in pixels per minute
     // starts timeline and passes required data to its constructor
@@ -95,7 +95,7 @@ void MainWindow::runGame(int selection) {
     canvas->start();
     lastTimerID = startTimer(itr->next());
     //TODO Invoke MediaPlayer instead
-    SongReader* song = fio->getSongReader(&location);
+    SongReader* song = fio->getSongReader(location);
     mp = new MediaPlayer();
     mp->playFile(song->getSongFile());
 }

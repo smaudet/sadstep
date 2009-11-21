@@ -13,23 +13,23 @@
 #define STEPREADER_H
 
 #include <QList>
+#include <QPair>
 
-class StepReader
-{
+class StepReader {
 public:
-    virtual QList<QList<QList<int>*>*>* getStepData(int difficulty=0) = 0;
-    virtual QList<double>* getBPM(int difficulty=0) = 0;
-    virtual QList<double>* getStops(int difficulty=0) = 0;
+    virtual QList<QList<QList<int>*>*>* getStepData(int difficulty=0)=0;
+    virtual QList<QPair<double,double>*>* getBPM(int difficulty=0)=0;
+    virtual QList<QPair<double,double>*>* getStops(int difficulty=0)=0;
     virtual double getOffset(int difficulty=0)=0;
     //The following functions are experimental and may be removed in the future
     //The idea is to provide an interface for obtaining arbitrary fields
-    virtual double getNumericalField(const char* field,int difficulty=0) = 0;
+    virtual double getNumericalField(const char* field,int difficulty=0)=0;
     virtual QList<double>* getVectorInfoField(const char* field,
 					      int difficulty=0)=0;
     virtual QList<QList<QList<int>*>*>* getNoteDataField(const char* field,
-							 int difficulty=0) = 0;
-    virtual int getNumDifficulties() = 0;
-    virtual QString getDifficultyName(int difficulty) = 0;
+                                                         int difficulty=0)=0;
+    virtual int getNumDifficulties()=0;
+    virtual QString getDifficultyName(int difficulty)=0;
 protected:
     QString* fileName;
 };

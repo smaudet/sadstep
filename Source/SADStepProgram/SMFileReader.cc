@@ -14,7 +14,9 @@
 #include <QStringList>
 #include <QFileInfo>
 #include <QDir>
+#include <QTime>
 
+//Represents a list of tags in the most likely order
 const char* SMFileReader::tagTypeNames[] = {
     "TITLE",
     "SUBTITLE",
@@ -29,6 +31,7 @@ const char* SMFileReader::tagTypeNames[] = {
     "CDTITLE",
     "MUSIC",
     "OFFSET",
+    "GENRE",
     "SAMPLESTART",
     "SAMPLELENGTH",
     "SELECTABLE",
@@ -37,72 +40,105 @@ const char* SMFileReader::tagTypeNames[] = {
     "BGCHANGES"
 };
 
-
 SMFileReader::SMFileReader(QString location) {
     fileName = new QString(location);
     songFieldData = new QList<QString>;
     notesData = new QList<NotesData>;
     fieldIndexes = new QList<int>;
     noteIndexes = new QList<int>;
+    tagTypeNum = 19;
     findTags();
 }
 
 //Preparses the meta data, notes meta data, and notes location
 void SMFileReader::findTags() {
+    //TODO Handle extremly large files
     //Open our file
     QFile file(*fileName);
     file.open(QIODevice::ReadOnly);
     //Use a textstream for easy parsing in Unicode
     textfile = new QTextStream(&file);
     textfile->setAutoDetectUnicode(true);
+
     //Find all the header info
-    for(int i = 0;i<sizeof(tagTypeNames);i++){
-	//Must find the entire data field
-	QRegExp matcher = QRegExp(QString("#")+QString(tagTypeNames[i])+":.*;");
-	QString s;
-	bool found = false;
-	while(!found){
-	    s+=textfile->readLine();
-	    int tint = s.indexOf(matcher,0);
-	    if(tint>=0){
-		//Add our line
-		songFieldData->append(s);
-		qDebug() << s;
-		fieldIndexes->append(textfile->pos()+tint); //Necessary?
-		qDebug() << fieldIndexes->last();
-		found = true;
-	    }
+    QString headertxt;
+    bool found = false;
+    int tint = 0;
+    QString s;
+    QRegExp noteMatcher(QString("#")+QString("NOTES")+":");
+    QRegExp commentsMatcher(QString("//.*"));
+    //Grabs all the header info before it hits NOTES tag
+    while(!found&&!textfile->atEnd()) {
+	s = textfile->readLine();
+	tint = s.indexOf(noteMatcher,0);
+	if(tint>=0) {
+	    //qDebug() << "found notes";
+	    found = true;
+	} else {
+	    //Remove Comments
+	    s.remove(commentsMatcher); //TODO Perfomance issue?
+	    //qDebug() << "read in line" << s;
+	    headertxt+=s;
 	}
-    }
-    //Find the notes locations and load the NotesData objects
-    QRegExp matcher = QRegExp(QString("#")+QString("NOTES")+":");
-    while(!textfile->atEnd()){
-	QString s(textfile->readLine());
-	int tint = s.indexOf(matcher,0);
-	if(tint>=0){
-	    //Found our index
-	    noteIndexes->append(textfile->pos()+tint);
-	    qDebug() << noteIndexes->last();
+    } //Works in theory
+    //qDebug() << headertxt;
+
+    //Only makes sense to parse anything if notes exist
+    if(found){ //If we found something then we have notes
+	//Find the notes locations and load the NotesData objects
+	//qDebug() << "Beginning Note find";
+	//We are guaranteed one set of notes
+	noteIndexes->append(tint+textfile->pos());
+	//qDebug() << tint << " + " << textfile->pos() << " = " << noteIndexes
+		//->last();
+	//Parse NotesData
+	//TODO Skipping Header info for now
+	//TODO Hard coded
+	for(int i=0;i<5;i++){
+	    textfile->readLine();
+	}
+
+	//Continue to find notes till we end the file
+	while(!textfile->atEnd()){ //TODO Throw an error here?
 	    s = textfile->readLine();
-	    //Clean space FIXME for whitespace
-	    while(s.isEmpty()){
-		s = textfile->readLine();
+	    tint = s.indexOf(noteMatcher,0);
+	    if(tint>=0){ //Found #Note: tag
+		noteIndexes->append(tint+textfile->pos());
+		//qDebug() << tint << " + " << textfile->pos() << " = "
+			//<< noteIndexes->last();
 	    }
-	    //TODO Generalize and implement: Placeholder for NotesData creation
-	    for(int i=0;i<4;i++){
-		textfile->readLine();
-	    }
-	    notesData->append(NotesData());
+	    //Find Find Info
+	};
+
+	QList<QRegExp>* regexps = new QList<QRegExp>();
+	//Load tags into RegExp
+	for(int i = 0;i<tagTypeNum;i++){
+	    regexps->append(QRegExp(QString("#")+QString(tagTypeNames[i])+
+				    ":[^;]*;"));
 	}
+	QListIterator<QRegExp> itr(*regexps);
+	QRegExp tagRipper(QString("#")+".*:");
+	while(itr.hasNext()){
+	    const QRegExp& rexp = itr.next();
+	    rexp.indexIn(headertxt);
+	    QString tfield = rexp.cap();
+	    tfield.remove(tagRipper); //Remove #TAG:
+	    tfield.remove(tfield.length()-1,1); //Remove ";"
+	    // << tfield << " Captured";
+	    songFieldData->append(tfield);
+	}
+    } else {
+	//TODO Throw an error
+	qDebug() << "---------------------------------------------------";
+	qDebug() << "ERROR WITH FILE - NO NOTES PRESENT";
+	qDebug() << "---------------------------------------------------";
     }
 }
 
-
-QString SMFileReader::getBackGroundFile() {
-
-}
+QString SMFileReader::getBackGroundFile() {}
 QList<QPair<double,QString>*>* SMFileReader::getBGAnimations(int difficulty){}
-QList<QPair<double,QString>*>* SMFileReader::getMenuBGAnimations(int difficulty){}
+QList<QPair<double,QString>*>* SMFileReader::getMenuBGAnimations(int difficulty)
+{}
 bool SMFileReader::isMenuUsingBGAnimations(int difficulty){}
 bool SMFileReader::isUsingBGAnimations(int difficulty){}
 QString SMFileReader::getCredits(){}
@@ -119,7 +155,7 @@ double SMFileReader::getSongSampleStart(){}
 bool SMFileReader::getSongSelectable(){}
 QTextStream SMFileReader::getSongSubtitles(){}
 QString SMFileReader::getSongTitle(){}
-QList<double>* SMFileReader::getStops(int difficulty){}
+QList<QPair<double,double>*>* SMFileReader::getStops(int difficulty){}
 QString SMFileReader::getSubtitle(){}
 QString SMFileReader::getTransliteration(int type){}
 QList<double>* SMFileReader::getVectorInfoField(const char* field,
@@ -168,14 +204,10 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
     for(int i=0;i<=difficulty;i++) {
 	bool found = false;
 	while(!found) {
-	    //textfile.readLine();
-	    //file.readLine(somedata,10000);
-	    //qDebug() << "read in line";
-	    QString ts(/*somedata*/textfile.readLine());
+	    QString ts(textfile.readLine());
 	    qDebug() << "ts: " << ts;
 	    if(ts.startsWith("#NOTES:")) {
 		found = true;
-		//qDebug() << "found diff";
 		lastString = ts;
 	    }
 	}
@@ -223,7 +255,8 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
 }
 
 //There happens to be only a single bpm despite the difficulty for .sm files
-QList<double>* SMFileReader::getBPM(int difficulty) {
+QList<QPair<double,double>*>* SMFileReader::getBPM(int difficulty) {
+    QList<QPair<double,double>*>* stops;
     QList<double>* data = new QList<double>;
     QFile file(*fileName);
     file.open(QIODevice::ReadOnly);
@@ -273,5 +306,5 @@ QList<double>* SMFileReader::getBPM(int difficulty) {
 	}
 	index = ++ti;
     }
-    return data;
+    return stops;
 }

@@ -26,7 +26,7 @@ public:
     bool seek(float time);
     float getTimePosition();
 private:
-	QString* file;
+    QString* file;
     void raise(libvlc_exception_t * ex);
     bool _isPlaying;
     bool _isMuted;

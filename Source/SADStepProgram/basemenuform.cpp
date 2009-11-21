@@ -4,6 +4,7 @@
 #include "songmenu.h"
 #include "gamemenu.h"
 #include "optionmenu.h"
+#include "profilemenu.h"
 #include <QMainWindow>
 #include <QtDebug>
 
@@ -33,9 +34,9 @@ bool BaseMenuForm::mainMenu() {
 
 BaseMenuForm::~BaseMenuForm()
 {
-    qDebug() << "forward";
+    qDebug() << "BaseMenuForm";
     delete m_ui;
-    qDebug() << "twilight";
+    qDebug() << "BaseMenuForm";
 }
 
 void BaseMenuForm::setMenuWidget(StepMenu* menu) {
@@ -135,6 +136,13 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
 	    close();
 	    break;
 	}
+    case 5: {
+            stepMenu = new ProfileMenu(this);
+            setButtonsVisible(false);
+            changeLabel(3);
+            setMenuWidget(stepMenu);
+            break;
+        }
     case 300: { // Run Game
 
 	    qDebug() << "Set To " << ((SongMenu*)stepMenu)->getIndex();
@@ -171,6 +179,11 @@ void BaseMenuForm::changeLabel(int labelChange){
 	    m_ui->label->setText("Song Menu");
 	    break;
 	}
+    case 3: {
+
+            m_ui->label->setText("Log In");
+            break;
+        }
     }
 }
 

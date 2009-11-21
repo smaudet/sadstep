@@ -4,12 +4,11 @@
 #include "StepReader.h"
 #include "SongReader.h"
 
-class SMFileReader : public StepReader, public SongReader
-{
+class SMFileReader : public StepReader, public SongReader {
 public:
     SMFileReader(QString location);
     QList<QList<QList<int>*>*>* getStepData(int difficulty=0);
-    QList<double>* getBPM(int difficulty=0);
+    QList<QPair<double,double>*>* getBPM(int difficulty=0);
     QString getSongFile();
     QString getBackGroundFile();
     QList<QPair<double,QString>*>* getBGAnimations(int difficulty = 0);
@@ -30,7 +29,7 @@ public:
     bool getSongSelectable();
     QTextStream getSongSubtitles();
     QString getSongTitle();
-    QList<double>* getStops(int difficulty=0);
+    QList<QPair<double,double>*>* getStops(int difficulty=0);
     QString getSubtitle();
     QString getTransliteration(int type = 0);
     QList<double>* getVectorInfoField(const char* field,
@@ -41,6 +40,7 @@ protected:
 private:
     void findTags();
     static const char* tagTypeNames[];
+    int tagTypeNum;
     QList<QString>* songFieldData;
     QList<int>* fieldIndexes;
     QList<int>* noteIndexes;
