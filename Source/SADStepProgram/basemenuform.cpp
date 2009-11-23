@@ -28,7 +28,7 @@ void BaseMenuForm::runGame() {
     goToMenu(BaseMenuForm::RUN_GAME);
 }
 
-bool BaseMenuForm::mainMenu() {
+void BaseMenuForm::mainMenu() {
     goToMenu(1);
 }
 

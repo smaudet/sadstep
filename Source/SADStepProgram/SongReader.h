@@ -32,10 +32,11 @@ public:
     virtual QString getSongTitle() = 0;
     virtual QString getSubtitle() = 0;
     virtual QString getTransliteration(int type = 0) = 0;
-    virtual QTextStream getSongSubtitles() = 0;
+    virtual QTextStream* getSongSubtitles() = 0;
     virtual bool getSongSelectable() = 0;
     virtual bool isMenuUsingBGAnimations(int difficutly = 0) = 0;
     virtual bool isUsingBGAnimations(int difficulty = 0) = 0;
+    //Possibly due for removal
     virtual double getSongLength() = 0;
     virtual double getSongSampleLength() = 0;
     virtual double getSongSampleStart() = 0;

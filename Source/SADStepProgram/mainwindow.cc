@@ -64,25 +64,26 @@ void MainWindow::gameLogic() {
 	    runMenu();
 	} else {
 	    qDebug() << itr->peekNext();
-	    lastTimerID = startTimer(itr->next());
+	    lastTimerID = startTimer((int)itr->next());
 	}
     }
 }
 
 void MainWindow::runGame(int selection) {
     canvasOn = true;
-    qDebug() << "help me";
     // implements the instance of song catalogue
     const SongCatalogue* const catalogue = fio->getSongCatalogue();
     // TODO: for now given 0 in future will get value from user selection
     QString location = catalogue->getFileName(selection);
     // gets stepreader for specified file
     StepReader* steps = fio->getStepReader(location);
-    QList<double>* bps /*= steps->getBPM()*/;
+    QList<QPair<double,double>*>* bps /*= steps->getBPM()*/;
     QList<QList<QList<int>*>*>* stepData = steps->getStepData();
+    qDebug() << "got to stepdata";
     //Distance in pixels, time in pixels per minute
     // starts timeline and passes required data to its constructor
     timeline = new Timeline(bps,stepData,0,800,360);
+    qDebug() << "got through timeline";
     int totalGameTime = 1 /*songs.getSongLength()*/;
     timeline->getNotes(stepData);
     score = new Score;
@@ -93,7 +94,7 @@ void MainWindow::runGame(int selection) {
     canvas = new GameCanvas(4,this);
     setCentralWidget(canvas);
     canvas->start();
-    lastTimerID = startTimer(itr->next());
+    lastTimerID = startTimer((int)itr->next());
     //TODO Invoke MediaPlayer instead
     SongReader* song = fio->getSongReader(location);
     mp = new MediaPlayer();

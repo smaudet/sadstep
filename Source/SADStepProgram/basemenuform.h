@@ -36,7 +36,7 @@ public:
     //    void runGame();
     //    void runElse();
 public slots:
-    bool mainMenu();
+    void mainMenu();
     void runGame();
     int getSpeed();
     int getRange();

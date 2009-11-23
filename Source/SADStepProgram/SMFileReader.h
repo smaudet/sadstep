@@ -3,6 +3,7 @@
 
 #include "StepReader.h"
 #include "SongReader.h"
+#include <QMap>
 
 class SMFileReader : public StepReader, public SongReader {
 public:
@@ -27,7 +28,7 @@ public:
     double getSongSampleLength();
     double getSongSampleStart();
     bool getSongSelectable();
-    QTextStream getSongSubtitles();
+    QTextStream* getSongSubtitles();
     QString getSongTitle();
     QList<QPair<double,double>*>* getStops(int difficulty=0);
     QString getSubtitle();
@@ -38,14 +39,15 @@ public:
     QString getDifficultyName(int difficulty);
 protected:
 private:
+    QList<int>* fieldIndexes;
     void findTags();
     static const char* tagTypeNames[];
     int tagTypeNum;
     QList<QString>* songFieldData;
-    QList<int>* fieldIndexes;
     QList<int>* noteIndexes;
     QList<NotesData>* notesData;
     QTextStream* textfile;
+    QString wrapInDir(const QString& filename);
 };
 
 #endif // SMFILEREADER_H

@@ -1,5 +1,9 @@
 #include <QtGui/QApplication>
 #include <QTime>
+#include <QListIterator>
+#include <QTimer>
+#include <QObject>
+#include "GameCanvas.h"
 //#include <QTest>
 //#define QT_NO_DEBUG_OUTPUT
 
@@ -9,20 +13,50 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //    MainWindow w;
-    //    w.show();
-//    Tests* tests = new Tests();
-//    QTest::qExec(tests);
-    FileIOServer* server = new FileIOServer();
-    int elapsedTime = 0;
-    int numFiles = server->getSongCatalogue()->getFileNames()->size();
-    for(int i = 0;i<numFiles;++i){
-	QString oname = server->getSongCatalogue()->getFileName(i);
-	SongReader* songreader = server->getSongReader(oname);
-	StepReader* stepreader = server->getStepReader(oname);
-	elapsedTime+=QTime::currentTime().msec();
-    }
-    qDebug() << elapsedTime;
-    qDebug() << elapsedTime/numFiles;
+        MainWindow w;
+        w.show();
+
+//Debug Code for FileIOServer
+//    FileIOServer* server = new FileIOServer();
+//    int elapsedTime = 0;
+//    QTime t;
+//    int numFiles = server->getSongCatalogue()->getFileNames()->size();
+//    for(int i = 0;i<numFiles;++i){
+//        t.restart();
+//        QString oname = server->getSongCatalogue()->getFileName(i);
+//        SongReader* songreader = server->getSongReader(oname);
+//        StepReader* stepreader = server->getStepReader(oname);
+//        elapsedTime+=t.elapsed();
+//        qDebug() << songreader->getBackGroundFile() << "background title";
+//        qDebug() << songreader->getCredits() << "credits";
+//        qDebug() << songreader->getSongArtist() << "song artist";
+//        qDebug() << songreader->getSongFile() << "song file";
+//        QListIterator<QPair<double,QString>*> itr(*(songreader->
+//                                                    getBGAnimations()));
+//        QPair<double,QString>* pair;
+//        qDebug() << "bg anims:";
+//        while(itr.hasNext()){
+//            pair = itr.next();
+//            qDebug() << pair->first << " " << pair->second;
+//        }
+//        qDebug() << songreader->getSongLyricsPath() << " lyrics path";
+//        qDebug() << songreader->getSongSampleLength() << " song sample length";
+//        qDebug() << songreader->getSongSampleStart() << " sample start";
+//        qDebug() << songreader->getSongSelectable() << " song selectable";
+//        qDebug() << songreader->getSongSubtitles()->readLine() << " lyrics";
+//        qDebug() << songreader->getSongTitle() << " title";
+//        QList<QPair<double,double>*>* bpms = stepreader->getBPM();
+//        QListIterator<QPair<double,double>*> itr2(*bpms);
+//        qDebug() << "bpms:";
+//        while(itr2.hasNext()){
+//            QPair<double,double>* pair = itr2.next();
+//            qDebug() << pair->first << " " << pair->second;
+//        }
+//    }
+//    qDebug() << elapsedTime;
+//    qDebug() << elapsedTime/numFiles;
+
+//Debug Code for GameCanvas
+//    TestTimer ttimer;
     return a.exec();
 }

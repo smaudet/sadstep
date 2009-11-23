@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-10-26T15:32:27
 # -------------------------------------------------
-#QT += testlib
+# QT += testlib
 LIBS += -L"lib" \
     -lvlc
 INCLUDEPATH += "include"
@@ -29,7 +29,8 @@ SOURCES += Arrow.cc \
     startmenu.cc \
     stepmenu.cpp \
     timeline.cpp \
-    mainwindow.cc
+    mainwindow.cc \
+    testtimer.cpp
 HEADERS += Arrow.h \
     ArrowGraphicsSet.h \
     FileIOServer.h \
@@ -52,7 +53,8 @@ HEADERS += Arrow.h \
     startmenu.h \
     stepmenu.h \
     timeline.h \
-    mainwindow.h
+    mainwindow.h \
+    testtimer.h
 FORMS += MMenuForm.ui \
     basemenuform.ui \
     gamemenuform.ui \
