@@ -24,6 +24,7 @@
 #include "score.h"
 #include "ScoreData.h"
 #include "MediaPlayer.h"
+#include "profile.h"
 
 class MainWindow : public QMainWindow
 {
@@ -55,6 +56,7 @@ private:
     ScoreData* scoreData;
     int dTimeHolder;
     Score* score;
+    Profile* profile;
 };
 
 #endif // MAINWINDOW_H

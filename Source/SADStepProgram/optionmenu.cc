@@ -1,4 +1,5 @@
 #include "optionmenu.h"
+#include "profile.h"
 
 OptionMenu::OptionMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form, parent)
 {
@@ -31,6 +32,7 @@ OptionMenu::OptionMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form, paren
     rangeSlider->setTickPosition(QSlider::TicksAbove);
     connect(rangeSlider, SIGNAL(sliderMoved(int)), this, SLOT(rangeChange(int)));
     connect(speedSlider, SIGNAL(sliderMoved(int)), this, SLOT(speedChange(int)));
+     //TODO: get pointer for location of profile class that is created at start of game
 }
 OptionMenu::~OptionMenu() {
     qDebug() << "OptionMenu";
@@ -57,6 +59,7 @@ void OptionMenu::speedChange (int speedChanged)
 {
     speed = speedSlider->value();
     //speed = speedChanged;
+
     qDebug() << speed << " speed";
 }
 void OptionMenu::rangeChange (int rangeChanged)
