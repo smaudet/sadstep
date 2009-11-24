@@ -4,7 +4,6 @@
 #include "GameCanvas.h"
 #include <QtDebug>
 #include <cmath>
-#include <QPair>
 
 Timeline::Timeline()
 {
@@ -59,7 +58,7 @@ Timeline::Timeline()
 
   */
 //TODO Stop functionality, Hold functionality, Mine functionality
-Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*>* arrowData
+Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
 		   ,double songLength, double distance, double speed) {
     qDebug() << "hello";/*
     dt = 0; // used as a counter in deletion proccess (see checkTime function)
@@ -67,13 +66,12 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
     double totalTime = 0;
     double lastDeconTime = 0;
     double errorsize = 0;
-    double beatCounter = 0.0;
-    double measureBPM = 0.0;
+    //double buffer = 0;
 
     creationTime = new QList<double>;
     destructionTime = new QList<double>;
     // double sLength = songLength;
-/*
+
     bool useX = false;
     if (arrowData->size() == BPM->size()) {
 	useX = true;
@@ -84,57 +82,33 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
 	//one, THEN and only then did an error occur.
 	//  TODO Throw Error
     }
-*/
-    for(int x=0;x < arrowData->size();x++){
+
+    for(int x=0;x<arrowData->size();x++){
 	//Eg:
 	//0 0 0 1
 	//1 0 0 2
 	//0 0 1 0
 	//0 0 0 3
 	//Does not ignore zero vectors since they are still counted in the game
-        QList<QList<int>* >* measureData = arrowData->at(x);
-        for(int w = 0; w < measureData->size(); w++)
-        {
-            measureBPM = BPM->at(0)->second;//loads in the initial BPM
-            double measureSize = measureData->size();
-            double divisionFactor = measureSize/4; /*for 8/4 time we'd get 2, 4/4 would be 1, so we have
-                                                     the factor of division*/
-            beatCounter += 1/divisionFactor; //this keeps track of how many beats have occured. it divides
-                                             //each note into a beat, so we will have
+	QList<QList<int>*>* measureData = arrowData->at(x);
+	for(int w = 0; w < measureData->size(); w++) {
+	    double measureBPM = BPM->at((useX ? x : 0)); //Use x or 0
+	    qDebug() << measureBPM << "bpm";
 
-            qDebug() << beatCounter << "is the beat";
-
-            for(int y = 1; y < BPM->size(); y++)//this is ignored if there is only one BPM
-            {
-                QPair<double,double>* bpmInfo = BPM->at(y);
-                if (beatCounter > bpmInfo->first)//used if multiple BPMs exist
-                {
-                    measureBPM = BPM->at(y+1)->second; //this reads in the next bpm. It then increments y,
-                                                       //the exits the loop
-                }
-                else
-                {break;}//used most of the time. happens when beatCounter isn't at the BPM change yet.
-            }
-
-            /*
-              need to do: create a vector of times when the bpm changes for gamecanvas
-                          need to calculate each time the BPM changes the times of each
-                             of the 6 notes after it, so their decon and constr. times
-                             can be calculate
-                          need to add in old code that reads indiv. notes to it can
-                             decide if it is a hold note or not
-            */
-            qDebug() << measureBPM << "bpm";
 	    //Find the speed of a quarter note
 	    measureBPM/=60; //Beats per second
 	    measureBPM=1/measureBPM; //Seconds per beat
 	    measureBPM*=1000; //milliseconds per beat
-
 	    qDebug() << measureBPM << "Milliseconds per beat";
+
 	    //We now have our time for a quarter note. Next, find the number of
 	    //notes in a particular measure and calculate the proper division
-            //factor
+	    //factor
 
+	    double measureSize = measureData->size();
+	    double divisionFactor = measureSize/4; /*for 8/4 time we'd get 2,
+						     4/4 would be 1, so we have
+						     the factor of division*/
 	    double noteTime = measureBPM/divisionFactor;
 
 	    //Now we have the time at which the note ought to deconstruct.
@@ -146,20 +120,14 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
 	    //The speed (arbitrary) at which it is traveling
 	    //creationTime = deconstructionTime - distance/speed
 
-            //may need to add if-then statement here to account for 0000's so
-            //game isnt creating times for nothing
-
 	    double deconTime = noteTime+totalTime;
 	    qDebug() << deconTime << " decon";
 	    this->destructionTime->append(deconTime);
 	    totalTime+=noteTime; //Add in note to totalTime
-
-            double arrowSpeed = distance*(1/noteTime);
-
-            this->creationTime->append((deconTime-lastDeconTime)-(distance/arrowSpeed));
+	    this->creationTime->append((deconTime-lastDeconTime)-(distance/speed));
 	    qDebug() << ((deconTime-lastDeconTime)-(distance/speed)) << " create";
 	    lastDeconTime = deconTime;
-            errorsize+=creationTime->last()-std::floor(creationTime->last());
+	    errorsize+=creationTime->last()-std::floor(creationTime->last());
 	}
     }
     qDebug() << "error time" << errorsize;

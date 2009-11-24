@@ -28,11 +28,11 @@ SongCatalogue::SongCatalogue()
 	}
     }
     //TODO Check for robustness
-    //TODO Support multiple extenstions
-    this->list = new QList<QString>(stepfiles->filter(QRegExp("\\.sm$")));
+    this->list = new QList<QString>(stepfiles->filter(QRegExp("\\.sm")));
 }
 
 QString SongCatalogue::getFileName(int index) const {
+    qDebug() << "zombies";
     return list->at(index);
 }
 

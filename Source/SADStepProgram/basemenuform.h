@@ -36,7 +36,7 @@ public:
     //    void runGame();
     //    void runElse();
 public slots:
-    void mainMenu();
+    bool mainMenu();
     void runGame();
     int getSpeed();
     int getRange();
@@ -46,10 +46,12 @@ signals:
 protected:
     void changeEvent(QEvent *e);
     void closeEvent(QCloseEvent* e);
+
 private:
     bool showButtonWindow;
     bool showOK;
     bool showCancel;
+    bool optionMenu; // used for if creating options menu
     QFile* sui;
     StepMenu* stepMenu;
     Ui::BaseMenuForm *m_ui;

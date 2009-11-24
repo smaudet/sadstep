@@ -49,20 +49,15 @@ public:
     int getFps() const;
     GraphicsTimer* getTimer() const;
     void start();
-    void updateArrowsSpeed(double speed);
 public slots:
     void updateArrows();
     void showScoreText(QString txt);
-    void showComboText(QString txt);
-    //Parameters may change in future
-    void setScoreNumber(double score);
 protected:
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
     //friend void GameCanvasThread::run();
     int fps;
-    double arrowSpeed;
     QImage getBackgroundImage();
     ArrowGraphicsSet* graphics;
     //An N-dimensional array of lanes of Arrows

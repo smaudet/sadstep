@@ -1,14 +1,4 @@
-/*
-  This class is simply a place-holder for game, the class that will end up
-  in control of most parts of the game.
 
-  It also provides the basic scheme and proof of concept for interaction between
-  the user and program through a device such as a keyboard, though does not
-  offer support for other devices at this time.
-
-	Author: Sebastian Audet
-
-  */
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -24,6 +14,7 @@
 #include "score.h"
 #include "ScoreData.h"
 #include "MediaPlayer.h"
+#include "songmenu.h"
 
 class MainWindow : public QMainWindow
 {
@@ -55,6 +46,7 @@ private:
     ScoreData* scoreData;
     int dTimeHolder;
     Score* score;
+    bool firstRun;
 };
 
 #endif // MAINWINDOW_H

@@ -8,6 +8,10 @@
 #include "stepmenu.h"
 #include "SongCatalogue.h"
 #include <QtDebug>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QKeyEvent>
+#include "MediaPlayer.h"
 
 class SongMenu: public StepMenu
 {
@@ -16,16 +20,25 @@ public:
     SongMenu(BaseMenuForm* form, QWidget* parent = 0);
     ~SongMenu();
     SongCatalogue* list;
-    const int getIndex();
-public slots:
-    void rowChanged2(int billybob); // yes its name is billybob deal with it
+    int getIndex();
+
+
+//public slots:
+  //  void rowChanged2(int billybob); // yes its name is billybob deal with it
     // (From: Scott)
 private:
-    QFile* sui;
-    QUiLoader* loader;
-    QWidget* widget;
-    QListWidget* listWidget;
+//    QFile* sui;
+//    QUiLoader* loader;
+//    QWidget* widget;
+//    QListWidget* listWidget;
     int songNumber;
+    int x;
+    bool songMenuON;
+
+protected:
+    void paintEvent(QPaintEvent* e);
+    void keyPressEvent(QKeyEvent* e);
+    void playMusic(QString smName);
 };
 
 #endif // SONGMENU_H

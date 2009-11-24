@@ -1,68 +1,63 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-10-26T15:32:27
 # -------------------------------------------------
-# QT += testlib
-LIBS += -L"lib" \
-    -lvlc
+#QT += testlib
+LIBS += -L"lib"
+LIBS += -lvlc
 INCLUDEPATH += "include"
 CONFIG += uitools
 TARGET = SADStepProgram
 TEMPLATE = app
-SOURCES += Arrow.cc \
-    ArrowGraphicsSet.cpp \
-    FileIOServer.cc \
-    GameCanvas.cc \
-    GraphicsTimer.cc \
-    MediaPlayer.cc \
-    NotesData.cc \
-    SMFileReader.cc \
-    ScoreData.cpp \
-    SongCatalogue.cc \
-    Tests.cc \
-    basemenuform.cpp \
-    gamemenu.cc \
-    main.cc \
-    optionmenu.cc \
-    profilemenu.cpp \
-    score.cpp \
-    songmenu.cc \
-    startmenu.cc \
+SOURCES += mainwindow.cc \
     stepmenu.cpp \
+    startmenu.cc \
+    songmenu.cc \
+    optionmenu.cc \
+    GraphicsTimer.cc \
+    gamemenu.cc \
+    GameCanvas.cc \
+    basemenuform.cpp \
+    ArrowGraphicsSet.cpp \
+    Arrow.cc \
     timeline.cpp \
-    mainwindow.cc \
-    testtimer.cpp
-HEADERS += Arrow.h \
-    ArrowGraphicsSet.h \
-    FileIOServer.h \
-    GameCanvas.h \
-    GraphicsTimer.h \
-    MediaPlayer.h \
-    NotesData.h \
-    SMFileReader.h \
-    ScoreData.h \
-    SongCatalogue.h \
-    SongReader.h \
-    StepReader.h \
-    Tests.h \
-    basemenuform.h \
-    gamemenu.h \
-    optionmenu.h \
-    profilemenu.h \
-    score.h \
-    songmenu.h \
-    startmenu.h \
+    score.cpp \
+    ScoreData.cpp \
+    FileIOServer.cc \
+    SongCatalogue.cc \
+    SMFileReader.cc \
+    MediaPlayer.cc \
+    Tests.cc \
+    main.cc \
+    NotesData.cc
+HEADERS += mainwindow.h \
     stepmenu.h \
+    startmenu.h \
+    songmenu.h \
+    optionmenu.h \
+    GraphicsTimer.h \
+    gamemenu.h \
+    GameCanvas.h \
+    basemenuform.h \
+    ArrowGraphicsSet.h \
+    Arrow.h \
     timeline.h \
-    mainwindow.h \
-    testtimer.h
-FORMS += MMenuForm.ui \
-    basemenuform.ui \
-    gamemenuform.ui \
+    score.h \
+    ScoreData.h \
+    FileIOServer.h \
+    SongReader.h \
+    SongCatalogue.h \
+    SMFileReader.h \
+    StepReader.h \
+    MediaPlayer.h \
+    Tests.h \
+    NotesData.h
+FORMS += songMenuForm.ui \
     optionmenu.ui \
-    profileMenuForm.ui \
-    stepmenu.ui \
-    songMenuForm.ui
-RESOURCES += Arrow.qrc \
+    MMenuForm.ui \
+    gamemenuform.ui \
+    basemenuform.ui \
+    stepmenu.ui
+RESOURCES += MenuForms.qrc \
     ButtonsLib.qrc \
-    MenuForms.qrc
+    Arrow.qrc
 OTHER_FILES += bugs.txt

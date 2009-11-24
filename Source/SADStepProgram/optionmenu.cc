@@ -6,19 +6,19 @@ OptionMenu::OptionMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form, paren
     range = 500;
     sui = new QFile(":/menus/optionmenu.ui");
     loader = new QUiLoader();
-    widget = new QWidget();
-    loader->load(sui,widget);
-    cancelBtn = widget->findChild<QPushButton*>("cancelBtn");
+    //widget = new QWidget();
+    loader->load(sui,this);
+    cancelBtn = this->findChild<QPushButton*>("cancelBtn");
     connect(cancelBtn, SIGNAL(clicked()), this, SLOT(cancel()));
-    this->setWidgetRep(widget->findChild<QWidget*>("Form"));
+    this->setWidgetRep(this->findChild<QWidget*>("Form"));
 
-    speedSlider = widget->findChild<QSlider*>("horizontalSlider");
+    speedSlider = this->findChild<QSlider*>("horizontalSlider");
 
-    rangeSlider = widget->findChild<QSlider*>("horizontalSlider_2");
-    easy = widget->findChild<QRadioButton*>("easy");
-    normal = widget->findChild<QRadioButton*>("normal");
-    hard = widget->findChild<QRadioButton*>("hard");
-    expert = widget->findChild<QRadioButton*>("expert");
+    rangeSlider = this->findChild<QSlider*>("horizontalSlider_2");
+    easy = this->findChild<QRadioButton*>("easy");
+    normal = this->findChild<QRadioButton*>("normal");
+    hard = this->findChild<QRadioButton*>("hard");
+    expert = this->findChild<QRadioButton*>("expert");
     //qDebug() << parent->height() << " at Options Menu";
 
     speedSlider->setMaximum(5000);
@@ -37,7 +37,7 @@ OptionMenu::~OptionMenu() {
     delete sui;
     delete loader;
     delete cancelBtn;
-    delete widget;
+    //delete widget;
     delete speedSlider;
     delete rangeSlider;
     delete expert;

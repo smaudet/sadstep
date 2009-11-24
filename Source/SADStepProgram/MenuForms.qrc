@@ -4,6 +4,5 @@
         <file alias="mainmenu.ui" >MMenuForm.ui</file>
         <file alias="gamemenu.ui" >gamemenuform.ui</file>
         <file alias="optionmenu.ui" >optionmenu.ui</file>
-        <file alias="profilemenu.ui" >profileMenuForm.ui</file>
     </qresource>
 </RCC>

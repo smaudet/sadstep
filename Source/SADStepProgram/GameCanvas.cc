@@ -4,7 +4,6 @@
 #include <QtDebug>
 #include <QPaintEngine>
 #include <QFont>
-#include <cmath>
 
 GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
 	QWidget(parent)
@@ -17,7 +16,6 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
 	arrows->append(new QList<Arrow*>());
     }
     timer = new GraphicsTimer(fps);
-    //TODO Performance boost?
     connect(timer,SIGNAL(timeout()),this,SLOT(updateArrows()));
     graphics = new ArrowGraphicsSet();
     laneSize=this->width()/lanes;
@@ -55,11 +53,9 @@ GameCanvas::~GameCanvas() {
     qDebug() << ":)";
 }
 
-//Speed = distance of screen / seconds
 bool GameCanvas::spawnArrow(double speed,int lane) {
-    arrowSpeed = speed;
     if(lane>0&&lane<=lane){
-        arrows->at(lane-1)->append(new Arrow(type));
+	arrows->at(lane-1)->append(new Arrow(speed,type));
 	return true;
     }
     return false;
@@ -125,7 +121,7 @@ void GameCanvas::paintEvent(QPaintEvent* e){
 	    Arrow* arrow = itr2.next();
 	    const QImage* timg = graphics->getArrowGraphic(arrow->getType(),
 							   laneNum);
-            int yindent = (int)((double)arrow->getPercentLoc()/100)*this->height();
+	    int yindent = ((double)arrow->getPercentLoc()/100)*this->height();
 	    p->drawImage((laneNum-1)*laneSize/2+this->width()/4,this->height()
 			 -yindent,*timg);
 	}
@@ -153,11 +149,7 @@ void GameCanvas::updateArrows() {
 	    if(loc>100) {
 		destroyArrow(lane);
 	    } else {
-                //distance = rate * time
-                //time = (fps)^-1
-                double distanceChange = arrowSpeed*std::pow(((double)fps),-1);
-                int percentageChange = (int)distanceChange/getDistance()*100;
-                arrow->giveLocation(loc+percentageChange);
+		arrow->giveLocation(loc+1);
 	    }
 	}
 	++lane;
@@ -175,38 +167,32 @@ GraphicsTimer* GameCanvas::getTimer() const {
 
 void GameCanvas::keyPressEvent(QKeyEvent* e){
     if(e->key()==Qt::Key_Up){
+        e->ignore();
 	//qDebug() << "1";
 	spawnArrow(1,1);
 	return;
     }
     if(e->key()==Qt::Key_Down){
-	//qDebug() << "2";
+        qDebug() << "2";
+        e->ignore();
+        qDebug() << "2 not ignoring";
 	spawnArrow(1,3);
 	return;
     }
     if(e->key()==Qt::Key_Left){
 	//qDebug() << "3";
+        e->ignore();
 	spawnArrow(1,2);
 	return;
     }
     if(e->key()==Qt::Key_Right){
 	//qDebug() << "4";
+        e->ignore();
 	spawnArrow(1,4);
 	return;
     }
     if(e->key()==Qt::Key_Escape){
-	parentWidget()->close();
+        e->ignore();
+        parentWidget()->close();
     }
-}
-
-void GameCanvas::showComboText(QString txt) {
-    //TODO Does nothing
-}
-
-void GameCanvas::setScoreNumber(double score) {
-    //TODO Does nothing
-}
-
-void GameCanvas::updateArrowsSpeed(double speed) {
-    arrowSpeed = speed;
 }

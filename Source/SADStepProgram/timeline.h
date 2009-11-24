@@ -1,13 +1,12 @@
 #ifndef TIMELINE_H
 #define TIMELINE_H
 #include <QList>
-#include <QPair>
 
 class Timeline
 {
 public:
     Timeline();
-    Timeline::Timeline(QList<QPair<double,double>*>* BPM, QList<QList<QList<int>*>*>* arrowData
+    Timeline::Timeline(QList<double>* BPM, QList<QList<QList<int>*>*>* arrowData
 		       , double songLength, double distance, double speed);
     int Timeline::getArrowSpeed();
     int Timeline::timeDisplacement(int pushTimer);
@@ -32,7 +31,6 @@ private:
     int scorePushTime;
     int displacement;
     int timelineDistance;
-
 
 };
 

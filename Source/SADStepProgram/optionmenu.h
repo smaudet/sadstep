@@ -34,7 +34,7 @@ private:
     QRadioButton* expert;
     QFile* sui;
     QUiLoader* loader;
-    QWidget* widget;
+    //QWidget* widget;
     QSlider* speedSlider;
     QSlider* rangeSlider;
     int speed;
