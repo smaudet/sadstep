@@ -1,5 +1,6 @@
 #include "MediaPlayer.h"
 #include <QFile>
+#include <QtDebug>
 
 MediaPlayer::MediaPlayer() {
     //preparation of the vlc command
@@ -18,11 +19,11 @@ MediaPlayer::MediaPlayer() {
     //create a new libvlc instance
     _vlcinstance=libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]),vlc_args,
 			    &_vlcexcep);
-    //raise (&_vlcexcep);
+    raise (&_vlcexcep);
 
     // Create a media player playing environement
     _mp = libvlc_media_player_new (_vlcinstance, &_vlcexcep);
-    //raise (&_vlcexcep);
+    raise (&_vlcexcep);
 }
 
 MediaPlayer::~MediaPlayer() {
@@ -33,7 +34,7 @@ MediaPlayer::~MediaPlayer() {
     libvlc_media_player_release (_mp);
 
     libvlc_release (_vlcinstance);
-    //raise (&_vlcexcep);
+    raise (&_vlcexcep);
 }
 
 MediaPlayer::MediaPlayer(QString file) {
@@ -58,8 +59,8 @@ bool MediaPlayer::isMuted() {
 
 void MediaPlayer::pause() {
     if(libvlc_media_player_can_pause(_mp, &_vlcexcep)) {
-        libvlc_media_player_pause(_mp,&_vlcexcep);
-        _isPlaying = false;
+	libvlc_media_player_pause(_mp,&_vlcexcep);
+	_isPlaying = false;
     }
 }
 
@@ -74,54 +75,54 @@ void MediaPlayer::stop() {
 
 bool MediaPlayer::seek(float time) {
     if(libvlc_media_player_is_seekable(_mp,&_vlcexcep)) {
-        libvlc_media_player_set_position(_mp,time,&_vlcexcep);
-        return true;
+	libvlc_media_player_set_position(_mp,time,&_vlcexcep);
+	return true;
     }
     return false;
 }
 
 float MediaPlayer::getTimePosition() {
     if(_isPlaying){
-        return libvlc_media_player_get_position(_mp,&_vlcexcep);
+	return libvlc_media_player_get_position(_mp,&_vlcexcep);
     } else {
-        return 0;
+	return 0;
     }
 }
 
 void MediaPlayer::play() {
     if(libvlc_media_player_will_play(_mp,&_vlcexcep)){
-        libvlc_media_player_play(_mp,&_vlcexcep);
-        _isPlaying = true;
+	libvlc_media_player_play(_mp,&_vlcexcep);
+	_isPlaying = true;
     }
 }
 
 bool MediaPlayer::loadFile(QString file) {
     if(QFile(file).exists()){
-        stop();
-        this->file = new QString(file);
-        // TODO not final behavior
-        return true;
+	stop();
+	this->file = new QString(file);
+	// TODO not final behavior
+	return true;
     } else {
-        return false;
+	return false;
     }
 }
 
 bool MediaPlayer::playFile(QString file) {
-    if(libvlc_media_player_will_play(_mp, &_vlcexcep)){
+   // if(libvlc_media_player_will_play(_mp, &_vlcexcep)){
     /* Create a new LibVLC media descriptor */
     _m = libvlc_media_new (_vlcinstance, file.toAscii(), &_vlcexcep);
-    //raise(&_vlcexcep);
+    raise(&_vlcexcep);
     libvlc_media_player_set_media (_mp, _m, &_vlcexcep);
-    //raise(&_vlcexcep);
+    raise(&_vlcexcep);
     /* Play */
     libvlc_media_player_play (_mp, &_vlcexcep );
-    //raise(&_vlcexcep);
-        _isPlaying=true;
+    raise(&_vlcexcep);
+	_isPlaying=true;
 
-        return true;
-    } else {
-        return false;
-    }
+	return true;
+//    } else {
+//	return false;
+//    }
 }
 void MediaPlayer::raise(libvlc_exception_t * ex)
 {

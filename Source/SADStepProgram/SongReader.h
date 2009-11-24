@@ -23,7 +23,7 @@ public:
     virtual QList<QPair<double,QString>*>* getBGAnimations(int difficulty=0)=0;
     //FIXME Decide whether or not we have just int or double
     virtual QList<QPair<double,QString>*>* getMenuBGAnimations(int difficulty=0)
-            = 0;
+	    = 0;
     virtual QString getBackGroundFile() = 0;
     virtual QString getCredits() = 0;
     virtual QString getSongArtist() = 0;
