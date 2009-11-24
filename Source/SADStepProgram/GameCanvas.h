@@ -36,8 +36,10 @@ public:
     //In pixels
     int getDistance();
     bool spawnArrow(double speed, int lane);
+    bool spawnHoldArrow(double speed,double distance, int lane);
     bool arrowPresent(int lane);
     bool destroyArrow(int lane);
+    bool destroyHoldArrow(int lane);
     bool blankArrow(int lane);
     //Unsure of exactly what these two functions will be responsible for
     // - use with caution or don't use at all, as the functionality may
@@ -67,6 +69,7 @@ private:
     ArrowGraphicsSet* graphics;
     //An N-dimensional array of lanes of Arrows
     QList<QList<Arrow*>*>* arrows;
+    QList<QList<Arrow*>*>* holdArrows;
     GraphicsTimer* timer;
     int type;
     int lanes;
@@ -76,6 +79,7 @@ private:
     int arrowLaneSize;
     const QImage* images[9];
     const QImage* images2[9];
+    const QImage* images3[9];
 };
 
 #endif // GAMECANVAS_H

@@ -4,6 +4,7 @@
 #include "StepReader.h"
 #include "SongReader.h"
 #include "SongCatalogue.h"
+#include "Skin.h"
 #include <QString>
 #include <QMap>
 
@@ -14,6 +15,7 @@ public:
     const SongCatalogue* const getSongCatalogue();
     StepReader* getStepReader(QString& location);
     SongReader* getSongReader(QString& location);
+    QList<Skin>* getSkins();
 private:
     QMap<QString,SongReader*> songReaders;
     QMap<QString,StepReader*> stepReaders;

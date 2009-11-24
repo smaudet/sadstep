@@ -31,7 +31,7 @@ void TestTimer::timerEvent(QTimerEvent* e){
     }
     case 1: {
 	spawnNum++;
-	canvas->spawnArrow(400,2);
+	canvas->spawnHoldArrow(400,600,2);
 	this->killTimer(e->timerId());
 	break;
     }

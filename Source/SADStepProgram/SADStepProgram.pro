@@ -31,7 +31,8 @@ SOURCES += mainwindow.cc \
     NotesData.cc \
     testtimer.cpp \
     profilemenu.cpp \
-    profile.cpp
+    profile.cpp \
+    Skin.cc
 HEADERS += mainwindow.h \
     stepmenu.h \
     startmenu.h \
@@ -56,7 +57,8 @@ HEADERS += mainwindow.h \
     NotesData.h \
     testtimer.h \
     profilemenu.h \
-    profile.h
+    profile.h \
+    Skin.h
 FORMS += songMenuForm.ui \
     optionmenu.ui \
     MMenuForm.ui \
