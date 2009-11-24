@@ -38,7 +38,7 @@ void SongMenu::paintEvent(QPaintEvent* e)
 
     //TODO: MAKE IT SO PROGRAM DOES NOT CRASH WHEN PROGRAM TRIES TO GO BEYOND BOUNDS OF QLIST list
     SongCatalogue* const cata = SongCatalogue::getInstance();
-    const QList<QString>* list = cata->getFileNames();
+    list = cata->getFileNames();
     QPainter* p = new QPainter(this);
     p->setPen(Qt::blue);
     p->setBrush(Qt::blue);
@@ -138,7 +138,8 @@ void SongMenu::keyPressEvent(QKeyEvent* e)
         qDebug()<< "Did you know L,";
         songNumber = x+2;
         qDebug()<< "Gods of death";
-        form->goToMenu((0),false);
+        qDebug()<< (list->at(x+2)) << " song given";
+        form->goToMenu(300);
         qDebug()<< "like apples";
 
 

@@ -16,11 +16,17 @@
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent) {
     showFullScreen();
+    qDebug() << "after full";
     canvasOn = false;
+     qDebug() << " cabvas false";
     needsToCloseGame = false;
+     qDebug() << " close false";
     scoreData = new ScoreData(); //class not implemented atm
+     qDebug() << " after score";
     runMenu();
+     qDebug() << " after run menu";
     fio = new FileIOServer(); // starts file IO server
+     qDebug() << "after I/O";
     x = 0;
     dTimeHolder = 0; //holds calculated value what time key should be pressed
     firstRun = true;

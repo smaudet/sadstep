@@ -1,4 +1,5 @@
 #include <QtGui/QApplication>
+#include <QtDebug>
 //#include <QTest>
 //#define QT_NO_DEBUG_OUTPUT
 
@@ -7,7 +8,9 @@
 
 int main(int argc, char *argv[])
 {
+    qDebug() << "start 0";
     QApplication a(argc, argv);
+    qDebug() << "start";
     MainWindow w;
    w.show();
         //Tests* tests = new Tests();

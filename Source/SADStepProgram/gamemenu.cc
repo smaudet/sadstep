@@ -7,6 +7,11 @@ GameMenu::GameMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form,parent)
     loader->load(sui,this);
     gameStartBtn = this->findChild<QPushButton*>("gameSelectBtn");
     // gamestartBtn->move((parent->width()/(2)), (parent->height()/(2)));
+    optionBtn = this->findChild<QPushButton*>("optionsSelectBtn");
+    exitBtn = this->findChild<QPushButton*>("exitBtn");
+    connect(gameStartBtn, SIGNAL(clicked()), this, SLOT(menuSelected2()));
+    connect(optionBtn, SIGNAL(clicked()), this, SLOT(menuSelected3()));
+    connect(exitBtn, SIGNAL(clicked()), this, SLOT(menuSelected4())); */
     x = 3;
     this->setWidgetRep(this);
 
@@ -23,6 +28,11 @@ void GameMenu::menuSelected4() {
 }*/
 GameMenu::~GameMenu() {
     qDebug() << "GameStuff";
+    //delete sui;
+    // delete loader;
+    //delete gameStartBtn;
+    // delete optionBtn;
+    // delete exitBtn;
     qDebug() << "GameStuff";
 }
 void GameMenu::paintEvent(QPaintEvent* e)
@@ -95,5 +105,3 @@ void GameMenu::keyPressEvent(QKeyEvent* e)
     }
 
 }
-
-

@@ -19,7 +19,7 @@ class SongMenu: public StepMenu
 public:
     SongMenu(BaseMenuForm* form, QWidget* parent = 0);
     ~SongMenu();
-    SongCatalogue* list;
+    const QList <QString>* list;
     int getIndex();
 
 
