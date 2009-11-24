@@ -8,17 +8,34 @@ TestTimer::TestTimer(QWidget* parent):QMainWindow(parent) {
     showFullScreen();
     canvas = new GameCanvas(4,this);
     setCentralWidget(canvas);
-    this->startTimer(500);
-    this->startTimer(800);
+    this->startTimer(7000);
+    this->startTimer(3000);
     MediaPlayer* p = new MediaPlayer;
     FileIOServer* fio = new FileIOServer();
     const SongCatalogue* sc = fio->getSongCatalogue();
     QString loc = sc->getFileName(0);
     qDebug() << fio->getSongReader(loc)->getSongFile();
-    p->playFile(fio->getSongReader(loc)->getSongFile());
+    canvas->start();
+    spawnNum=0;
+    //p->playFile(fio->getSongReader(loc)->getSongFile());
 }
 
 void TestTimer::timerEvent(QTimerEvent* e){
     qDebug() << e->timerId() << "timer";
-    canvas->spawnArrow(18,1);
+    switch(spawnNum) {
+    case 0: {
+	spawnNum++;
+	canvas->spawnArrow(200,1);
+	this->killTimer(e->timerId());
+	break;
+    }
+    case 1: {
+	spawnNum++;
+	canvas->spawnArrow(400,2);
+	this->killTimer(e->timerId());
+	break;
+    }
+    default: {
+    }
+    }
 }

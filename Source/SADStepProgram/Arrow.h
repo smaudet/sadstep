@@ -6,16 +6,15 @@
 class Arrow
 {
 public:
-    Arrow(ARROW_SPEED speed, int arrowType);
+    Arrow(int arrowType);
     Arrow(const Arrow&);
     const int getType() const;
-    const int getPercentLoc() const;
-    const ARROW_SPEED getSpeed() const;
-    void giveLocation(int percentloc);
+    const double getPercentLoc() const;
+    void giveLocation(double percentloc);
 private:
     ARROW_SPEED speed;
     int type;
-    int ploc;
+    double ploc;
 };
 
 #endif // ARROW_H

@@ -14,6 +14,7 @@ protected:
     void timerEvent(QTimerEvent* e);
 private:
     GameCanvas* canvas;
+    int spawnNum;
 };
 
 #endif // TESTTIMER_H
