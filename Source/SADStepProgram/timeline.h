@@ -13,12 +13,15 @@ public:
     int Timeline::timeDisplacement(int pushTimer);
     int Timeline::createTime();
     int Timeline::checkTime();
+    double Timeline::getBPMChanges();
     void Timeline::getNotes(QList<QList<QList<int>*>*>* arrowData);
     Timeline::~Timeline();
     void setDistance(int distance);
     QList <double>* creationTime;
     QList <double>* destructionTime;
+    QList <double>* bpmChanges;
     QList<QList<int>*>* arrowGiantMeasure;
+    QList<QList<double>*>* holdCounters;
     void calculateTimes(int speed, int distance);
 
 private:
