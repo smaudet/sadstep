@@ -12,8 +12,11 @@
 #include <QPainter>
 #include <QKeyEvent>
 #include <QString>
+#include <QPoint>
 #include "FileIOServer.h"
 #include "MediaPlayer.h"
+#include <QImage>
+#include <QPointF>
 
 class SongMenu: public StepMenu
 {
@@ -23,6 +26,7 @@ public:
     ~SongMenu();
     const QList <QString>* list;
     int getIndex();
+    MediaPlayer* myPlayer;
 
 
 //public slots:
@@ -38,6 +42,8 @@ private:
     bool songMenuON;
     FileIOServer* IO;
     QString selectedSong;
+    QPointF point;
+    QImage backroundImage;
 
 protected:
     void paintEvent(QPaintEvent* e);

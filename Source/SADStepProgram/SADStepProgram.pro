@@ -29,7 +29,9 @@ SOURCES += mainwindow.cc \
     Tests.cc \
     main.cc \
     NotesData.cc \
-    testtimer.cpp
+    testtimer.cpp \
+    profilemenu.cpp \
+    profile.cpp
 HEADERS += mainwindow.h \
     stepmenu.h \
     startmenu.h \
@@ -52,13 +54,16 @@ HEADERS += mainwindow.h \
     MediaPlayer.h \
     Tests.h \
     NotesData.h \
-    testtimer.h
+    testtimer.h \
+    profilemenu.h \
+    profile.h
 FORMS += songMenuForm.ui \
     optionmenu.ui \
     MMenuForm.ui \
     gamemenuform.ui \
     basemenuform.ui \
-    stepmenu.ui
+    stepmenu.ui \
+    profileMenuForm.ui
 RESOURCES += MenuForms.qrc \
     ButtonsLib.qrc \
     Arrow.qrc

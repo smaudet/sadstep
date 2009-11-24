@@ -10,6 +10,7 @@
 #include <QPoint>
 #include <QPaintEngine>
 #include "FileIOServer.h"
+#include <QImage>
 
 #include "MediaPlayer.h"
 
@@ -20,6 +21,9 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
     songNumber = 0;
     this->setWidgetRep(this);
     IO = new FileIOServer();
+    myPlayer = new MediaPlayer();
+
+
 
 }
 
@@ -43,9 +47,21 @@ void SongMenu::paintEvent(QPaintEvent* e)
     QPainter* p = new QPainter(this);
     p->setPen(Qt::blue);
     p->setBrush(Qt::red);
+    selectedSong = (x+2);
+    /* TODO: load background image waiting for song reader to work correctly
+    qDebug()<< " before image load";
+    qDebug()<< IO->getSongReader(selectedSong)->getBackGroundFile();
+    backroundImage.load(IO->getSongReader(selectedSong)->getBackGroundFile());
+
+    point.setX(0.0);
+    point.setY(0.0);
+
+    p->drawImage(point,backroundImage);
+    */
+    // draw red box for song info
     p->drawRect((form->width()/3)*2,(form->height()/4), form->width()/3, (form->height()/2));
     p->setBrush(Qt::blue);
-    if ( x >=0 && x+4<=list->size()-3)
+    if ( x >=0 && x+4<=list->size()-3)// draws blue rec in center value
     {
         p->drawRect(0,(form->height()/4), form->width()/3, (form->height()/8));
     }
@@ -138,21 +154,16 @@ void SongMenu::paintEvent(QPaintEvent* e)
     }
 
        qDebug() << list->at(x+2);
-     /*
-        qDebug()<< "HELLO";
-        QString smName = (list->at(x+2));
-         qDebug()<< "HELLO";
-        QString alpha = IO->getSongReader(&smName)->getSongFile();
-         qDebug()<< "HELLO";
-        MediaPlayer* myPlayer = new MediaPlayer();
-         qDebug()<< "HELLO";
-        qDebug() << myPlayer->playFile(alpha);
-         qDebug()<< "HELLO";*/
+
+
+
+
+
 
     p->setPen(Qt::black);
     p->setFont(QFont("Arial", 10));
 
-    if ( x >=0 && x+4<=list->size()-3)
+    if ( x >=0 && x+4<=list->size()-3) //draw when list not withing 3 of endpoints
     {
         p->drawText(0,(form->height()/3)-(form->height()/10)*2,list->at(x+4));
         p->drawText(0, (form->height()/3)-(form->height()/10), list->at(x+3));
@@ -170,6 +181,17 @@ void SongMenu::paintEvent(QPaintEvent* e)
 
 
 
+        if (myPlayer->isPlaying()==true) // if music playing stops it before setting new song
+    {
+       myPlayer->stop();
+   }
+       myPlayer->playFile(IO->getSongReader(selectedSong)->getSongFile()); // plays music
+       //TODO: use song sample instead of start of song once mediaplayer functions are fixed
+       //myPlayer->pause();
+       // myPlayer->seek(IO->getSongReader(selectedSong)->getSongSampleStart());
+       //myPlayer->play();
+
+
     songNumber = x+2;
     qDebug() << "Eat my shorts 16";
     delete p;
@@ -183,13 +205,14 @@ void SongMenu::keyPressEvent(QKeyEvent* e)
     if(e->key()==Qt::Key_Return)
     {
 
-
+        myPlayer->stop();
         qDebug()<< "Did you know L,";
         songNumber = x+2;
         qDebug()<< "Gods of death";
         qDebug()<< (list->at(x+2)) << " song given";
         form->goToMenu(300);
         qDebug()<< "like apples";
+
 
 
     }
@@ -228,8 +251,9 @@ void SongMenu::keyPressEvent(QKeyEvent* e)
     if(e->key()==Qt::Key_Escape)
     {
 
-
+        myPlayer->stop();
         form->goToMenu((1)); // TODO: make it run game
+
 
 
     }
