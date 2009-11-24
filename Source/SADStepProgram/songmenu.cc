@@ -19,6 +19,7 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent)
     x = 0;
     songNumber = 0;
     this->setWidgetRep(this);
+    IO = new FileIOServer();
 
 }
 
@@ -41,6 +42,8 @@ void SongMenu::paintEvent(QPaintEvent* e)
     list = cata->getFileNames();
     QPainter* p = new QPainter(this);
     p->setPen(Qt::blue);
+    p->setBrush(Qt::red);
+    p->drawRect((form->width()/3)*2,(form->height()/4), form->width()/3, (form->height()/2));
     p->setBrush(Qt::blue);
     if ( x >=0 && x+4<=list->size()-3)
     {
@@ -69,6 +72,10 @@ void SongMenu::paintEvent(QPaintEvent* e)
         p->setFont(QFont("Arial", 15));
         qDebug()<< " 4";
         p->drawText(0, (form->height()/3)+(form->height()/10), list->at(x+2));
+        selectedSong = list->at(x+2);
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
         qDebug()<< " 5";
         p->setFont(QFont("Arial", 10));
         p->drawText(0, (form->height()/3)+(form->height()/10)*2, list->at(x+1));
@@ -89,16 +96,24 @@ void SongMenu::paintEvent(QPaintEvent* e)
         p->drawText(0, (form->height()/3)+(form->height()/10), list->at(x+3));
         p->setFont(QFont("Arial", 15));
         p->drawText(0, (form->height()/3)+(form->height()/10)*2, list->at(x+2));
+        selectedSong = list->at(x+2);
+         p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
         p->setFont(QFont("Arial", 10));
     }
     if (x+4== list->size()-2)
     {
         p->drawRect(0,(form->height()/4) -(form->height()/10), form->width()/3, (form->height()/8));
-        songNumber = x+4;
+        songNumber = x+3;
         p->setPen(Qt::black);
         p->drawText(0,(form->height()/3)-(form->height()/10)*2,list->at(x+4));
         p->setFont(QFont("Arial", 15));
         p->drawText(0, (form->height()/3)-(form->height()/10), list->at(x+3));
+        selectedSong = list->at(x+3);
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
         p->setFont(QFont("Arial", 10));
         p->drawText(0, (form->height()/3), list->at(x+2));
         p->drawText(0, (form->height()/3)+(form->height()/10), list->at(x+1));
@@ -107,10 +122,14 @@ void SongMenu::paintEvent(QPaintEvent* e)
     if (x+4== list->size()-1)
     {
         p->drawRect(0,(form->height()/4) -(form->height()/10)*2, form->width()/3, (form->height()/8));
-        songNumber =x+3;
+        songNumber =x+4;
         p->setPen(Qt::black);
         p->setFont(QFont("Arial", 15));
         p->drawText(0,(form->height()/3)-(form->height()/10)*2,list->at(x+4));
+        selectedSong = list->at(x+4);
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
         p->setFont(QFont("Arial", 10));
         p->drawText(0, (form->height()/3)-(form->height()/10), list->at(x+3));
         p->drawText(0, (form->height()/3), list->at(x+2));
@@ -119,7 +138,7 @@ void SongMenu::paintEvent(QPaintEvent* e)
     }
 
        qDebug() << list->at(x+2);
-     /*FileIOServer* IO = new FileIOServer();
+     /*
         qDebug()<< "HELLO";
         QString smName = (list->at(x+2));
          qDebug()<< "HELLO";
@@ -138,6 +157,10 @@ void SongMenu::paintEvent(QPaintEvent* e)
         p->drawText(0,(form->height()/3)-(form->height()/10)*2,list->at(x+4));
         p->drawText(0, (form->height()/3)-(form->height()/10), list->at(x+3));
         p->setFont(QFont("Arial", 15));
+        selectedSong = list->at(x+2);
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
+        p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
         p->drawText(0, (form->height()/3), list->at(x+2));
         p->setFont(QFont("Arial", 10));
         p->drawText(0, (form->height()/3)+(form->height()/10), list->at(x+1));
@@ -212,6 +235,7 @@ void SongMenu::keyPressEvent(QKeyEvent* e)
     }
     return;
 }
+
 
 
 

@@ -11,6 +11,8 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QString>
+#include "FileIOServer.h"
 #include "MediaPlayer.h"
 
 class SongMenu: public StepMenu
@@ -34,6 +36,8 @@ private:
     int songNumber;
     int x;
     bool songMenuON;
+    FileIOServer* IO;
+    QString selectedSong;
 
 protected:
     void paintEvent(QPaintEvent* e);

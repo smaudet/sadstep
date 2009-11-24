@@ -3,8 +3,7 @@
 #include "SMFileReader.h"
 #include <QtDebug>
 
-FileIOServer::FileIOServer()
-{
+FileIOServer::FileIOServer() {
     this->catalog = SongCatalogue::getInstance();
 }
 
@@ -12,21 +11,50 @@ const SongCatalogue* const FileIOServer::getSongCatalogue() {
     return catalog;
 }
 
-StepReader* FileIOServer::getStepReader(QString* location) {
-    QString s(*location);
-    qDebug() << s;
-    if(s.endsWith(".sm",Qt::CaseInsensitive)) {/*
-	qDebug() << "found";*/
-	return new SMFileReader(*location);
-    }
-    return NULL;
+StepReader* FileIOServer::getStepReader(QString& location) {
+    checkStepReaders(location); //TODO Thread Safe?
+    return stepReaders[location];
 }
 
-SongReader* FileIOServer::getSongReader(QString* location) {
-    QString s(*location);
-    qDebug() << s;
-    if(s.endsWith(".sm",Qt::CaseInsensitive)) {
-	return new SMFileReader(*location);
+SongReader* FileIOServer::getSongReader(QString& location) {
+    checkSongReaders(location); //TODO Thread Safe?
+    return songReaders[location];
+}
+
+//Returns true if a reader exists already, false otherwise
+bool FileIOServer::checkStepReaders(QString& location) {
+    if(stepReaders.contains(location)){
+        return true;
+    } else {
+        if(location.endsWith(".sm",Qt::CaseInsensitive)){//Need proper file plugin sys
+            SMFileReader* sm = new SMFileReader(location);
+            songReaders.insert(location,sm);
+            stepReaders.insert(location,sm);
+        } else {
+            //TODO Throw error
+            qDebug() << "------------------------------------------";
+            qDebug() << "Not a compatible file";
+            qDebug() << "------------------------------------------";
+        }
+        return false;
     }
-    return NULL;
+}
+
+//Returns true if a reader exists already, false otherwise
+bool FileIOServer::checkSongReaders(QString& location) {
+    if(songReaders.contains(location)){
+        return true;
+    } else {
+        if(location.endsWith(".sm",Qt::CaseInsensitive)){//Need proper file plugin sys
+            SMFileReader* sm = new SMFileReader(location);
+            songReaders.insert(location,sm);
+            stepReaders.insert(location,sm);
+        } else {
+            //TODO Throw error
+            qDebug() << "------------------------------------------";
+            qDebug() << "Not a compatible file";
+            qDebug() << "------------------------------------------";
+        }
+        return false;
+    }
 }

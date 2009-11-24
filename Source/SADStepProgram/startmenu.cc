@@ -31,7 +31,7 @@ void StartMenu::keyPressEvent(QKeyEvent* e)
 {
     qDebug() << "start of startmenu paint event";
 
-    if(e->key()==Qt::Key_Space)
+    if(e->key()==Qt::Key_Return)
     {
         form->goToMenu(1);
 
