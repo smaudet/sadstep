@@ -39,7 +39,6 @@ public:
     QString getDifficultyName(int difficulty);
 protected:
 private:
-    QList<int>* fieldIndexes;
     void findTags();
     static const char* tagTypeNames[];
     int tagTypeNum;

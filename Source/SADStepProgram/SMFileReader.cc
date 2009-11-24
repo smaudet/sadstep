@@ -47,7 +47,6 @@ SMFileReader::SMFileReader(QString location) {
     fileName = new QString(location);
     songFieldData = new QList<QString>;
     notesData = new QList<NotesData>;
-    fieldIndexes = new QList<int>;
     noteIndexes = new QList<int>;
     tagTypeNum = 20; //TODO Needs to be dynamic
     findTags();
@@ -249,7 +248,7 @@ QList<double>* SMFileReader::getVectorInfoField(const char* field,
     return NULL; //TODO Implement
 }
 int SMFileReader::getNumDifficulties() {
-    return fieldIndexes->size();
+    return noteIndexes->size();
 }
 QString SMFileReader::getDifficultyName(int difficulty) {
     return "I don't know the difficulty yet"; //TODO Implement
@@ -265,24 +264,26 @@ QString SMFileReader::getSongFile() {
 //lower number returns easier difficulty, however in future need to search in
 //SM files and get the actuall difficulty
 QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
+    qDebug() << "got in";
     QList<QList<QList<int>*>*>* data = new QList<QList<QList<int>*>*>();
     QFile file(*fileName);
     file.open(QIODevice::ReadOnly);
     QTextStream textfile(&file);
     textfile.setAutoDetectUnicode(true);
-    textfile.seek(fieldIndexes->at(difficulty));
+    textfile.seek(noteIndexes->at(difficulty));
     //Begin Reading Routine
     bool done = false;
     while(!done){
+        qDebug() << "in loop";
 	QList<QList<int>*>* measure = new QList<QList<int>*>;
 	data->append(measure);
 	bool finishedMeasure = false;
-	//qDebug() << "starting measure";
+        qDebug() << "starting measure";
 	while(!finishedMeasure){
 	    QString s(textfile.readLine());
 	    s=s.trimmed();
 	    if(s.isEmpty()) {
-		//qDebug() << "discarded empty";
+                qDebug() << "discarded empty";
 		continue;
 	    }
 	    done = s.contains(";");
