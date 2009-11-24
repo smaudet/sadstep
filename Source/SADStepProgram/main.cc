@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
 //    w.show();
 //	Tests* tests = new Tests();
 //	QTest::qExec(tests);
-    TestTimer t;
+    //TestTimer t;
+    FileIOServer* io = new FileIOServer();
+    QString loc = io->getSongCatalogue()->getFileName(0);
+    io->getStepReader(loc)->getStepData();
     return a.exec();
 }

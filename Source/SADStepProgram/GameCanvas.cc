@@ -4,6 +4,7 @@
 #include <QtDebug>
 #include <QPaintEngine>
 #include <QFont>
+#include <QPointF>
 #include <cmath>
 
 GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
@@ -31,6 +32,12 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     parentWidget()->setPalette(palette);
     type = 1;
     this->fps = fps;
+    laneIndent = this->width()/4;
+    arrowLaneSize = laneSize/2;
+    for(int i=0;i<lanes;++i) { //TODO Make Dynamic
+	images[i] = graphics->getArrowGraphic(type,i+1);
+	images2[i] = graphics->getArrowGraphic(type+1,i+1);
+    }
     showScoreText("");
 }
 
@@ -60,7 +67,8 @@ bool GameCanvas::spawnArrow(double speed,int lane) {
     arrowSpeed = speed;
     if(lane>0&&lane<=lane){
 	qDebug() << "successfull spawn";
-	arrows->at(lane-1)->append(new Arrow(type));
+	int index = lane-1;
+	arrows->at(index)->append(new Arrow(images[index]->height(),type));
 	return true;
     }
     return false;
@@ -112,25 +120,26 @@ bool GameCanvas::scoreArrow(int lane) {
 }
 
 void GameCanvas::paintEvent(QPaintEvent* e){
-    qDebug() << "painting";
+    //qDebug() << "painting";
     QPainter* p = new QPainter(this);
+    p->setRenderHint(QPainter::Antialiasing,true);
+    p->setRenderHint(QPainter::HighQualityAntialiasing,true);
     QListIterator<QList<Arrow*>*> itr(*arrows);
     //draw score region
     for(int i=0;i<this->lanes;++i){
-	const QImage* timg = graphics->getArrowGraphic(2,i+1);
-	p->drawImage((i)*laneSize/2+this->width()/4,0,*timg);
+	QPointF point((i)*arrowLaneSize+laneIndent,0);
+	p->drawImage(point,*images2[i]);
     }
     int laneNum=1;
     while(itr.hasNext()) {
 	QListIterator<Arrow*> itr2(*itr.next());
 	while(itr2.hasNext()){
 	    Arrow* arrow = itr2.next();
-	    const QImage* timg = graphics->getArrowGraphic(arrow->getType(),
-							   laneNum);
-	    int yindent = (int)((arrow->getPercentLoc()/100)*this->height());
-	    qDebug() << yindent;
-	    p->drawImage((laneNum-1)*laneSize/2+this->width()/4,this->height()
-			 -yindent,*timg);
+	    int yindent = (int)(arrow->getDistanceLoc());
+	    //qDebug() << yindent;
+	    QPointF point((laneNum-1)*arrowLaneSize+laneIndent,this->height()
+			 -yindent);
+	    p->drawImage(point,*images[laneNum-1]);
 	}
 	++laneNum;
     }
@@ -151,17 +160,16 @@ void GameCanvas::updateArrows() {
 	QListIterator<Arrow*> itr2(*n);
 	while(itr2.hasNext()){
 	    Arrow* arrow = itr2.next();
-	    double loc=arrow->getPercentLoc();
-	    if(loc>100) {
+	    double loc=arrow->getBottomLoc();
+	    if(loc>getDistance()) {
 		destroyArrow(lane);
 	    } else {
 		//distance = rate * time
 		//time = (fps)^-1
 		double distanceChange = arrowSpeed*std::pow(((double)fps),-1);
-		qDebug() << distanceChange << "dchange";
-		double percentageChange = distanceChange/getDistance()*100;
-		arrow->giveLocation(loc+percentageChange);
-		qDebug() << arrow->getPercentLoc() << "percentage";
+		//qDebug() << distanceChange << "dchange";
+		arrow->setDistanceLoc(arrow->getDistanceLoc()+distanceChange);
+		//qDebug() << arrow->getDistanceLoc() << "distance";
 	    }
 	}
 	++lane;

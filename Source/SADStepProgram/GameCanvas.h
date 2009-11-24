@@ -72,6 +72,10 @@ private:
     int lanes;
     int laneSize;
     QString txt;
+    int laneIndent;
+    int arrowLaneSize;
+    const QImage* images[9];
+    const QImage* images2[9];
 };
 
 #endif // GAMECANVAS_H

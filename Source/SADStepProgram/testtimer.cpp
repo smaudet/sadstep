@@ -6,7 +6,7 @@
 
 TestTimer::TestTimer(QWidget* parent):QMainWindow(parent) {
     showFullScreen();
-    canvas = new GameCanvas(4,this);
+    canvas = new GameCanvas(4,this,45);
     setCentralWidget(canvas);
     this->startTimer(7000);
     this->startTimer(3000);

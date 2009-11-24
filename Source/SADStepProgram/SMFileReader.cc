@@ -94,12 +94,14 @@ void SMFileReader::findTags() {
 	    textfile->readLine();
 	}
 	QString ts;
+	qint64 lastPos;
 	while(ts.isEmpty()){
+	    lastPos = textfile->pos();
 	    ts = textfile->readLine();
 	    ts.remove(commentsMatcher); //TODO Perfomance issue?
 	    ts.trimmed();
 	}
-	noteIndexes->append(tint+textfile->pos());
+	noteIndexes->append(tint+lastPos);
 
 	//Continue to find notes till we end the file
 	while(!textfile->atEnd()){ //TODO Throw an error here?
@@ -112,12 +114,14 @@ void SMFileReader::findTags() {
 		    textfile->readLine();
 		}
 		QString ts1;
+		qint64 lastPos;
 		while(ts1.isEmpty()){
+		    lastPos = textfile->pos();
 		    ts1 = textfile->readLine();
 		    ts1.remove(commentsMatcher); //TODO Perfomance issue?
 		    ts1.trimmed();
 		}
-		noteIndexes->append(tint+textfile->pos());
+		noteIndexes->append(tint+lastPos);
 	    }
 	    //Find Find Info
 	};
@@ -274,22 +278,23 @@ QList<QList<QList<int>*>*>* SMFileReader::getStepData(int difficulty){
     //Begin Reading Routine
     bool done = false;
     while(!done){
-        qDebug() << "in loop";
+	qDebug() << "in loop";
 	QList<QList<int>*>* measure = new QList<QList<int>*>;
 	data->append(measure);
 	bool finishedMeasure = false;
-        qDebug() << "starting measure";
+	qDebug() << "starting measure";
 	while(!finishedMeasure){
 	    QString s(textfile.readLine());
 	    s=s.trimmed();
 	    if(s.isEmpty()) {
-                qDebug() << "discarded empty";
+		qDebug() << "discarded empty";
 		continue;
 	    }
 	    done = s.contains(";");
 	    if(s.contains(",") || done) {
 		finishedMeasure = true;
 	    } else {
+		qDebug() << s;
 		QList<int>* note = new QList<int>;
 		measure->append(note);
 		for(int i = 0;i<s.size();i++){ //Split the note into parts
