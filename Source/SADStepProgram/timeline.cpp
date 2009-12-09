@@ -23,29 +23,37 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
     double beatCounter = 0.0;
     double measureBPM = 0.0;
     double note_mSPB = 0.0; //note's milliseconds per beat
-
+    qDebug() << "how are you?";
     creationTime = new QList<double>;
     destructionTime = new QList<double>;
-    // double sLength = songLength;
+    holdCounters = new QList<QList<double>*>;
+    QList<double>* noteHoldTime = new QList<double>;
 
+    // double sLength = songLength;
+    qDebug() << "really?";
     for(int u=0; u<4; u++) //Initializes holdCounters to have 4 different QLists for each lane
     {
-        QList<double>* temp;
+        QList<double>* temp = new QList<double>;
         holdCounters->append(temp);
     }
-
+    qDebug() << "that is good.";
     measureBPM = BPM->at(0)->second;//loads in the initial BPM
+    qDebug() << measureBPM << " well, shall we begin?";
     for(int x=0;x < arrowData->size();x++){
+        qDebug() << "Phase one complete";
 	//Eg:
 	//0 0 0 1
 	//1 0 0 2
 	//0 0 1 0
 	//0 0 0 3
 	//Does not ignore zero vectors since they are still counted in the game
+
         QList<QList<int>* >* measureData = arrowData->at(x);
         for(int w = 0; w < measureData->size(); w++)
         {
+            qDebug() << "Phase two complete";
             double measureSize = measureData->size();
+            qDebug()<< measureSize << " is measure size";
             double divisionFactor = measureSize/4; /*for 8/4 time we'd get 2, 4/4 would be 1, so we have
                                                      the factor of division*/
             beatCounter += 1/divisionFactor; //this keeps track of how many beats have occured. it divides
@@ -89,19 +97,22 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
 	    qDebug() << deconTime << " decon";
 	    this->destructionTime->append(deconTime);
 	    totalTime+=noteTime; //Add in note to totalTime
+            qDebug() << totalTime << " is song length so far";
 
-            QList<int>* noteData = measureData->at(x);
-            for(int z = 0; z < noteData->size(); z++) //this code handles hold notes. it fines the start and
+            QList<int>* noteData = measureData->at(w);
+            qDebug() << "not here";
+            for(int z = 0; z < noteData->size(); z++) //this code handles hold notes. it finds the start and
             {                                         //stop times, then figures the distance
+                qDebug() << "maybe here?";
+                qDebug() << noteData->at(z);
                 if(noteData->at(z) == 2)
                 {
-                    double startTimeHold = deconTime;         //this bit of code assumes that a 3 will always
-                    QList<double>* noteHoldTime;              //follow a 2, and never another 2. If the .sm
-                    noteHoldTime->append(startTimeHold);      //file is corrupted, it will ruin the holdCounters
-                    holdCounters->at(z)->append(*noteHoldTime);//However, it can be safely assume that this wont happen.
+                    qDebug() << "can you get in?";
+                    holdCounters->at(z)->append(deconTime);
                 }
                 else if(noteData->at(z) == 3)
                 {
+                    qDebug() <<"FINISH HIM!!!";
                     double endTimeHold = deconTime;
                     qDebug() << endTimeHold << " is when the hold should end";
                     double startTime = holdCounters->at(z)->last();
@@ -109,15 +120,16 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
                     qDebug() << totalHoldTime << " is how long the hold lasts";
                     int indexHold = holdCounters->at(z)->lastIndexOf(startTime);
                     qDebug() << indexHold << " is the index of the hold";
-                    double holdDistance = (1/arrowSpeed)*totalHoldTime;
+                    double holdDistance = (1/arrowTime)*totalHoldTime;
                     qDebug() << holdDistance << " is how long the hold is in pixels";
                     holdCounters->at(z)->replace(indexHold,holdDistance);
                 }
             }
 
-            this->creationTime->append((deconTime-lastDeconTime)-(distance/arrowTime));
-	    qDebug() << ((deconTime-lastDeconTime)-(distance/speed)) << " create";
+            this->creationTime->append(deconTime-((deconTime-lastDeconTime)-(distance/arrowTime)));
+            qDebug() << (deconTime-((deconTime-lastDeconTime)-(distance/arrowTime))) << " create";
 	    lastDeconTime = deconTime;
+            qDebug() << lastDeconTime << " is teh last decon time";
             errorsize+=creationTime->last()-std::floor(creationTime->last());
 	}
     }
