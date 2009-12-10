@@ -2,6 +2,7 @@
 #include <QTimer>
 #include <QList>
 #include "GameCanvas.h"
+#include "FileIOServer.h"
 #include <QtDebug>
 #include <cmath>
 #include <QPair>
@@ -13,7 +14,7 @@ Timeline::Timeline()
 
 //TODO Stop functionality, Hold functionality, Mine functionality
 Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*>* arrowData
-                   ,double songLength, double distance, double speed) {
+                   ,double songLength, double distance, double speed, double offset) {
     qDebug() << "hello";/*
     dt = 0; // used as a counter in deletion proccess (see checkTime function)
     ct = 0; // used as a counter in creation proccess (see createTime function)*/
@@ -26,8 +27,10 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
     qDebug() << "how are you?";
     creationTime = new QList<double>;
     destructionTime = new QList<double>;
+    bpmChanges = new QList<double>;
+    speedChanges = new QList<double>;
     holdCounters = new QList<QList<double>*>;
-    QList<double>* noteHoldTime = new QList<double>;
+    new FileIOServer;
 
     // double sLength = songLength;
     qDebug() << "really?";
@@ -38,6 +41,10 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
     }
     qDebug() << "that is good.";
     measureBPM = BPM->at(0)->second;//loads in the initial BPM
+    bpmChanges->append(0); //instantiates bpmChanges with a 0  i.e. bpm changes at 0
+    speedChanges->append((distance/6)*(measureBPM/60)); //gives pixels per second for initial bpm
+    //totalTime = (offset-(2*offset))*1000; //adds in the song's offset.
+    qDebug() << totalTime << " should include offset";
     qDebug() << measureBPM << " well, shall we begin?";
     for(int x=0;x < arrowData->size();x++){
         qDebug() << "Phase one complete";
@@ -69,7 +76,9 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
                     measureBPM = BPM->at(y+1)->second; //this reads in the next bpm. It then increments y,
                                                        //the exits the loop
                     bpmChanges->append(lastDeconTime);
-                }
+                    double theSpeedChange = ((distance/6)*(measureBPM/60));//pixels per 6 beats times beats per
+                    speedChanges->append(theSpeedChange);                  //minute times 1 minute per 60 seconds
+                }                                                          //therefore theSpeedChange is pixels per second
                 else
                 {break;}//used most of the time. happens when beatCounter isn't at the BPM change yet.
             }
@@ -126,14 +135,17 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM, QList<QList<QList<int>*>*
                 }
             }
 
-            this->creationTime->append(deconTime-((deconTime-lastDeconTime)-(distance/arrowTime)));
-            qDebug() << (deconTime-((deconTime-lastDeconTime)-(distance/arrowTime))) << " create";
+            this->creationTime->append(deconTime-((deconTime-lastDeconTime)-(distance*arrowTime)));
+            qDebug() << (distance*arrowTime) << "distance and arrowTime";
+            qDebug() << (deconTime-lastDeconTime) << "decon and last";
+            qDebug() << (deconTime-((deconTime-lastDeconTime)-(distance*arrowTime))) << " create";
             lastDeconTime = deconTime;
             qDebug() << lastDeconTime << " is teh last decon time";
             errorsize+=creationTime->last()-std::floor(creationTime->last());
         }
     }
     qDebug() << "error time" << errorsize;
+    qDebug() << bpmChanges->size() << "size of bpmChanges";
 }
 
 void Timeline::getNotes(QList<QList<QList<int>*>*>* arrowData) {
@@ -195,13 +207,13 @@ int Timeline::timeDisplacement(int pushTimer) // used to send time to Score clas
     return displacement;
 }
 
-int Timeline::createTime() //returns creation time for arrows 1 set at a time
+double Timeline::createTime() //returns creation time for arrows 1 set at a time
 {
     cTime = creationTime->at(ct);
     return cTime;
     ++ct;
 }
-int Timeline::checkTime() // returns time for destruction 1 arrow set at a time
+double Timeline::checkTime() // returns time for destruction 1 arrow set at a time
 {
     dTime = destructionTime->at(dt);
     return dTime;

@@ -12,6 +12,7 @@
 #include "Arrow.h"
 #include "GraphicsTimer.h"
 #include "ArrowGraphicsSet.h"
+#include <QTime>
 
 //#define DRAW_SURFACE QWidget;
 //#define THREAD_TYPE QThread;
@@ -64,6 +65,7 @@ protected:
 private:
     //friend void GameCanvasThread::run();
     int fps;
+    int counter;
     double arrowSpeed;
     QImage getBackgroundImage();
     ArrowGraphicsSet* graphics;
@@ -77,6 +79,8 @@ private:
     QString txt;
     int laneIndent;
     int arrowLaneSize;
+    QTime* stimer;
+    int totelapsed;
     const QImage* images[9];
     const QImage* images2[9];
     const QImage* images3[9];

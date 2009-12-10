@@ -19,7 +19,7 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
 	arrows->append(new QList<Arrow*>);
 	holdArrows->append(new QList<Arrow*>);
     }
-    timer = new GraphicsTimer(fps);
+    timer = new GraphicsTimer(1000.0/(double)fps);
     //TODO Performance boost?
     connect(timer,SIGNAL(timeout()),this,SLOT(updateArrows()));
     graphics = new ArrowGraphicsSet();
@@ -28,11 +28,11 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     QBrush brush(getBackgroundImage());
     QPalette palette = parentWidget()->palette();
     palette.setBrush(QPalette::Window,brush);
-    palette.setBrush(QPalette::WindowText,*(new QBrush(*(new QColor(255,100,0
-								    ,30)))));
+    palette.setBrush(QPalette::WindowText,*(new QBrush(*(new QColor(255,100,0,30)))));
     parentWidget()->setStyleSheet("");
     parentWidget()->setPalette(palette);
     type = 1;
+    stimer = new QTime();
     this->fps = fps;
     laneIndent = this->width()/4;
     arrowLaneSize = laneSize/2;
@@ -41,6 +41,8 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
 	images2[i] = graphics->getArrowGraphic(type+1,i+1);
     }
     showScoreText("");
+    totelapsed = 0;
+    counter = 0;
 }
 
 void GameCanvas::showScoreText(QString txt) {
@@ -55,13 +57,14 @@ QImage GameCanvas::getBackgroundImage() {
 
 void GameCanvas::start() {
     timer->start();
+    stimer->start();
 }
 
 GameCanvas::~GameCanvas() {
-    qDebug() << "allo";
+    //qDebug() << "allo";
     delete arrows;
     delete timer;
-    qDebug() << ":)";
+    //qDebug() << ":)";
 }
 
 //Speed = distance of screen / seconds
@@ -79,7 +82,7 @@ bool GameCanvas::spawnArrow(double speed,int lane) {
 bool GameCanvas::spawnHoldArrow(double speed, double distance, int lane) {
     arrowSpeed = speed;
     if(lane>0&&lane<=lane){
-	qDebug() << "successfull spawn";
+         //qDebug() << "successfull spawn";
 	int index = lane-1;
 	holdArrows->at(index)->append(new Arrow(distance,type));
 	QImage* calcImage = new QImage(images[lane-1]->scaled(images[1]->width(),distance,Qt::IgnoreAspectRatio));
@@ -200,6 +203,14 @@ void GameCanvas::paintEvent(QPaintEvent* e){
 }
 
 void GameCanvas::updateArrows() {
+    totelapsed+=stimer->elapsed();
+    stimer->restart();
+    counter++;
+    if(counter==fps){
+        qDebug() << totelapsed << "seconds elapsed per total frames";
+        counter = 0;
+        totelapsed = 0;
+    }
     QListIterator<QList<Arrow*>*> itr(*arrows);
     int lane = 1;
     while(itr.hasNext()) {
@@ -213,8 +224,8 @@ void GameCanvas::updateArrows() {
 	    } else {
 		//distance = rate * time
 		//time = (fps)^-1
-		double distanceChange = arrowSpeed*std::pow(((double)fps),-1);
-		//qDebug() << distanceChange << "dchange";
+                double distanceChange = arrowSpeed*(1.0/(double)fps);
+           //qDebug() << distanceChange << "dchange";
 		arrow->setDistanceLoc(arrow->getDistanceLoc()+distanceChange);
 		//qDebug() << arrow->getDistanceLoc() << "distance";
 	    }
@@ -256,7 +267,7 @@ GraphicsTimer* GameCanvas::getTimer() const {
 void GameCanvas::keyPressEvent(QKeyEvent* e){
     if(e->key()==Qt::Key_Up){
 	//qDebug() << "1";
-	spawnArrow(1,1);
+         spawnArrow(1,1);
 	return;
     }
     if(e->key()==Qt::Key_Down){

@@ -1,12 +1,12 @@
 // Author: Scott Tollas
-// Date Last Modified: 11/3/09
+// Date Last Modified: 12/9/09
 // Purpose: To create a score from the values of hits or misses returned from the game class
 
 #include "score.h"
 #include <QString>
 #include <QDebug>
 
-Score::Score()//:data()
+Score::Score()
 {
     this->Range = 1500.00;
     this->totalScore = 0;
@@ -16,10 +16,11 @@ Score::Score()//:data()
     bad = 0;
     perfect = 0;
 }
-void Score::calculateScore(int displacement)
+void Score::scoreSingle(int perfectTime, int HumanTime)
 {
     qDebug() << displacement << " displacement";
     qDebug () << Range << " Range";
+    displacement = perfectTime - HumanTime;
 
     if (displacement <= (double)Range/3)// score for 1/3 of max range
     {
@@ -57,34 +58,6 @@ void Score::calculateScore(int displacement)
     }
     totalScore = totalScore + score;
 
-    /*
-*************************************************************
-    Depriciated Code
-*************************************************************
- lastScore = score;
-    if (lastScore == 0)
-    {
-	praise = 4;
-	perfect++;
-    }
-
-
-    if (lastScore == 250)
-    {
-	praise == 3;
-	good++;
-    }
-    if (lastScore == 500)
-    {
-	praise = 2;
-	ok++;
-    }
-    if (lastScore == 1000)
-    {
-	praise = 1;
-	bad++;
-    }
-*/
 
 }
 int Score::getTotalScore() // use to retrive total accumulated score in one game session
@@ -132,5 +105,12 @@ int Score::getNumberOfOk()
 int Score::getNumberOfPerfect()
 {
     return perfect;
+}
+void Score::scoreHold(int humanPress, int perfectPress, int humanRelease,int perfectRelease)
+{
+   int perfectDisplacement = perfectRelease - perfectPress;
+   int humanDisplacement = humanRelease - humanPress;
+   score = (perfectDisplacement)*100 - (perfectDisplacement - humanDisplacement)*100;
+   totalScore = totalScore + score;
 }
 

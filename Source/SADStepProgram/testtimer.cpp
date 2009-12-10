@@ -16,6 +16,7 @@ TestTimer::TestTimer(QWidget* parent):QMainWindow(parent) {
     QString loc = sc->getFileName(0);
     qDebug() << fio->getSongReader(loc)->getSongFile();
     canvas->start();
+    qDebug() << canvas->getDistance();
     spawnNum=0;
     //p->playFile(fio->getSongReader(loc)->getSongFile());
 }

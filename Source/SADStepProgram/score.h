@@ -7,7 +7,6 @@
 #define SCORE_H
 
 #include "ScoreData.h"
-#include "score.h"
 #include <QString>
 
 class Score
@@ -15,7 +14,7 @@ class Score
 public:
     Score();
     ~Score();
-    void calculateScore(int displacement);
+    void scoreSingle(int perfectTime, int HumanTime);
     int getTotalScore();
     void setMaxRange(int maxRange);
     int getPraise();
@@ -25,6 +24,7 @@ public:
     int getNumberOfGood();
     int getNumberOfBad();
     int getNumberOfPerfect();
+    void scoreHold(int humanPress, int perfectPress, int humanRelease,int perfectRelease);
 private:
     int displacement;
     int totalScore;

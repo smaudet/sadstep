@@ -16,6 +16,7 @@
 #include <QtGui/QMainWindow>
 #include <QObject>
 #include <QTimer>
+#include <QTime>
 #include <QTimerEvent>
 #include "basemenuform.h"
 #include "FileIOServer.h"
@@ -25,6 +26,7 @@
 #include "ScoreData.h"
 #include "MediaPlayer.h"
 #include "profile.h"
+#include "scoreevaluator.h"
 
 class MainWindow : public QMainWindow
 {
@@ -33,6 +35,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    int getSongTimeElapsed();
 public slots:
     void runMenu();
     void runGame(int selection);
@@ -41,7 +44,9 @@ protected:
     void timerEvent(QTimerEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
+    QTime* tel;
     MediaPlayer* mp;
+    ScoreEvaluator* eval;
     bool canvasOn;
     bool needsToCloseGame;
     FileIOServer* fio;
@@ -49,12 +54,20 @@ private:
     BaseMenuForm* menu;
     bool canwinB;
     QListIterator<double>* itr;
+    QListIterator<double>* deconItr;
+    QListIterator<double>* bpmItr;
+    QListIterator<double>* speedItr;
+    QList<int>* press;
     Timeline* timeline;
-    int lastTimerID;
+    int lastNoteTimerID;
+    int lastBPMTimerID;
+    int lastSpawnArrowTime;
+
+    double currentArrowSpeed;
     int x;
     QList<QList<int>*>* arrows;
     ScoreData* scoreData;
-    int dTimeHolder;
+    double dTimeHolder;
     Score* score;
     Profile* profile;
 };
