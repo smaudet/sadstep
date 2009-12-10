@@ -57,7 +57,7 @@ void SMFileReader::findTags() {
     //TODO Handle extremly large files
     //Open our file
     QFile file(*fileName);
-    file.open(QIODevice::ReadOnly);
+    qDebug() << file.open(QIODevice::ReadOnly) << " Opening fine";
     //Use a textstream for easy parsing in Unicode
     textfile = new QTextStream(&file);
     textfile->setAutoDetectUnicode(true);
@@ -90,18 +90,19 @@ void SMFileReader::findTags() {
 	//Find the notes locations and load the NotesData objects
 	//TODO Skipping Header info for now
 	//TODO Hard coded
+        qDebug() << "was found";
 	for(int i=0;i<5;i++){
 	    textfile->readLine();
 	}
-	QString ts;
-	qint64 lastPos;
-	while(ts.isEmpty()){
+        QString ts;
+        qint64 lastPos;
+        while(ts.isEmpty()){ //Strip Whitespace
 	    lastPos = textfile->pos();
-	    ts = textfile->readLine();
+            ts = textfile->readLine();
 	    ts.remove(commentsMatcher); //TODO Perfomance issue?
 	    ts.trimmed();
 	}
-	noteIndexes->append(tint+lastPos);
+        noteIndexes->append(tint+lastPos);
 
 	//Continue to find notes till we end the file
 	while(!textfile->atEnd()){ //TODO Throw an error here?
@@ -113,8 +114,8 @@ void SMFileReader::findTags() {
 		for(int i=0;i<5;i++){
 		    textfile->readLine();
 		}
-		QString ts1;
-		qint64 lastPos;
+                QString ts1;
+                qint64 lastPos;
 		while(ts1.isEmpty()){
 		    lastPos = textfile->pos();
 		    ts1 = textfile->readLine();

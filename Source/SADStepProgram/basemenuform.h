@@ -26,7 +26,7 @@ public:
 	       };
     QLabel* label;
     void setMenuWidget(StepMenu* menu);
-    void BaseMenuForm::setActiveButton();
+    void setActiveButton();
     bool setButtonsVisible(bool visible);
     bool toggleButtonWindow();
     bool toggleOK();
