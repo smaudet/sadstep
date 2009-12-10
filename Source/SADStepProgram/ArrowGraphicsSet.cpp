@@ -49,6 +49,47 @@ void ArrowGraphicsSet::loadArrowGraphics(int width, int height, int lanes) {
 				       Qt::SmoothTransformation)));
 	}
     }
+    //Hard coded - for demo purposes only
+    QList<QImage*>* ta1 = arrowImages->at(0);
+    ta1->append(new QImage((new QImage(":/arrows/arrowhtcapl","png")) //3
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbcapl","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbodyl","png")) //5
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1 = arrowImages->at(1);
+    ta1->append(new QImage((new QImage(":/arrows/arrowhtcapd","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbcapd","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbodyd","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1 = arrowImages->at(2);
+    ta1->append(new QImage((new QImage(":/arrows/arrowhtcapu","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbcapu","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbodyu","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1 = arrowImages->at(3);
+    ta1->append(new QImage((new QImage(":/arrows/arrowhtcapr","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbcapr","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
+    ta1->append(new QImage((new QImage(":/arrows/arrowhbodyr","png"))
+                ->scaled(width,height,Qt::KeepAspectRatio,
+                         Qt::SmoothTransformation)));
 }
 
 const QImage* ArrowGraphicsSet::getArrowGraphic(int type, int lane) const{

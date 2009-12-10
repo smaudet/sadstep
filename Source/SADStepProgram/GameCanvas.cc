@@ -36,9 +36,17 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     this->fps = fps;
     laneIndent = this->width()/4;
     arrowLaneSize = laneSize/2;
+    holdImages = new QList<QList<QImage*>*>;
+    qDebug() << "suspicious stuff";
     for(int i=0;i<lanes;++i) { //TODO Make Dynamic
 	images[i] = graphics->getArrowGraphic(type,i+1);
 	images2[i] = graphics->getArrowGraphic(type+1,i+1);
+        topcaps[i] = graphics->getArrowGraphic(type+2,i+1);
+        bottomcaps[i] = graphics->getArrowGraphic(type+3,i+1);
+        holdbs[i] = graphics->getArrowGraphic(type+4,i+1);
+        qDebug() << "pops head";
+        holdImages->append(new QList<QImage*>);
+        qDebug() << "hmm";
     }
     showScoreText("");
     totelapsed = 0;
@@ -85,8 +93,47 @@ bool GameCanvas::spawnHoldArrow(double speed, double distance, int lane) {
          //qDebug() << "successfull spawn";
 	int index = lane-1;
 	holdArrows->at(index)->append(new Arrow(distance,type));
-	QImage* calcImage = new QImage(images[lane-1]->scaled(images[1]->width(),distance,Qt::IgnoreAspectRatio));
-	images3[lane-1] = calcImage;
+        const QImage* tcapImage = topcaps[index];
+        const QImage* bcapImage = bottomcaps[index];
+        const QImage* bodyImage = holdbs[index];
+        QImage* calcImage;
+        if(distance < tcapImage->height()) {
+            calcImage = new QImage(*tcapImage);
+        }
+        double extradist = (double)distance - (double)(1.5*tcapImage->height());
+        if(extradist>0){
+            calcImage = new QImage(tcapImage->width(),distance,QImage::Format_ARGB32);
+            QPainter p(calcImage);
+            //Calc part areas
+            double numbody = extradist/(double)(bodyImage->height());
+            int bodyuse = 0;
+            double extra = numbody - std::floor(extradist/(double)(bodyImage->height()));
+            if(numbody>0&&numbody<=1) {
+                bodyuse = 1;
+            }
+            if(numbody>1){
+                bodyuse = numbody;
+                if(extra>0){
+                    bodyuse++;
+                }
+            }
+            //Paint part areas
+            //Draw Underlay
+            p.drawImage(0,tcapImage->height()/2,*bodyImage);
+            //Draw Loop
+            for(int i = 0;i<bodyuse;++i){
+                p.drawImage(0,tcapImage->height()+i*(bodyImage->height()),*bodyImage);
+            }
+            //Paint image areas
+            //Draw Bottom Cap
+            p.drawImage(0,distance-bcapImage->height(),*bcapImage);
+            //Draw Top Cap
+            p.drawImage(0,0,*tcapImage);
+        } else {
+            qDebug() << "Unhandled Exception";
+        }
+/*new QImage(images[lane-1]->scaled(images[1]->width(),distance,Qt::IgnoreAspectRatio));*/
+        holdImages->at(lane-1)->append(calcImage);
 	return true;
     }
     return false;
@@ -182,15 +229,19 @@ void GameCanvas::paintEvent(QPaintEvent* e){
     }
     itr = QListIterator<QList<Arrow*>*>(*holdArrows);
     laneNum=1;
+    int i1 = 0;
     while(itr.hasNext()) {
+        int j1 = 0;
 	QListIterator<Arrow*> itr2(*itr.next());
 	while(itr2.hasNext()){
 	    Arrow* arrow = itr2.next();
 	    int yindent = (int)(arrow->getDistanceLoc());
 	    QPointF point((laneNum-1)*arrowLaneSize+laneIndent,this->height()
 			 -yindent);
-	    p->drawImage(point,*images3[laneNum-1]);
+            p->drawImage(point,*holdImages->at(i1)->at(j1));
+            ++j1;
 	}
+        ++i1;
 	++laneNum;
     }
     p->setPen(QColor(255,0,0,255));

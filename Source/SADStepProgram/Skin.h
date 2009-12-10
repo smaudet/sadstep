@@ -1,6 +1,8 @@
 #ifndef SKIN_H
 #define SKIN_H
 
+#include <QString>
+
 class Skin
 {
 public:

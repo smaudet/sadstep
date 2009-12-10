@@ -83,7 +83,11 @@ private:
     int totelapsed;
     const QImage* images[9];
     const QImage* images2[9];
-    const QImage* images3[9];
+//    const QImage* images3[9];
+    QList<QList<QImage*>*>* holdImages;
+    const QImage* topcaps[9];
+    const QImage* bottomcaps[9];
+    const QImage* holdbs[9];
 };
 
 #endif // GAMECANVAS_H

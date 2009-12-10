@@ -6,12 +6,17 @@
 
 TestTimer::TestTimer(QWidget* parent):QMainWindow(parent) {
     showFullScreen();
+    qDebug() << "debug";
     canvas = new GameCanvas(4,this,45);
+    qDebug() << "canvas";
     setCentralWidget(canvas);
+    qDebug() << "jik";
     this->startTimer(7000);
     this->startTimer(3000);
+    qDebug() << "timers";
     MediaPlayer* p = new MediaPlayer;
     FileIOServer* fio = new FileIOServer();
+    qDebug() << "file io problem";
     const SongCatalogue* sc = fio->getSongCatalogue();
     QString loc = sc->getFileName(0);
     qDebug() << fio->getSongReader(loc)->getSongFile();
