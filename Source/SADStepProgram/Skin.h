@@ -5,6 +5,8 @@ class Skin
 {
 public:
     Skin();
+    QString backgroundImage;
+    QString buttonImage;
 };
 
 #endif // SKIN_H

@@ -2,6 +2,10 @@
 #include <QString>
 #include "SMFileReader.h"
 #include <QtDebug>
+#include <QDir>
+#include <QFileInfo>
+#include <QFileInfoList>
+#include <QListIterator>
 
 FileIOServer::FileIOServer() {
     this->catalog = SongCatalogue::getInstance();
@@ -60,4 +64,7 @@ bool FileIOServer::checkSongReaders(QString& location) {
 }
 
 QList<Skin>* FileIOServer::getSkins() {
+    QDir skinDir("Skins");
+    QFileInfoList skins = skinDir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
+    QListIterator<QFileInfo> itr(skins);
 }
