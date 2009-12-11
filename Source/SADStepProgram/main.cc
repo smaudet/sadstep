@@ -62,6 +62,6 @@ int main(int argc, char *argv[])
 //            }
 //        }
 //        qDebug() << elapsedTime;
-//        qDebug() << elapsedTime/numFiles
+//        qDebug() << elapsedTime/numFiles;
     return a.exec();
 }

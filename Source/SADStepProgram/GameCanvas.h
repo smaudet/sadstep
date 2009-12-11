@@ -66,6 +66,7 @@ private:
     //friend void GameCanvasThread::run();
     int fps;
     int counter;
+    bool flipb;
     double arrowSpeed;
     QImage getBackgroundImage();
     ArrowGraphicsSet* graphics;

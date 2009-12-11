@@ -10,11 +10,10 @@
 #include "timeline.h"
 #include "SongReader.h"
 
-
 #include <QTime>
 
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent) {
+	: QMainWindow(parent) {
     showFullScreen();
     tel = new QTime();
     currentArrowSpeed = 0;
@@ -29,50 +28,53 @@ MainWindow::MainWindow(QWidget *parent)
     press = new QList<int>;
     for (int z=0; z<5;z++)
     {
-        press->append(0);
+	press->append(0);
     }
 }
 
 void MainWindow::gameLogic() {
     if (x >= arrows->size()-6){
-        qDebug() << "should stop now";
-        mp->stop();
-        needsToCloseGame=true;
+	qDebug() << "should stop now";
+	mp->stop();
+	needsToCloseGame=true;
     }
     if (canvas) {
-        bool allValYAreZero = true;
-        //Note (the musical type)
-        int ysize = arrows->at(x)->size();
-        int* y = new int[ysize];
-        for(int i=0;i<ysize;++i) {
-            y[i] = arrows->at(x)->at(i);
-            if(y[i]!=0){
-                allValYAreZero = false; // takes into acount <0,0,0,0> vectors
-            }
-        }
-        if(allValYAreZero) {
-            x++;
-        } else {
-            for(int i = 0;i<ysize;++i) { // spawns arrow in correct lane
-                if(y[i]>0){
-                    //qDebug() << currentArrowSpeed << " arrow speed";
-                    canvas->spawnArrow(currentArrowSpeed,i+1);
-                    //qDebug() << currentArrowSpeed*lastSpawnArrowTime << " = " << canvas->getDistance();
-                }
-            }
-            x++;
-        }
-        if(needsToCloseGame) { // return to menus if song over else continue
-            qDebug() << "ending";
-            needsToCloseGame=false;
-            runMenu();
-        } else {
-            if(itr->hasNext()) {
-                int previousTime = itr->peekPrevious();
-                int nextTime = itr->next();
-                lastNoteTimerID = startTimer((int)(nextTime-previousTime));
-            }
-        }
+	bool allValYAreZero = true;
+	//Note (the musical type)
+	int ysize = arrows->at(x)->size();
+	int* y = new int[ysize];
+	for(int i=0;i<ysize;++i) {
+	    y[i] = arrows->at(x)->at(i);
+	    if(y[i]!=0){
+		allValYAreZero = false; // takes into acount <0,0,0,0> vectors
+	    }
+	}
+	if(allValYAreZero) {
+	    x++;
+	} else {
+	    for(int i = 0;i<ysize;++i) { // spawns arrow in correct lane
+		if(y[i]>0){
+		    if(y[i]==1) {
+			canvas->spawnArrow(currentArrowSpeed,i+1);
+		    }
+		    if(y[i]==2) {
+			canvas->spawnHoldArrow(currentArrowSpeed,holdItrs->at(i)->next(),i+1);
+		    }
+		}
+	    }
+	    x++;
+	}
+	if(needsToCloseGame) { // return to menus if song over else continue
+	    qDebug() << "ending";
+	    needsToCloseGame=false;
+	    runMenu();
+	} else {
+	    if(itr->hasNext()) {
+		int previousTime = itr->peekPrevious();
+		int nextTime = itr->next();
+		lastNoteTimerID = startTimer((int)(nextTime-previousTime));
+	    }
+	}
     }
 }
 
@@ -105,6 +107,11 @@ void MainWindow::runGame(int selection) {
     bpmItr = new QListIterator<double>(*(timeline->bpmChanges));
     speedItr = new QListIterator<double>(*(timeline->speedChanges));
     deconItr = new QListIterator<double>(*(timeline->destructionTime));
+    holdItrs = new QList<QListIterator<double>*>;
+    QListIterator<QList<double>*> holdItr(*(timeline->holdCounters));
+    while(holdItr.hasNext()){
+	holdItrs->append(new QListIterator<double>(*(holdItr.next())));
+    }
     arrows = timeline->arrowGiantMeasure; //***** placeholder (getNotes)
     setCentralWidget(canvas);
     canvas->start();
@@ -112,7 +119,7 @@ void MainWindow::runGame(int selection) {
     lastNoteTimerID = startTimer((int)itr->next());
     deconItr->next();
     if(timeline->bpmChanges->size() != 0) {
-        lastBPMTimerID = startTimer((int)bpmItr->next());
+	lastBPMTimerID = startTimer((int)bpmItr->next());
     }
     currentArrowSpeed = speedItr->next();
 
@@ -124,11 +131,11 @@ void MainWindow::runGame(int selection) {
 
 void MainWindow::runMenu() {
     if(canvasOn) { // Need to delete game stuff
-        //qDebug() << "canvas was on";
-        delete timeline;
-        delete itr;
-        canvasOn = false;
-        mp->stop();
+	//qDebug() << "canvas was on";
+	delete timeline;
+	delete itr;
+	canvasOn = false;
+	mp->stop();
     }
     //qDebug() << "end of loop";
     menu = new BaseMenuForm(this);
@@ -144,92 +151,92 @@ int MainWindow::getSongTimeElapsed() {
 //Basic demonstration of keyboard use on the Game ONLY
 void MainWindow::keyPressEvent(QKeyEvent* e) {
     if(e->key()==Qt::Key_Up){
-        if(canvas){
-            qDebug() << "got to up press";
-            press->replace(2,1);// set presssed key
-            eval->setCurrentTime(tel->elapsed());
-            eval->evaluateSingle(press,tel->elapsed());
-            press->replace(2,0); // after sending value reset to 0
+	if(canvas){
+	    qDebug() << "got to up press";
+	    press->replace(2,1);// set presssed key
+	    eval->setCurrentTime(tel->elapsed());
+	    eval->evaluateSingle(press,tel->elapsed());
+	    press->replace(2,0); // after sending value reset to 0
 
 
-            //}
+	    //}
 
-        }
-        if (!canvas){
-            // NOTE: Does nothing atm, will allow for arrow key selection of
-            // buttons on screen
-            menu->setActiveButton();
-        }
-        return;
+	}
+	if (!canvas){
+	    // NOTE: Does nothing atm, will allow for arrow key selection of
+	    // buttons on screen
+	    menu->setActiveButton();
+	}
+	return;
     }
     if(e->key()==Qt::Key_Down){
-        if(canvas){
-            qDebug() << "got to down press";
-           press->replace(3,1);// set presssed key
-           eval->setCurrentTime(tel->elapsed());
-            eval->evaluateSingle(press,tel->elapsed());
-            press->replace(3,0); // after sending value reset to 0
-        }
-        if (!canvas) {
-            // NOTE: Does nothing atm, will allow for arrow key selection of
-            // buttons on screen
-            menu->setActiveButton();
-        }
-        return;
+	if(canvas){
+	    qDebug() << "got to down press";
+	   press->replace(3,1);// set presssed key
+	   eval->setCurrentTime(tel->elapsed());
+	    eval->evaluateSingle(press,tel->elapsed());
+	    press->replace(3,0); // after sending value reset to 0
+	}
+	if (!canvas) {
+	    // NOTE: Does nothing atm, will allow for arrow key selection of
+	    // buttons on screen
+	    menu->setActiveButton();
+	}
+	return;
     }
     if(e->key()==Qt::Key_Left){
-        if(canvas){
-            qDebug() << "got to left press";
-           press->replace(1,1);// set presssed key
-           eval->setCurrentTime(tel->elapsed());
-            eval->evaluateSingle(press,tel->elapsed());
-            press->replace(1,0); // after sending value reset to 0
-        }
-        if (!canvas)
-        {
-            // NOTE: Does nothing atm, will allow for arrow key selection of
-            // buttons on screen
-            menu->setActiveButton();
-        }
-        return;
+	if(canvas){
+	    qDebug() << "got to left press";
+	   press->replace(1,1);// set presssed key
+	   eval->setCurrentTime(tel->elapsed());
+	    eval->evaluateSingle(press,tel->elapsed());
+	    press->replace(1,0); // after sending value reset to 0
+	}
+	if (!canvas)
+	{
+	    // NOTE: Does nothing atm, will allow for arrow key selection of
+	    // buttons on screen
+	    menu->setActiveButton();
+	}
+	return;
     }
     if(e->key()==Qt::Key_Right){
-        if(canvas){
-            qDebug() << "got to right press";
-           press->replace(2,1);// set presssed key
-            eval->setCurrentTime(tel->elapsed());
-            eval->evaluateSingle(press,tel->elapsed());
-            press->replace(2,0); // after sending value reset to 0
-        }
-        if (!canvas) {
-            menu->setActiveButton(); // NOTE: Does nothing atm, will allow for
-            // arrow key selection of buttons on screen
-        }
-        return;
+	if(canvas){
+	    qDebug() << "got to right press";
+	   press->replace(2,1);// set presssed key
+	    eval->setCurrentTime(tel->elapsed());
+	    eval->evaluateSingle(press,tel->elapsed());
+	    press->replace(2,0); // after sending value reset to 0
+	}
+	if (!canvas) {
+	    menu->setActiveButton(); // NOTE: Does nothing atm, will allow for
+	    // arrow key selection of buttons on screen
+	}
+	return;
     }
     if(e->key()==Qt::Key_Escape){
-        if(canvas){
-            needsToCloseGame = true;
+	if(canvas){
+	    needsToCloseGame = true;
 
-        }
+	}
     }
 }
 
 void MainWindow::timerEvent(QTimerEvent* e) {
     if(e->timerId() == lastNoteTimerID) {
-        killTimer(lastNoteTimerID);
-        gameLogic();
+	killTimer(lastNoteTimerID);
+	gameLogic();
     }
     if(e->timerId() == lastBPMTimerID) {
-        killTimer(lastBPMTimerID);
-        if(bpmItr->hasNext()){
-            double nextBpm = bpmItr->next();
-            double previousBpm = bpmItr->peekPrevious();
-            if(bpmItr->hasNext()){
-                currentArrowSpeed = speedItr->next();
-                lastBPMTimerID = startTimer((int)(nextBpm-previousBpm));
-            }
-        }
+	killTimer(lastBPMTimerID);
+	if(bpmItr->hasNext()){
+	    double nextBpm = bpmItr->next();
+	    double previousBpm = bpmItr->peekPrevious();
+	    if(bpmItr->hasNext()){
+		currentArrowSpeed = speedItr->next();
+		lastBPMTimerID = startTimer((int)(nextBpm-previousBpm));
+	    }
+	}
     }
 }
 

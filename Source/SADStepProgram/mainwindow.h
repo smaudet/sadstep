@@ -6,7 +6,7 @@
   the user and program through a device such as a keyboard, though does not
   offer support for other devices at this time.
 
-        Author: Sebastian Audet
+	Author: Sebastian Audet
 
   */
 
@@ -57,6 +57,7 @@ private:
     QListIterator<double>* deconItr;
     QListIterator<double>* bpmItr;
     QListIterator<double>* speedItr;
+    QList<QListIterator<double>*>* holdItrs;
     QList<int>* press;
     Timeline* timeline;
     int lastNoteTimerID;
