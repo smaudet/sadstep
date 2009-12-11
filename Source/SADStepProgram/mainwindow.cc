@@ -95,7 +95,7 @@ void MainWindow::runGame(int selection) {
     //qDebug() << "got to stepdata";
     //Distance in pixels, time in pixels per minute
     // starts timeline and passes required data to its constructor
-    canvas = new GameCanvas(4,this,45);
+    canvas = new GameCanvas(4,this,25);
     timeline = new Timeline(bps,stepData,0,canvas->getDistance(),profile->getSpeed(), steps->getOffset());
     timeline->getNotes(stepData);
     eval = new ScoreEvaluator(timeline->destructionTime, timeline->arrowGiantMeasure, profile->getRange());

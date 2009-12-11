@@ -71,12 +71,15 @@ private:
     QImage getBackgroundImage();
     ArrowGraphicsSet* graphics;
     //An N-dimensional array of lanes of Arrows
-    QList<QList<Arrow*>*>* arrows;
-    QList<QList<Arrow*>*>* holdArrows;
+    QList<Arrow*>* arrows;
+    QList<Arrow*>* holdArrows;
     GraphicsTimer* timer;
     int type;
     int lanes;
     int laneSize;
+    int reDrawSize;
+    int* laneArrowSizes;
+    int* laneHoldArrowSizes;
     QString txt;
     int laneIndent;
     int arrowLaneSize;

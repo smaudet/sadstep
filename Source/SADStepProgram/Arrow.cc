@@ -25,6 +25,10 @@ void Arrow::setDistanceLoc(double distanceLoc) {
     dloc=distanceLoc;
 }
 
+void Arrow::addToLocation(double distanceLoc) {
+    dloc+=distanceLoc;
+}
+
 double Arrow::getBottomLoc() const{
     return dloc-size;
 }

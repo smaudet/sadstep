@@ -13,11 +13,11 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     this->lanes=lanes;
     this->setGeometry(x()/2,y()/2,parentWidget()->width(),parentWidget()
 		      ->height());
-    arrows = new QList<QList<Arrow*>*>;
-    holdArrows = new QList<QList<Arrow*>*>;
+    arrows = new QList<Arrow*>[lanes];
+    holdArrows = new QList<Arrow*>[lanes];
     for(int i = 0;i<lanes;++i){
-	arrows->append(new QList<Arrow*>);
-	holdArrows->append(new QList<Arrow*>);
+	/*arrows[i] = new Arrow*[100];
+	holdArrows[i] = new Arrow*[100];*/
     }
     timer = new GraphicsTimer(1000.0/(double)fps);
     //TODO Performance boost?
@@ -36,6 +36,7 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     this->fps = fps;
     laneIndent = this->width()/4;
     arrowLaneSize = laneSize/2;
+    reDrawSize = lanes*arrowLaneSize;
     holdImages = new QList<QList<QImage*>*>;
     qDebug() << "suspicious stuff";
     for(int i=0;i<lanes;++i) { //TODO Make Dynamic
@@ -70,7 +71,8 @@ void GameCanvas::start() {
 
 GameCanvas::~GameCanvas() {
     //qDebug() << "allo";
-    delete arrows;
+    delete []arrows;
+    delete []holdArrows;
     delete timer;
     //qDebug() << ":)";
 }
@@ -81,7 +83,7 @@ bool GameCanvas::spawnArrow(double speed,int lane) {
     if(lane>0&&lane<=lane){
 	//qDebug() << "successfull spawn";
 	int index = lane-1;
-	arrows->at(index)->append(new Arrow(images[index]->height(),type));
+	arrows[index].append(new Arrow(images[index]->height(),type));
 	return true;
     }
     return false;
@@ -92,7 +94,7 @@ bool GameCanvas::spawnHoldArrow(double speed, double distance, int lane) {
     if(lane>0&&lane<=lane){
 	 //qDebug() << "successfull spawn";
 	int index = lane-1;
-	holdArrows->at(index)->append(new Arrow(distance,type));
+	holdArrows[index].append(new Arrow(distance,type));
 	const QImage* tcapImage = topcaps[index];
 	const QImage* bcapImage = bottomcaps[index];
 	const QImage* bodyImage = holdbs[index];
@@ -144,7 +146,7 @@ int GameCanvas::getDistance() {
 }
 
 bool GameCanvas::arrowPresent(int lane) {
-    if(arrows->at(lane-1)->size()>0) {
+    if(arrows[lane].size()>0) {
 	return true;
     }
     return false;
@@ -155,7 +157,7 @@ bool GameCanvas::destroyArrow(int lane) {
 	qDebug() << "Tried to delete a non-existant lane " << lane;
 	return false;
     } else {
-	QList<Arrow*>* tlane = arrows->at(lane-1);
+	QList<Arrow*>* tlane = &arrows[lane-1];
 	if(tlane->size()>0){
 	    Arrow* arrow = tlane->first();
 	    tlane->removeFirst();
@@ -174,7 +176,7 @@ bool GameCanvas::destroyHoldArrow(int lane) {
 	qDebug() << "Tried to delete a non-existant lane " << lane;
 	return false;
     } else {
-	QList<Arrow*>* tlane = holdArrows->at(lane-1);
+	QList<Arrow*>* tlane = &holdArrows[lane-1];
 	if(tlane->size()>0){
 	    Arrow* arrow = tlane->first();
 	    tlane->removeFirst();
@@ -204,45 +206,49 @@ bool GameCanvas::scoreArrow(int lane) {
 }
 
 void GameCanvas::paintEvent(QPaintEvent* e){
-    //qDebug() << "painting";
     QPainter* p = new QPainter(this);
     p->setRenderHint(QPainter::Antialiasing,true);
     p->setRenderHint(QPainter::HighQualityAntialiasing,true);
-    QListIterator<QList<Arrow*>*> itr(*arrows);
-    //draw score region
-    for(int i=0;i<this->lanes;++i){
+    for(int i = 0;i<lanes;++i){
+	//draw score region
 	QPointF point((i)*arrowLaneSize+laneIndent,0);
 	p->drawImage(point,*images2[i]);
-    }
-    int laneNum=1;
-    while(itr.hasNext()) {
-	QListIterator<Arrow*> itr2(*itr.next());
-	while(itr2.hasNext()){
-	    Arrow* arrow = itr2.next();
-	    int yindent = (int)(arrow->getDistanceLoc());
-	    //qDebug() << yindent;
-	    QPointF point((laneNum-1)*arrowLaneSize+laneIndent,this->height()
-			 -yindent);
-	    p->drawImage(point,*images[laneNum-1]);
-	}
-	++laneNum;
-    }
-    itr = QListIterator<QList<Arrow*>*>(*holdArrows);
-    laneNum=1;
-    int i1 = 0;
-    while(itr.hasNext()) {
 	int j1 = 0;
-	QListIterator<Arrow*> itr2(*itr.next());
+	QListIterator<Arrow*> itr(arrows[i]);
+	while(itr.hasNext()){
+	    Arrow* arrow = itr.next();
+	    double loc=arrow->getBottomLoc();
+	    if(loc>getDistance()) {
+		destroyArrow(i+1);
+	    } else {
+		//distance = rate * time
+		//time = (fps)^-1
+		double distanceChange = arrowSpeed*(1.0/(double)fps);
+		arrow->addToLocation(distanceChange);
+	    }
+	    int yindent = (int)(arrow->getDistanceLoc());
+	    QPointF point((i)*arrowLaneSize+laneIndent,height()
+			 -yindent);
+	    p->drawImage(point,*images[i]);
+	}
+	QListIterator<Arrow*> itr2(holdArrows[i]);
 	while(itr2.hasNext()){
 	    Arrow* arrow = itr2.next();
+	    double loc=arrow->getBottomLoc();
+	    if(loc>getDistance()) {
+		destroyHoldArrow(i);
+	    } else {
+		//distance = rate * time
+		//time = (fps)^-1
+		double distanceChange = arrowSpeed*std::pow(((double)fps),-1);
+		arrow->addToLocation(distanceChange);
+	    }
 	    int yindent = (int)(arrow->getDistanceLoc());
-	    QPointF point((laneNum-1)*arrowLaneSize+laneIndent,this->height()
+	    QPointF point((i)*arrowLaneSize+laneIndent,height()
 			 -yindent);
-	    p->drawImage(point,*holdImages->at(i1)->at(j1));
+	    p->drawImage(point,*holdImages->at(i)->at(j1));
 	    ++j1;
 	}
-	++i1;
-	++laneNum;
     }
     p->setPen(QColor(255,0,0,255));
     QFont f;
@@ -251,53 +257,12 @@ void GameCanvas::paintEvent(QPaintEvent* e){
     p->drawText(this->rect(),Qt::AlignCenter,txt);
     p->end();
     delete p;
+    qDebug() << stimer->elapsed() << "paint";
 }
 
 void GameCanvas::updateArrows() {
-    qDebug() << stimer->restart();
-    QListIterator<QList<Arrow*>*> itr(*arrows);
-    int lane = 1;
-    while(itr.hasNext()) {
-	QList<Arrow*>* n = itr.next();
-	QListIterator<Arrow*> itr2(*n);
-	while(itr2.hasNext()){
-	    Arrow* arrow = itr2.next();
-	    double loc=arrow->getBottomLoc();
-	    if(loc>getDistance()) {
-		destroyArrow(lane);
-	    } else {
-		//distance = rate * time
-		//time = (fps)^-1
-		double distanceChange = arrowSpeed*(1.0/(double)fps);
-	   //qDebug() << distanceChange << "dchange";
-		arrow->setDistanceLoc(arrow->getDistanceLoc()+distanceChange);
-		//qDebug() << arrow->getDistanceLoc() << "distance";
-	    }
-	}
-	++lane;
-    }
-    itr = QListIterator<QList<Arrow*>*>(*holdArrows);
-    lane = 1;
-    while(itr.hasNext()) {
-	QList<Arrow*>* n = itr.next();
-	QListIterator<Arrow*> itr2(*n);
-	while(itr2.hasNext()){
-	    Arrow* arrow = itr2.next();
-	    double loc=arrow->getBottomLoc();
-	    if(loc>getDistance()) {
-		destroyHoldArrow(lane);
-	    } else {
-		//distance = rate * time
-		//time = (fps)^-1
-		double distanceChange = arrowSpeed*std::pow(((double)fps),-1);
-		//qDebug() << distanceChange << "dchange";
-		arrow->setDistanceLoc(arrow->getDistanceLoc()+distanceChange);
-		//qDebug() << arrow->getDistanceLoc() << "distance";
-	    }
-	}
-	++lane;
-    }
-    repaint();
+    stimer->restart();
+    repaint(laneIndent,0,reDrawSize,height());
 }
 
 int GameCanvas::getFps() const {

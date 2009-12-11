@@ -13,6 +13,7 @@ public:
     const double getPercentLoc() const;
     //Deprecated
     void giveLocation(double percentloc);
+    void addToLocation(double distanceLoc);
     void setDistanceLoc(double distanceLoc);
     const double getDistanceLoc() const;
     double getBottomLoc() const;
