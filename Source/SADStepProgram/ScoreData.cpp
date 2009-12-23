@@ -1,4 +1,4 @@
-#include "scoredata.h"
+#include "ScoreData.h"
 
 ScoreData::ScoreData()
 {

@@ -1,3 +1,6 @@
+/*
+ *  Author: Sebastian Audet
+ */
 #ifndef GRAPHICSTIMER_H
 #define GRAPHICSTIMER_H
 

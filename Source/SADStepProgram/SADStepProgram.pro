@@ -4,23 +4,19 @@
 # QT += testlib
 LIBS += -L"lib"
 LIBS += -lvlc
-INCLUDEPATH += "include"
-CONFIG += uitools
+LIBS += -lmingw32 \
+    -lSDL \
+    -mwindows
+INCLUDEPATH += "include" \
+    "include/SDL"
+
+# CONFIG += uitools
 TARGET = SADStepProgram
 TEMPLATE = app
-SOURCES += mainwindow.cc \
-    stepmenu.cpp \
-    startmenu.cc \
-    songmenu.cc \
-    optionmenu.cc \
-    GraphicsTimer.cc \
-    gamemenu.cc \
+SOURCES += GraphicsTimer.cc \
     GameCanvas.cc \
-    basemenuform.cpp \
     ArrowGraphicsSet.cpp \
     Arrow.cc \
-    timeline.cpp \
-    score.cpp \
     ScoreData.cpp \
     FileIOServer.cc \
     SongCatalogue.cc \
@@ -29,24 +25,22 @@ SOURCES += mainwindow.cc \
     Tests.cc \
     main.cc \
     NotesData.cc \
-    testtimer.cpp \
-    profilemenu.cpp \
-    profile.cpp \
     Skin.cc \
-    scoreevaluator.cpp
-HEADERS += mainwindow.h \
-    stepmenu.h \
-    startmenu.h \
-    songmenu.h \
-    optionmenu.h \
-    GraphicsTimer.h \
-    gamemenu.h \
+    MainWindow.cc \
+    Timeline.cpp \
+    StepMenu.cpp \
+    StartMenu.cc \
+    SongMenu.cc \
+    Score.cpp \
+    ProfileMenu.cpp \
+    Profile.cpp \
+    BaseMenuForm.cpp \
+    ScoreEvaluator.cpp \
+    GameMenu.cc
+HEADERS += GraphicsTimer.h \
     GameCanvas.h \
-    basemenuform.h \
     ArrowGraphicsSet.h \
     Arrow.h \
-    timeline.h \
-    score.h \
     ScoreData.h \
     FileIOServer.h \
     SongReader.h \
@@ -56,11 +50,19 @@ HEADERS += mainwindow.h \
     MediaPlayer.h \
     Tests.h \
     NotesData.h \
-    testtimer.h \
-    profilemenu.h \
-    profile.h \
     Skin.h \
-    scoreevaluator.h
+    ProjectHeader.h \
+    Timeline.h \
+    StepMenu.h \
+    StartMenu.h \
+    SongMenu.h \
+    ProfileMenu.h \
+    Profile.h \
+    BaseMenuForm.h \
+    Score.h \
+    ScoreEvaluator.h \
+    MainWindow.h \
+    GameMenu.h
 FORMS += songMenuForm.ui \
     optionmenu.ui \
     MMenuForm.ui \
@@ -70,5 +72,9 @@ FORMS += songMenuForm.ui \
     profileMenuForm.ui
 RESOURCES += MenuForms.qrc \
     ButtonsLib.qrc \
-    Arrow.qrc
+    Arrow.qrc \
+    Arrows2.qrc \
+    Arrows3.qrc \
+    Arrows4.qrc \
+    Arrows5.qrc
 OTHER_FILES += bugs.txt

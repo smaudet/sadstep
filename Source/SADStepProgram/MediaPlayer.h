@@ -1,3 +1,6 @@
+/*
+ *  Author: Sebastian Audet
+ */
 #ifndef MEDIAPLAYER_H
 #define MEDIAPLAYER_H
 
@@ -13,7 +16,7 @@ public:
     ~MediaPlayer();
     //Won't accept Unicode file names due to limitations in VLC
     bool playFile(QString file);
-    
+
     bool playFileInWindow(QString& file, QWidget* window);
 	void changeVolume(int newVolume);
     void stop();

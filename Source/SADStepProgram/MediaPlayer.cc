@@ -5,10 +5,10 @@
 MediaPlayer::MediaPlayer() {
     //preparation of the vlc command
     const char * const vlc_args[] = {
-	"-I", "dummy", /* Don't use any interface */
-	"--ignore-config", /* Don't use VLC's config */
-	/*"--extraintf=logger",*/ //log anything
-	"--verbose=2", //be much more verbose then normal for debugging purpose
+        "-I", "dummy", /* Don't use any interface */
+        "--ignore-config", /* Don't use VLC's config */
+        /*"--extraintf=logger",*/ //log anything
+        "--verbose=2", //be much more verbose then normal for debugging purpose
     };
     _isPlaying=false;
 
@@ -18,7 +18,7 @@ MediaPlayer::MediaPlayer() {
 
     //create a new libvlc instance
     _vlcinstance=libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]),vlc_args,
-			    &_vlcexcep);
+                            &_vlcexcep);
     raise (&_vlcexcep);
 
     // Create a media player playing environement
@@ -59,8 +59,8 @@ bool MediaPlayer::isMuted() {
 
 void MediaPlayer::pause() {
     if(libvlc_media_player_can_pause(_mp, &_vlcexcep)) {
-	libvlc_media_player_pause(_mp,&_vlcexcep);
-	_isPlaying = false;
+        libvlc_media_player_pause(_mp,&_vlcexcep);
+        _isPlaying = false;
     }
 }
 
@@ -75,35 +75,35 @@ void MediaPlayer::stop() {
 
 bool MediaPlayer::seek(float time) {
     if(libvlc_media_player_is_seekable(_mp,&_vlcexcep)) {
-	libvlc_media_player_set_position(_mp,time,&_vlcexcep);
-	return true;
+        libvlc_media_player_set_position(_mp,time,&_vlcexcep);
+        return true;
     }
     return false;
 }
 
 float MediaPlayer::getTimePosition() {
     if(_isPlaying){
-	return libvlc_media_player_get_position(_mp,&_vlcexcep);
+        return libvlc_media_player_get_position(_mp,&_vlcexcep);
     } else {
-	return 0;
+        return 0;
     }
 }
 
 void MediaPlayer::play() {
     if(libvlc_media_player_will_play(_mp,&_vlcexcep)){
-	libvlc_media_player_play(_mp,&_vlcexcep);
-	_isPlaying = true;
+        libvlc_media_player_play(_mp,&_vlcexcep);
+        _isPlaying = true;
     }
 }
 
 bool MediaPlayer::loadFile(QString file) {
     if(QFile(file).exists()){
-	stop();
-	this->file = new QString(file);
-	// TODO not final behavior
-	return true;
+        stop();
+        this->file = new QString(file);
+        // TODO not final behavior
+        return true;
     } else {
-	return false;
+        return false;
     }
 }
 
@@ -117,19 +117,18 @@ bool MediaPlayer::playFile(QString file) {
     /* Play */
     libvlc_media_player_play (_mp, &_vlcexcep );
     raise(&_vlcexcep);
-	_isPlaying=true;
+        _isPlaying=true;
 
-	return true;
+        return true;
 //    } else {
 //	return false;
 //    }
 }
-void MediaPlayer::raise(libvlc_exception_t * ex)
-{
+void MediaPlayer::raise(libvlc_exception_t * ex) {
     if (libvlc_exception_raised (ex))
     {
-	fprintf (stderr, "error: %s\n", libvlc_exception_get_message(ex));
-	exit (-1);
+        fprintf (stderr, "error: %s\n", libvlc_exception_get_message(ex));
+        exit (-1);
 
     }
 }

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/arrows">
+        <file alias="arrowhtcapl">arrows/arrowLeftTopCap.png</file>
+        <file alias="arrowhbcapl">arrows/arrowLeftBottomCap.png</file>
+        <file alias="arrowhbodyl">arrows/arrowLeftHold.png</file>
+    </qresource>
+</RCC>

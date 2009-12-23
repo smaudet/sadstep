@@ -1,3 +1,6 @@
+/*
+ *  Author: Sebastian Audet
+ */
 #ifndef FILEIOSERVER_H
 #define FILEIOSERVER_H
 

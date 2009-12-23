@@ -3,17 +3,5 @@
         <file alias="MArrow">arrows/arrow.png</file>
         <file alias="background.jpg">arrows/trogdor-wings.jpg</file>
         <file alias="arrowScore">arrows/arrowScore.png</file>
-        <file alias="arrowhbcapd">arrows/arrowDownBottomCap.png</file>
-        <file alias="arrowhbodyd">arrows/arrowDownHold.png</file>
-        <file alias="arrowhtcapd">arrows/arrowDownTopCap.png</file>
-        <file alias="arrowhbcapl">arrows/arrowLeftBottomCap.png</file>
-        <file alias="arrowhbodyl">arrows/arrowLeftHold.png</file>
-        <file alias="arrowhtcapl">arrows/arrowLeftTopCap.png</file>
-        <file alias="arrowhbodyr">arrows/arrowRightHoldBody.png</file>
-        <file alias="arrowhbcapr">arrows/arrowRightHoldBottomCap.png</file>
-        <file alias="arrowhtcapr">arrows/arrowRightHoldTopCap.png</file>
-        <file alias="arrowhbcapu">arrows/arrowUpBottomCap.png</file>
-        <file alias="arrowhbodyu">arrows/arrowUpHold.png</file>
-        <file alias="arrowhtcapu">arrows/arrowUpTopCap.png</file>
     </qresource>
 </RCC>

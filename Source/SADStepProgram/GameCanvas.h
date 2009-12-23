@@ -1,3 +1,6 @@
+/*
+ *  Author: Sebastian Audet
+ */
 #ifndef GAMECANVAS_H
 #define GAMECANVAS_H
 
@@ -13,6 +16,7 @@
 #include "GraphicsTimer.h"
 #include "ArrowGraphicsSet.h"
 #include <QTime>
+#include "ProjectHeader.h"
 
 //#define DRAW_SURFACE QWidget;
 //#define THREAD_TYPE QThread;
@@ -31,7 +35,7 @@
 
 class GameCanvas: public QWidget { Q_OBJECT
 public:
-    GameCanvas(int lanes,QWidget* parent, int fps = 60);
+    GameCanvas(int lanes,QWidget* parent = 0, int fps = 60);
     ~GameCanvas();
     void run();
     //In pixels
@@ -63,7 +67,10 @@ protected:
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
-    //friend void GameCanvasThread::run();
+    friend int threadFunc(void* canvas);\
+    SDL_Thread* execthread;
+    SDL_Rect* backgroundRect;
+    double errorcount;
     int fps;
     int counter;
     bool flipb;
@@ -83,15 +90,28 @@ private:
     QString txt;
     int laneIndent;
     int arrowLaneSize;
-    QTime* stimer;
     int totelapsed;
     const QImage* images[9];
+    SDL_Surface* imagesSprites[9];
     const QImage* images2[9];
+    SDL_Surface* images2Sprites[9];
 //    const QImage* images3[9];
-    QList<QList<QImage*>*>* holdImages;
+    QList<QImage*>** holdImages;
+    QList<SDL_Surface*>** holdSurfaces;
     const QImage* topcaps[9];
     const QImage* bottomcaps[9];
     const QImage* holdbs[9];
+    SDL_Surface* screen;
+    SDL_Surface* bgimage;
+    SDL_Surface* lanesurfs[9];
+    int laneIndents[9];
+    Uint32 lastTime;
+    bool is_Running;
+
+    //For Debugging purposes
+    int timeVar;
+    int incrementVar;
+    int startTime;
 };
 
 #endif // GAMECANVAS_H

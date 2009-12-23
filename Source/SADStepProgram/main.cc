@@ -1,3 +1,4 @@
+#include <SDL.h>
 #include <QtGui/QApplication>
 #include <QtDebug>
 //#include <QTest>
@@ -5,7 +6,7 @@
 
 #include "mainwindow.h"
 //#include "Tests.h";
-#include "testtimer.h"
+#include "TestTimer.h"
 #include <QTime>
 #include <QList>
 #include <QListIterator>
@@ -16,6 +17,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+    w.setGeometry(0,0,800,600);
     w.show();
 //	Tests* tests = new Tests();
 //	QTest::qExec(tests);
