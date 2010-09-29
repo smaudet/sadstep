@@ -1,5 +1,5 @@
 #include "StartMenu.h"
-#include "basemenuform.h"
+#include "BaseMenuForm.h"
 
 
 StartMenu::StartMenu(BaseMenuForm* form,QWidget* parent): StepMenu(form,parent)

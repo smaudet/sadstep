@@ -44,6 +44,7 @@ protected:
     void timerEvent(QTimerEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
+    int arrowIncrementVar;
     QTime* tel;
     MediaPlayer* mp;
     ScoreEvaluator* eval;

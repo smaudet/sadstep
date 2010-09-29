@@ -24,6 +24,7 @@ MediaPlayer::MediaPlayer() {
     // Create a media player playing environement
     _mp = libvlc_media_player_new (_vlcinstance, &_vlcexcep);
     raise (&_vlcexcep);
+    qDebug() << "media player";
 }
 
 MediaPlayer::~MediaPlayer() {

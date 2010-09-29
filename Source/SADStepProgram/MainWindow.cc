@@ -14,6 +14,7 @@
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent) {
     //showFullScreen();
+    arrowIncrementVar = 0;
     tel = new QTime();
     currentArrowSpeed = 0;
     lastSpawnArrowTime = 0;
@@ -33,17 +34,18 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent) {
 }
 
 void MainWindow::gameLogic() {
-    qDebug () << incrementVar << "incvar";
-    qDebug() << timeline->creationTime->at(incrementVar) << "construct Time";
-    qDebug() << timeline->destructionTime->at(incrementVar) << "destruct time";
+//    qDebug () << incrementVar << "incvar";
+//    qDebug() << timeline->creationTime->at(incrementVar) << " " << incrementVar << "construct Time";
+//    qDebug() << timeline->destructionTime->at(incrementVar) << " " << incrementVar << "destruct time";
     ++incrementVar;
-    if (notesLocation >= arrows->size()){
+    if (notesLocation >= arrows->size()-1){
         qDebug() << "should stop now";
         mp->stop();
         needsToCloseGame=true;
     }
     if(needsToCloseGame) { // return to menus if song over else continue
         qDebug() << "ending";
+        canvas->debug();
         if(itr->hasNext()){
             int zi = 0;
             while(itr->hasNext()){
@@ -52,8 +54,10 @@ void MainWindow::gameLogic() {
             }
             qDebug() << "elements remaining: " << zi;
         }
+        canvas->stop();
         needsToCloseGame=false;
         runMenu();
+        qDebug() << "------------Done with song-----------";
         return;
     } else {
         if(itr->hasNext()) {
@@ -72,6 +76,9 @@ void MainWindow::gameLogic() {
             if(note>0){
                 if(note==1) {
                     canvas->spawnArrow(currentArrowSpeed,i+1);
+                    //qDebug() << SDL_GetTicks() - canvas->pstartTime << " start " <<timeline->creationTime->at(arrowIncrementVar) << " " << arrowIncrementVar << "construct Time";
+                    //qDebug() << timeline->destructionTime->at(arrowIncrementVar) << " " << arrowIncrementVar << "destruct time";
+                    ++arrowIncrementVar;
                 }
                 if(note==2) {
                     canvas->spawnHoldArrow(currentArrowSpeed,holdItrs->at(i)->next(),i+1);
@@ -113,7 +120,7 @@ void MainWindow::runGame(int selection) {
     }
     arrows = timeline->arrowGiantMeasure; //***** placeholder (getNotes)
     setCentralWidget(canvas);
-    qDebug() << itr->peekNext();
+    //qDebug() << itr->peekNext();
     lastNoteTimerID = startTimer((int)itr->next());
     deconItr->next();
     if(timeline->bpmChanges->size() != 0) {
@@ -126,7 +133,7 @@ void MainWindow::runGame(int selection) {
     mp->playFile(song->getSongFile());
     tel->start();
     canvas->start();
-    qDebug() << "told canvas to start";
+    //qDebug() << "told canvas to start";
 }
 
 void MainWindow::runMenu() {
@@ -134,7 +141,7 @@ void MainWindow::runMenu() {
     connect(menu,SIGNAL(runGame(int)),this,SLOT(runGame(int)));
     setCentralWidget(menu);
     if(canvasOn) { // Need to delete game stuff
-        //qDebug() << "canvas was on";
+        qDebug() << "canvas was on";
         delete timeline;
         delete itr;
         canvasOn = false;
@@ -226,6 +233,7 @@ void MainWindow::timerEvent(QTimerEvent* e) {
         gameLogic();
     }
     if(e->timerId() == lastBPMTimerID) {
+        qDebug() << "shouldn't be here";
         //qDebug() << "bpm timer got through" << lastBPMTimerID;
         if(bpmItr->hasNext()){
             double nextBpm = bpmItr->next();

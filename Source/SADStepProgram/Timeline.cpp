@@ -196,9 +196,10 @@ Timeline::Timeline(QList<QPair<double,double>* >* BPM,
             //Check the data
             //qDebug() << createOffset << "offset";
             //qDebug() << createT << "orignal create time";
-            qDebug() << this->creationTime->last() << "create time";
+            //qDebug() << this->creationTime->last() << "create time";
+            qDebug() << destructionTime->last() - creationTime->last() << "diff";
             //qDebug() << deconTime << "orignal destruct time";
-            qDebug() << destructionTime->last() << "destruct time";
+            //qDebug() << destructionTime->last() << "destruct time";
 
             //Error stuff - IGNORE
             errorsize+=creationTime->last()-std::floor(creationTime->last());

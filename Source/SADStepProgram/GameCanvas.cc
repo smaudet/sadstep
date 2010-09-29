@@ -22,6 +22,7 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     //Unsure that this command does anything...
     this->setGeometry(x()/2,y()/2,parentWidget()->width(),parentWidget()
                       ->height());
+    qDebug() << "height" << height();
     //Create Arrow Queues
     arrows = new QList<Arrow*>[lanes];
     holdArrows = new QList<Arrow*>[lanes];
@@ -51,7 +52,10 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     arrowSpeed = 0;
     errorcount = 0;
     timeVar = 402;
-    incrementVar = 0;
+    dincrementVar = 0;
+    sincrementVar = 0;
+    startTimes = new QList<double>;
+    endTimes = new QList<double>;
     this->fps = fps; //Doesn't actually do anything - deprecate
     laneIndent = this->width()/4;
     arrowLaneSize = laneSize/2;
@@ -154,20 +158,34 @@ int threadFunc(void *canvas){
         if(tmpticks>=gcanvas->totelapsed){
             gcanvas->totelapsed +=1000;
             qDebug() << (double)(gcanvas->counter) << "fps";
-            qDebug() << tmpticks;
             gcanvas->counter=0;
         }
         gcanvas->updateArrows();
-        SDL_Delay(5);
+        //SDL_Delay(5);
     }
     qDebug() << "Quitting";
+}
+
+void GameCanvas::stop() {
+    is_Running = false;
+    return;
 }
 
 void GameCanvas::start() {
     is_Running = true;
     execthread = SDL_CreateThread(threadFunc,this);
     startTime = SDL_GetTicks();
+    pstartTime = startTime;
     qDebug() << startTime << "started Time";
+    return;
+}
+
+void GameCanvas::debug() {
+    QListIterator<double> itr1(*startTimes);
+    QListIterator<double> itr2(*endTimes);
+    while(itr1.hasNext()&&itr2.hasNext()){
+        qDebug() << itr2.next() - itr1.next() << "diff";
+    }
 }
 
 GameCanvas::~GameCanvas() {
@@ -175,7 +193,7 @@ GameCanvas::~GameCanvas() {
     is_Running = false;
     SDL_KillThread(execthread);
     qDebug() << "deleting GameCanvas";
-    SDL_QuitSubSystem(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_JOYSTICK);
+    //SDL_Quit();
     qDebug() << "deleting GameCanvas";
     delete []arrows;
     qDebug() << "deleting GameCanvas";
@@ -188,6 +206,9 @@ GameCanvas::~GameCanvas() {
 //Speed = distance of screen / seconds
 bool GameCanvas::spawnArrow(double speed,int lane) {
     arrowSpeed = speed;
+    startTimes->append(SDL_GetTicks() - startTime);
+    //qDebug() << SDL_GetTicks() - startTime << sincrementVar++ << "actual construct";
+    //qDebug() << "arrow speed" << arrowSpeed;
     if(lane>0&&lane<=lane){
         int index = lane-1;
         arrows[index].append(new Arrow(images[index]->height(),type));
@@ -271,9 +292,10 @@ bool GameCanvas::destroyArrow(int lane) {
         if(tlane->size()>0){
             Arrow* arrow = tlane->first();
             tlane->removeFirst();
-            ++incrementVar;
-//            qDebug() << incrementVar*timeVar;
-            qDebug() << SDL_GetTicks() - startTime << incrementVar << "actual destruct"; // ~ Destruct Time
+//            ++dincrementVar;
+//            qDebug() << dincrementVar*timeVar;
+            endTimes->append(SDL_GetTicks() - startTime);
+            //qDebug() << SDL_GetTicks() - startTime << dincrementVar << "actual destruct"; // ~ Destruct Time
             delete arrow;
             //qDebug() << "Deleted";
             return true;
@@ -406,7 +428,7 @@ void GameCanvas::updateArrows() {
         while(itr.hasNext()){
             Arrow* arrow = itr.next();
             double loc=arrow->getBottomLoc();
-            if(loc>getDistance()) {
+            if(loc>height()) {
                 destroyArrow(i+1);
             } else {
                 arrow->addToLocation(distanceChange);

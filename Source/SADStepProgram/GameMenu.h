@@ -10,7 +10,7 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QKeyEvent>
-#include "basemenuform.h"
+#include "BaseMenuForm.h"
 
 class GameMenu : public StepMenu
 { Q_OBJECT

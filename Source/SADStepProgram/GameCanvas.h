@@ -56,7 +56,12 @@ public:
     int getFps() const;
     GraphicsTimer* getTimer() const;
     void start();
+    void stop();
     void updateArrowsSpeed(double speed);
+
+    //For Debugging:
+    int pstartTime;
+    void debug();
 public slots:
     void updateArrows();
     void showScoreText(QString txt);
@@ -110,8 +115,11 @@ private:
 
     //For Debugging purposes
     int timeVar;
-    int incrementVar;
+    int dincrementVar;
+    int sincrementVar;
     int startTime;
+    QList<double>* startTimes;
+    QList<double>* endTimes;
 };
 
 #endif // GAMECANVAS_H

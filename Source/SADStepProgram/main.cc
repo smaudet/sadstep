@@ -4,7 +4,7 @@
 //#include <QTest>
 //#define QT_NO_DEBUG_OUTPUT
 
-#include "mainwindow.h"
+#include "MainWindow.h"
 //#include "Tests.h";
 #include "TestTimer.h"
 #include <QTime>

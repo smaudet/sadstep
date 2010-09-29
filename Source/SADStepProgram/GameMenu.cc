@@ -1,4 +1,4 @@
-#include "gamemenu.h"
+#include "GameMenu.h"
 
 GameMenu::GameMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form,parent)
 {

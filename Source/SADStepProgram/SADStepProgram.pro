@@ -4,11 +4,19 @@
 # QT += testlib
 LIBS += -L"lib"
 LIBS += -lvlc
+LIBS += -lSDL
+win32 {
 LIBS += -lmingw32 \
-    -lSDL \
     -mwindows
+}
+unix {
+LIBS += -L/usr/lib
+}
 INCLUDEPATH += "include" \
     "include/SDL"
+unix {
+    INCLUDEPATH += "/usr/include/SDL"
+}
 
 # CONFIG += uitools
 TARGET = SADStepProgram
