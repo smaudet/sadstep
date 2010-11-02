@@ -30,10 +30,10 @@ public:
     float getTimePosition();
 private:
 	QString* file;
-    void raise(libvlc_exception_t * ex);
+    //void raise(libvlc_exception_t *ex);
     bool _isPlaying;
     bool _isMuted;
-    libvlc_exception_t _vlcexcep;
+    //libvlc_exception_t _vlcexcep;
     libvlc_instance_t *_vlcinstance;
     libvlc_media_player_t *_mp;
     libvlc_media_t *_m;

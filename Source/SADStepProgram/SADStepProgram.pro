@@ -13,7 +13,8 @@ unix {
 LIBS += -L/usr/lib
 }
 INCLUDEPATH += "include" \
-    "include/SDL"
+    += "include/SDL"
+    += "include/vlc"
 unix {
     INCLUDEPATH += "/usr/include/SDL"
 }

@@ -4,6 +4,6 @@
 #ifndef PROJECTHEADER_H
 #define PROJECTHEADER_H
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #endif // PROJECTHEADER_H
