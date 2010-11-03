@@ -71,7 +71,20 @@ HEADERS += GraphicsTimer.h \
     Score.h \
     ScoreEvaluator.h \
     MainWindow.h \
-    GameMenu.h
+    GameMenu.h \
+    include/vlc/vlc.h \
+    include/vlc/libvlc_vlm.h \
+    include/vlc/libvlc_version.h \
+    include/vlc/libvlc_structures.h \
+    include/vlc/libvlc_media_player.h \
+    include/vlc/libvlc_media_list_player.h \
+    include/vlc/libvlc_media_list.h \
+    include/vlc/libvlc_media_library.h \
+    include/vlc/libvlc_media_discoverer.h \
+    include/vlc/libvlc_media.h \
+    include/vlc/libvlc_events.h \
+    include/vlc/libvlc.h \
+    include/vlc/deprecated.h
 FORMS += songMenuForm.ui \
     optionmenu.ui \
     MMenuForm.ui \

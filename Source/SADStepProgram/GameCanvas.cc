@@ -164,6 +164,7 @@ int threadFunc(void *canvas){
         //SDL_Delay(5);
     }
     qDebug() << "Quitting";
+    return 0;
 }
 
 void GameCanvas::stop() {

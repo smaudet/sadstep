@@ -18,7 +18,7 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent) 
     songNumber = 0;
     this->setWidgetRep(this);
     IO = new FileIOServer();
-    myPlayer = new MediaPlayer();
+    myPlayer = MediaPlayer::getMediaPlayerInst();
 }
 SongMenu::~SongMenu() {
     songMenuON = false;
@@ -167,7 +167,7 @@ void SongMenu::paintEvent(QPaintEvent* e) {
 //    if (myPlayer->isPlaying()==true) { // if music playing stops it before setting new song
 //        myPlayer->stop();
 //    }
-//    myPlayer->playFile(IO->getSongReader(selectedSong)->getSongFile()); // plays music
+myPlayer->playFile(IO->getSongReader(selectedSong)->getSongFile()); // plays music
 //    //TODO: use song sample instead of start of song once mediaplayer functions are fixed
 //    //myPlayer->pause();
 //    // myPlayer->seek(IO->getSongReader(selectedSong)->getSongSampleStart());
@@ -180,7 +180,7 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     void SongMenu::keyPressEvent(QKeyEvent* e) {
 //    qDebug() << "MAD PERSON HERE!!!!!!!!";
 //    if(e->key()==Qt::Key_Return){
-//        myPlayer->stop();
+        myPlayer->stop();
 //        qDebug()<< "Did you know L,";
 //        songNumber = x+2;
 //        qDebug()<< "Gods of death";

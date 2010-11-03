@@ -10,6 +10,16 @@
 
 class MediaPlayer
 {
+private:
+    static MediaPlayer* msPlayer;
+    QString* file;
+    //void raise(libvlc_exception_t *ex);
+    bool _isPlaying;
+    bool _isMuted;
+    //libvlc_exception_t _vlcexcep;
+    libvlc_instance_t *_vlcinstance;
+    libvlc_media_player_t *_mp;
+    libvlc_media_t *_m;
 public:
     MediaPlayer();
     MediaPlayer(QString file);
@@ -28,15 +38,9 @@ public:
     void mute();
     bool seek(float time);
     float getTimePosition();
-private:
-	QString* file;
-    //void raise(libvlc_exception_t *ex);
-    bool _isPlaying;
-    bool _isMuted;
-    //libvlc_exception_t _vlcexcep;
-    libvlc_instance_t *_vlcinstance;
-    libvlc_media_player_t *_mp;
-    libvlc_media_t *_m;
+    static MediaPlayer* getMediaPlayerInst(){
+        return MediaPlayer::msPlayer;
+    }
 };
 
 #endif // MEDIAPLAYER_H

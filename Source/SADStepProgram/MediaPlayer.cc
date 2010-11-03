@@ -2,6 +2,10 @@
 #include <QFile>
 #include <QtDebug>
 
+
+
+MediaPlayer* MediaPlayer::msPlayer = new MediaPlayer();
+
 MediaPlayer::MediaPlayer() {
     //preparation of the vlc command
     const char * const vlc_args[] = {
@@ -102,10 +106,12 @@ bool MediaPlayer::loadFile(QString file) {
         stop();
         this->file = new QString(file);
         // TODO not final behavior
-        return true;
-    } else {
-        return false;
+        _m = libvlc_media_new_location(_vlcinstance, file.toAscii());
+        if(_m!=NULL){
+            return true;
+        }
     }
+    return false;
 }
 
 bool MediaPlayer::playFile(QString file) {

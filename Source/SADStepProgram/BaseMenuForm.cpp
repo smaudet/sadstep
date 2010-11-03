@@ -29,6 +29,7 @@ void BaseMenuForm::runGame() {
 
 bool BaseMenuForm::mainMenu() {
     goToMenu(1);
+    return false; //FIXME
 }
 
 BaseMenuForm::~BaseMenuForm() {

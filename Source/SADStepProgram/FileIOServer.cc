@@ -67,4 +67,5 @@ QList<Skin>* FileIOServer::getSkins() {
     QDir skinDir("Skins");
     QFileInfoList skins = skinDir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
     QListIterator<QFileInfo> itr(skins);
+    return NULL;
 }

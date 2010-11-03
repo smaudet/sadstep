@@ -68,7 +68,7 @@ void MainWindow::gameLogic() {
         }
     }
     if (canvasOn) {
-        bool allValYAreZero = true;
+        //bool allValYAreZero = true;
         //Note (the musical type)
         QList<int>* noteRow = arrows->at(notesLocation);
         for(int i = 0;i<noteRow->size();++i) { // spawns arrow in correct lane
@@ -129,7 +129,7 @@ void MainWindow::runGame(int selection) {
     }
     currentArrowSpeed = speedItr->next();
     SongReader* song = fio->getSongReader(location);
-    mp = new MediaPlayer();
+    mp = MediaPlayer::getMediaPlayerInst();
     mp->playFile(song->getSongFile());
     tel->start();
     canvas->start();
