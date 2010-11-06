@@ -18,6 +18,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QTimerEvent>
+#include <SDL/SDL.h>
 #include "BaseMenuForm.h"
 #include "FileIOServer.h"
 #include "GameCanvas.h"
@@ -36,6 +37,17 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
     int getSongTimeElapsed();
+
+    //Not final code, please do not use
+    //SDL Timing stuff
+    int lastTime;
+    int diffTime;
+    int currentDiffTime;
+    int currentSpawnTime;
+    SDL_Thread* execthread;
+    MediaPlayer* mp;
+    QList<QList<int>*>* arrows;
+    double currentArrowSpeed;
 public slots:
     void runMenu();
     void runGame(int selection);
@@ -44,9 +56,10 @@ protected:
     void timerEvent(QTimerEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
+    friend int gameThread(void* data);
+
     int arrowIncrementVar;
-    QTime* tel;
-    MediaPlayer* mp;
+    //QTime* tel;
     ScoreEvaluator* eval;
     bool canvasOn;
     bool needsToCloseGame;
@@ -64,10 +77,7 @@ private:
     int lastNoteTimerID;
     int lastBPMTimerID;
     int lastSpawnArrowTime;
-
-    double currentArrowSpeed;
     int notesLocation;
-    QList<QList<int>*>* arrows;
     ScoreData* scoreData;
     double dTimeHolder;
     Score* score;

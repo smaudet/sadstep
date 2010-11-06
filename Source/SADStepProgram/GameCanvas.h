@@ -12,11 +12,12 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QListIterator>
 #include "Arrow.h"
 #include "GraphicsTimer.h"
 #include "ArrowGraphicsSet.h"
-#include <QTime>
 #include "ProjectHeader.h"
+#include "MediaPlayer.h"
 
 //#define DRAW_SURFACE QWidget;
 //#define THREAD_TYPE QThread;
@@ -58,6 +59,7 @@ public:
     void start();
     void stop();
     void updateArrowsSpeed(double speed);
+    void giveTimelineInfo(QListIterator<double>* itr, QList<QList<int>*>* arrows, double arrowspeed);
 
     //For Debugging:
     int pstartTime;
@@ -72,7 +74,14 @@ protected:
     void paintEvent(QPaintEvent* e);
     void keyPressEvent(QKeyEvent* e);
 private:
-    friend int threadFunc(void* canvas);\
+    friend int threadFunc(void* canvas);
+
+    //Timeline stuff
+    QListIterator<double>* timeLineInfo;
+    QList<QList<int>*>* parrows;
+    double arrowspeed;
+    bool paused;
+
     SDL_Thread* execthread;
     SDL_Rect* backgroundRect;
     double errorcount;
@@ -118,6 +127,9 @@ private:
     int dincrementVar;
     int sincrementVar;
     int startTime;
+    int ones;
+    int twoleft;
+    int holdArrowCount;
     QList<double>* startTimes;
     QList<double>* endTimes;
 };

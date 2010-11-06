@@ -67,6 +67,7 @@ int Profile::getDifficultyValue() // gets int value of selected difficulty
     {
         return(3);
     }
+    return 0;
 }
 
 

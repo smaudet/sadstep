@@ -95,10 +95,10 @@ float MediaPlayer::getTimePosition() {
 }
 
 void MediaPlayer::play() {
-    if(libvlc_media_player_will_play(_mp/*,&_vlcexcep*/)){
+    //if(libvlc_media_player_will_play(_mp/*,&_vlcexcep*/)){
         libvlc_media_player_play(_mp/*,&_vlcexcep*/);
         _isPlaying = true;
-    }
+    //}
 }
 
 bool MediaPlayer::loadFile(QString file) {
@@ -107,11 +107,16 @@ bool MediaPlayer::loadFile(QString file) {
         this->file = new QString(file);
         // TODO not final behavior
         _m = libvlc_media_new_location(_vlcinstance, file.toAscii());
+        libvlc_media_player_set_media (_mp, _m);
         if(_m!=NULL){
             return true;
         }
     }
     return false;
+}
+
+bool MediaPlayer::isReady() {
+    return libvlc_media_player_get_state(_mp)==libvlc_Playing;
 }
 
 bool MediaPlayer::playFile(QString file) {

@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.setGeometry(0,0,800,600);
+    w.setGeometry(0,0,800,0);
     w.show();
 //	Tests* tests = new Tests();
 //	QTest::qExec(tests);

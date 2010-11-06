@@ -96,12 +96,15 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
     Uint8  video_bpp;
     Uint32 videoflags;
     lastTime = 0;
-    videoflags = SDL_SWSURFACE|SDL_ANYFORMAT|SDL_DOUBLEBUF/*|SDL_FULLSCREEN*/;
+    const SDL_VideoInfo* vinfo = SDL_GetVideoInfo();
+    videoflags = videoflags|(vinfo->hw_available?SDL_HWSURFACE:SDL_SWSURFACE);
+    videoflags = videoflags|SDL_ANYFORMAT|SDL_DOUBLEBUF/*|SDL_FULLSCREEN*/;
     width = parentWidget()->width();
     height = parentWidget()->height();
-    video_bpp = 8;
-    qDebug() << "about to set screen";
-    screen = SDL_SetVideoMode(width, height, video_bpp, videoflags);
+    video_bpp = 64;
+    qDebug() << "width " << width << "\n height " << height << "\n video_bpp" << video_bpp << "\n videoflags " << videoflags;
+    screen = SDL_SetVideoMode(width, height, SDL_VideoModeOK(width,height,video_bpp,videoflags), videoflags);
+    qDebug() << "actual bpp used " << screen->format->BitsPerPixel;
 
     if (!screen){
             fprintf(stderr, "Couldn't set %dx%d video mode: %s\n",
@@ -137,6 +140,10 @@ GameCanvas::GameCanvas(int lanes,QWidget* parent,int fps):
         SDL_BlitSurface(images2Sprites[i],NULL,lanesurfs[i],NULL);
     }
     qDebug() << "done setting up sdl";
+
+    ones = 0;
+    twoleft = 0;
+    holdArrowCount = 0;
 }
 
 void GameCanvas::showScoreText(QString txt) {
@@ -150,20 +157,94 @@ QImage GameCanvas::getBackgroundImage() {
 }
 
 int threadFunc(void *canvas){
+    int delay = 0;
     GameCanvas* gcanvas = (GameCanvas*) canvas;
-    gcanvas->totelapsed = 1000;
-    gcanvas->lastTime = SDL_GetTicks(); //Ensure that it set properly
+    int totelapsed = 1000;
+    int lastTime = SDL_GetTicks(); //Ensure that it set properly
+    QList<QList<int>*>* arrows = gcanvas->parrows;
+    QList<int>* noteRow;
+    int notesLocation = 0;
+    int currentArrowSpeed = gcanvas->arrowspeed;
+    bool needsToCloseGame = false;
+    int arrowsSize = arrows->size()-1;
+    qDebug() << arrowsSize << " arrowsSize";
+
+    QListIterator<double>* itr = gcanvas->timeLineInfo;
+
+    int startTime = gcanvas->startTime;
+    int currentSpawnTime = startTime+itr->next();
+    int eventWaiter = 0;
+
+    SDL_Event event;
+
+    qDebug() << "game begun";
     while(gcanvas->is_Running){
-        int tmpticks = SDL_GetTicks()-gcanvas->startTime;
-        if(tmpticks>=gcanvas->totelapsed){
-            gcanvas->totelapsed +=1000;
-            qDebug() << (double)(gcanvas->counter) << "fps";
-            gcanvas->counter=0;
+        while(SDL_PollEvent(&event)){
+            switch(event.type){  /* Process the appropiate event type */
+                case SDL_KEYDOWN:  /* Handle a KEYDOWN event */
+                    if(event.key.keysym.sym == SDLK_DOWN){
+                        if (delay>0){
+                            delay-=1;
+                        }
+                    } else if(event.key.keysym.sym == SDLK_UP){
+                        delay+=1;
+                    } else if(event.key.keysym.sym == SDLK_SPACE) {
+                        gcanvas->paused = !gcanvas->paused;
+                        if(gcanvas->paused){
+                            SDL_GetTicks();
+                        }
+                    }
+                    break;
+            }
         }
-        gcanvas->updateArrows();
-        //SDL_Delay(5);
+        if(!gcanvas->paused){
+            //if(eventWaiter==50){
+    //            eventWaiter++;
+    //        }
+
+            if(SDL_GetTicks() > currentSpawnTime){ //Call this function once every frame - might be off by one
+                if (notesLocation >= arrowsSize){
+                    qDebug() << "notesLocation " << notesLocation;
+                    qDebug() << "should stop now";
+                    MediaPlayer::getMediaPlayerInst()->stop();
+                    needsToCloseGame=true;
+                    gcanvas->is_Running = false;
+                    qDebug() << notesLocation << " notesLocation";
+                }
+                if(!needsToCloseGame) {
+                    if( itr->hasNext()) {
+                        currentSpawnTime = itr->next()+startTime;
+                        //qDebug() << "hello " << currentSpawnTime;
+                    }
+                    noteRow = arrows->at(notesLocation);
+                    for(int i = 0;i<noteRow->size();++i) { // spawns arrow in correct lane
+                        int note = noteRow->at(i);
+                        if(note>0){
+                            if(note==1) {
+                                gcanvas->startTimes->append(SDL_GetTicks() - startTime);
+                                gcanvas->spawnArrow(currentArrowSpeed,i+1);
+                            }
+    //                            if(note==2) {
+    //                                gcanvas->spawnHoldArrow(currentArrowSpeed,holdItrs->at(i)->next(),i+1);
+    //                            }
+                        }
+                    }
+                    notesLocation++;
+                }
+                lastTime = SDL_GetTicks();
+            }
+            int tmpticks = SDL_GetTicks()-startTime;
+            if(tmpticks>=totelapsed){
+                totelapsed +=1000;
+                qDebug() << (double)(gcanvas->counter) << "fps";
+                gcanvas->counter=0;
+            }
+            gcanvas->updateArrows();
+            SDL_Delay(delay);
+        }
     }
     qDebug() << "Quitting";
+    gcanvas->debug();
     return 0;
 }
 
@@ -177,6 +258,7 @@ void GameCanvas::start() {
     execthread = SDL_CreateThread(threadFunc,this);
     startTime = SDL_GetTicks();
     pstartTime = startTime;
+    paused = false;
     qDebug() << startTime << "started Time";
     return;
 }
@@ -187,6 +269,9 @@ void GameCanvas::debug() {
     while(itr1.hasNext()&&itr2.hasNext()){
         qDebug() << itr2.next() - itr1.next() << "diff";
     }
+    qDebug() << " Ones " << ones;
+    qDebug() << " Twoleft " << twoleft;
+    qDebug() << " holdLeft " << holdArrowCount;
 }
 
 GameCanvas::~GameCanvas() {
@@ -204,10 +289,17 @@ GameCanvas::~GameCanvas() {
     qDebug() << "deleting GameCanvas";
 }
 
+void GameCanvas::giveTimelineInfo(QListIterator<double>* itr, QList<QList<int>*>* arrows, double arrowspeed){
+    this->timeLineInfo = itr;
+    this->parrows = arrows;
+    this->arrowspeed = arrowspeed;
+}
+
 //Speed = distance of screen / seconds
 bool GameCanvas::spawnArrow(double speed,int lane) {
     arrowSpeed = speed;
-    startTimes->append(SDL_GetTicks() - startTime);
+    //startTimes->append(SDL_GetTicks() - startTime);
+    ones++;
     //qDebug() << SDL_GetTicks() - startTime << sincrementVar++ << "actual construct";
     //qDebug() << "arrow speed" << arrowSpeed;
     if(lane>0&&lane<=lane){
@@ -219,58 +311,59 @@ bool GameCanvas::spawnArrow(double speed,int lane) {
 }
 
 bool GameCanvas::spawnHoldArrow(double speed, double distance, int lane) {
-    arrowSpeed = speed;
-    if(lane>0&&lane<=lane){
-         //qDebug() << "successfull spawn";
-        int index = lane-1;
-        const QImage* tcapImage = topcaps[index];
-        const QImage* bcapImage = bottomcaps[index];
-        const QImage* bodyImage = holdbs[index];
-        QImage* calcImage;
-        if(distance < tcapImage->height()) {
-            calcImage = new QImage(*tcapImage);
-        }
-        double extradist = (double)distance - (double)(1.5*tcapImage->height());
-        if(extradist>0){
-            calcImage = new QImage(tcapImage->width(),distance,QImage::Format_ARGB32);
-            QPainter p(calcImage);
-            //Calc part areas
-            double numbody = extradist/(double)(bodyImage->height());
-            int bodyuse = 0;
-            double extra = numbody - std::floor(extradist/(double)(bodyImage->height()));
-            if(numbody>0&&numbody<=1) {
-                bodyuse = 1;
-            }
-            if(numbody>1){
-                bodyuse = numbody;
-                if(extra>0){
-                    bodyuse++;
-                }
-            }
-            //Paint part areas
-            //Draw Underlay
-            p.drawImage(0,tcapImage->height()/2,*bodyImage);
-            //Draw Loop
-            for(int i = 0;i<bodyuse;++i){
-                p.drawImage(0,tcapImage->height()+i*(bodyImage->height()),*bodyImage);
-            }
-            //Paint image areas
-            //Draw Bottom Cap
-            p.drawImage(0,distance-bcapImage->height(),*bcapImage);
-            //Draw Top Cap
-            p.drawImage(0,0,*tcapImage);
-        } else {
-            qDebug() << "Unhandled Exception";
-        }
-/*new QImage(images[lane-1]->scaled(images[1]->width(),distance,Qt::IgnoreAspectRatio));*/
-        holdImages[index]->append(calcImage);
-        calcImage->save("./tmpHoldImg.bmp","bmp");
-        SDL_Surface* tmp = SDL_LoadBMP("./tmpHoldImg.bmp");
-        holdSurfaces[index]->append(tmp);
-        holdArrows[index].append(new Arrow(distance,type));
-        return true;
-    }
-    return false;
+    holdArrowCount++;
+//    arrowSpeed = speed;
+//    if(lane>0&&lane<=lane){
+//         //qDebug() << "successfull spawn";
+//        int index = lane-1;
+//        const QImage* tcapImage = topcaps[index];
+//        const QImage* bcapImage = bottomcaps[index];
+//        const QImage* bodyImage = holdbs[index];
+//        QImage* calcImage;
+//        if(distance < tcapImage->height()) {
+//            calcImage = new QImage(*tcapImage);
+//        }
+//        double extradist = (double)distance - (double)(1.5*tcapImage->height());
+//        if(extradist>0){
+//            calcImage = new QImage(tcapImage->width(),distance,QImage::Format_ARGB32);
+//            QPainter p(calcImage);
+//            //Calc part areas
+//            double numbody = extradist/(double)(bodyImage->height());
+//            int bodyuse = 0;
+//            double extra = numbody - std::floor(extradist/(double)(bodyImage->height()));
+//            if(numbody>0&&numbody<=1) {
+//                bodyuse = 1;
+//            }
+//            if(numbody>1){
+//                bodyuse = numbody;
+//                if(extra>0){
+//                    bodyuse++;
+//                }
+//            }
+//            //Paint part areas
+//            //Draw Underlay
+//            p.drawImage(0,tcapImage->height()/2,*bodyImage);
+//            //Draw Loop
+//            for(int i = 0;i<bodyuse;++i){
+//                p.drawImage(0,tcapImage->height()+i*(bodyImage->height()),*bodyImage);
+//            }
+//            //Paint image areas
+//            //Draw Bottom Cap
+//            p.drawImage(0,distance-bcapImage->height(),*bcapImage);
+//            //Draw Top Cap
+//            p.drawImage(0,0,*tcapImage);
+//        } else {
+//            qDebug() << "Unhandled Exception";
+//        }
+///*new QImage(images[lane-1]->scaled(images[1]->width(),distance,Qt::IgnoreAspectRatio));*/
+//        holdImages[index]->append(calcImage);
+//        calcImage->save("./tmpHoldImg.bmp","bmp");
+//        SDL_Surface* tmp = SDL_LoadBMP("./tmpHoldImg.bmp");
+//        holdSurfaces[index]->append(tmp);
+//        holdArrows[index].append(new Arrow(distance,type));
+//        return true;
+//    }
+//    return false;
 }
 
 int GameCanvas::getDistance() {
@@ -296,6 +389,7 @@ bool GameCanvas::destroyArrow(int lane) {
 //            ++dincrementVar;
 //            qDebug() << dincrementVar*timeVar;
             endTimes->append(SDL_GetTicks() - startTime);
+            this->twoleft++;
             //qDebug() << SDL_GetTicks() - startTime << dincrementVar << "actual destruct"; // ~ Destruct Time
             delete arrow;
             //qDebug() << "Deleted";
@@ -406,13 +500,16 @@ void GameCanvas::updateArrows() {
     lastTime = SDL_GetTicks();
     //(pixels/sec)*(timeSpent msec/1000msec)*1sec
     double distanceChange = arrowSpeed*((double) timeSpent/1000.0);
-    //qDebug() << (int)distanceChange << "distanceChange" << distanceChange;
     errorcount += distanceChange - std::floor(distanceChange);
     if(errorcount>1){//TODO Performance issue?
         distanceChange = std::floor(distanceChange)+std::floor(errorcount);
         errorcount = errorcount - std::floor(errorcount);
     }
     //qDebug() << errorcount;
+    if(counter%64==0){
+        qDebug() << "timeSpent" << timeSpent;
+        qDebug() << std::floor(distanceChange) << "distanceChange" << distanceChange;
+    }
     SDL_Rect point;
     SDL_Surface* sprite;
     for(int i = 0;i<lanes;++i){

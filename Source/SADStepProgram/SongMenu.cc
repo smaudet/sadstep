@@ -12,6 +12,7 @@
 #include <QImage>
 #include "MediaPlayer.h"
 
+
 SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent) {
     songMenuON = true;
     x = 0;
@@ -38,7 +39,9 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     // TODO: load background image waiting for song reader to work correctly
    // " before image load"
 
+
     //Not implemented
+
 
     /*  if (IO->getSongReader(selectedSong)->getBackGroundFile() != NULL)
     {
@@ -48,14 +51,17 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     p->drawImage(point,backroundImage);
     } */
 
+
     // draw red box for song info
     p->drawRect((form->width()/3)*2,(form->height()/4), form->width()/3, (form->height()/2));
     p->setBrush(Qt::blue);
+
 
     p->setFont(QFont("Arial", 10));
     p->drawRect(0,(form->height()/4) +(form->height()/10), form->width()/3, (form->height()/8));
     songNumber = 0;
     p->setPen(Qt::black);
+
 
     if (list->size() <= x+3)
     {
@@ -67,6 +73,7 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     }
     qDebug()<< " 1";
 
+
     if (list->size() <= x+2)
     {
       p->drawText(0, (form->height()/3)-(form->height()/10), "ERROR: Does Not Exist");
@@ -75,6 +82,7 @@ void SongMenu::paintEvent(QPaintEvent* e) {
      {
        p->drawText(0, (form->height()/3)-(form->height()/10), list->at(x+2));
    }
+
 
     qDebug()<< " 2";
     if (list->size() <=x+1)
@@ -87,6 +95,7 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     }
     qDebug()<< " 3";
     p->setFont(QFont("Arial", 15));
+
 
      qDebug()<< " 4a";
     if (list->size() <= x)
@@ -104,9 +113,13 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     }
     qDebug()<< " 5";
 
+
     p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
     p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
     p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
+
+
+
 
 
 
@@ -142,7 +155,13 @@ firstRun = false;
 
 
 
+
+
+
+
         update();
+
+
 
 
     }
@@ -157,7 +176,11 @@ firstRun = false;
          }
 
 
+
+
          update();
+
+
 
 
     }

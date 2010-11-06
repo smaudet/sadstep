@@ -36,6 +36,7 @@ public:
     bool isPlaying();
     bool isMuted();
     void mute();
+    bool isReady();
     bool seek(float time);
     float getTimePosition();
     static MediaPlayer* getMediaPlayerInst(){
