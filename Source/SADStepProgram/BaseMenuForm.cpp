@@ -145,8 +145,16 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
             //qDebug() << "Eat my shorts 0";
             break;
         }
-    case 3: /*{
-            qDebug() << "case 3:";
+    case 3:{} //Does Nothing intentionally!!!!!!!!!!!!!!!!!
+              // Forces Game to Quit
+    case 4: {
+            qDebug() << "case 4:";
+            close();
+            break;
+        }
+    case 5:{
+            /*
+             qDebug() << "case 3:";
             stepMenu = new OptionMenu(this);
             setButtonsVisible(false);
             changeLabel(1);
@@ -154,12 +162,9 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
             optionMenu = true;
             setMenuWidget(stepMenu);
             break;
-        }*/
-    case 4: {
-            qDebug() << "case 4:";
-            close();
-            break;
+            */
         }
+
     case 300: { // Run Game
 
             qDebug() << "Set To " << ((SongMenu*)stepMenu)->getIndex();

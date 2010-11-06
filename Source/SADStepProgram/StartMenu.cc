@@ -37,6 +37,10 @@ void StartMenu::keyPressEvent(QKeyEvent* e)
 
 
     }
+    if(e->key()==Qt::Key_Escape)
+    {
+      form->goToMenu(3);
+    }
 }
 void StartMenu::paintEvent(QPaintEvent* e)
 {

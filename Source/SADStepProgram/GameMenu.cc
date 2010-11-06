@@ -42,15 +42,15 @@ void GameMenu::paintEvent(QPaintEvent* e)
     p->setBrush(Qt::blue);
     if (x==3)
     {
-    p->drawRect(form->width()/2.3,(form->height()/4), form->width()/6, (form->height()/10));
+    p->drawRect(form->width()/2.3,(form->height()/4), form->width()/3.5, (form->height()/10));
 }
     if(x==2)
     {
-        p->drawRect(form->width()/2.3,(form->height()/4)+(form->height()/10), form->width()/8, (form->height()/10));
+        p->drawRect(form->width()/2.3,(form->height()/4)+(form->height()/10), form->width()/5, (form->height()/10));
     }
     if (x==1)
     {
-        p->drawRect(form->width()/2.3,(form->height()/4)+(form->height()/10)*2, form->width()/16, (form->height()/10));
+        p->drawRect(form->width()/2.3,(form->height()/4)+(form->height()/10)*2, form->width()/11, (form->height()/10));
     }
     p->setFont(QFont("Arial", 25));
     p->setPen(Qt::black);
@@ -102,6 +102,10 @@ void GameMenu::keyPressEvent(QKeyEvent* e)
         }
         else
             return;
+    }
+    if(e->key()==Qt::Key_Escape)
+    {
+      form->goToMenu(3);
     }
 
 }
