@@ -137,7 +137,7 @@ void BaseMenuForm::goToMenu(int index, bool firstRun) {
             qDebug() << "case 2:";
             stepMenu = new SongMenu(this);
             //stepMenu->setVisible(true);
-            setButtonsVisible(true);
+            setButtonsVisible(false);
             changeLabel(2);
             // qDebug() << "Eat my roomates shorts";
             //stepMenu->setFocus();

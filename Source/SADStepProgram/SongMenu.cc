@@ -20,6 +20,7 @@ SongMenu::SongMenu(BaseMenuForm* form, QWidget* parent): StepMenu(form, parent) 
     this->setWidgetRep(this);
     IO = new FileIOServer();
     myPlayer = MediaPlayer::getMediaPlayerInst();
+    firstRun = true;
 }
 SongMenu::~SongMenu() {
     songMenuON = false;
@@ -37,7 +38,7 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     // TODO: load background image waiting for song reader to work correctly
    // " before image load"
 
-    //**** broken
+    //Not implemented
 
     /*  if (IO->getSongReader(selectedSong)->getBackGroundFile() != NULL)
     {
@@ -103,19 +104,18 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     }
     qDebug()<< " 5";
 
-//    p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
-//    p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
-//    p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
+    p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10), IO->getSongReader(selectedSong)->getSongTitle());
+    p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*2, IO->getSongReader(selectedSong)->getSubtitle());
+    p->drawText((form->width()/3)*2, (form->height()/3)+(form->height()/10)*3, IO->getSongReader(selectedSong)->getSongArtist());
 
 
 
-
-
-    if (myPlayer->isPlaying()==true) { // if music playing stops it before setting new song
-       myPlayer->stop();
-    }
-    myPlayer->playFile(IO->getSongReader(selectedSong)->getSongFile()); // plays music
-
+if (firstRun == true)
+    {
+    selectedSong=list->at((x));
+myPlayer->playFile(IO->getSongReader(selectedSong)->getSongFile());
+firstRun = false;
+}
     delete p;
 }
     void SongMenu::keyPressEvent(QKeyEvent* e) {
@@ -132,8 +132,14 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     if(e->key()==Qt::Key_Up) {
         if( x < list->size()-1)
         {
+            if (myPlayer->isPlaying()==true){ // if music playing stops it before setting new song
+                myPlayer->stop();}
         ++x;
+        selectedSong=list->at((x));
+        myPlayer->playFile(IO->getSongReader(selectedSong)->getSongFile()); // plays music
         }
+
+
 
 
         update();
@@ -143,7 +149,11 @@ void SongMenu::paintEvent(QPaintEvent* e) {
     if(e->key()==Qt::Key_Down) {
         if( x > 0)
          {
+            if (myPlayer->isPlaying()==true) { // if music playing stops it before setting new song
+                myPlayer->stop();}
          --x;
+         selectedSong=list->at((x));
+          myPlayer->playFile(IO->getSongReader(selectedSong)->getSongFile()); // plays music
          }
 
 

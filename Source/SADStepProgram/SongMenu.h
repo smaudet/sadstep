@@ -37,9 +37,11 @@ private:
 //    QUiLoader* loader;
 //    QWidget* widget;
 //    QListWidget* listWidget;
-    int songNumber;
+
     int x;
+    int songNumber;
     bool songMenuON;
+    bool firstRun;
     FileIOServer* IO;
     QString selectedSong;
     QPointF point;
