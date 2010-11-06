@@ -44,6 +44,7 @@ private:
     QString selectedSong;
     QPointF point;
     QImage backroundImage;
+    int numberSelected;
 
 protected:
     void paintEvent(QPaintEvent* e);
